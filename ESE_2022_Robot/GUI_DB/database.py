@@ -141,177 +141,69 @@ class db(sqlite_lib):
         self = sqlite_lib()
         self.open("database.db")
         
-        # 운동 목표 데이터 베이스(id, 운동이름, 목표 세트, 목표 개수)
-        sql1 = '''CREATE TABLE if not exists workout(
-            id integer not null primary key autoincrement,
+        # 운동 루틴 목표 데이터 베이스(루틴id, 운동이름, 목표 세트, 목표 개수, 쉬는시간)
+        sql1 = '''CREATE TABLE if not exists routine(
+            routine_id text not null,
             name text not null,
             aim_set int not null,
-            aim_num int not null)'''
+            aim_num int not null,
+            rest_time int not null)'''
 
-        # 운동 루틴 데이터 베이스(id, 루틴 이름)
-        sql2 = '''CREATE TABLE if not exists routine(
-            id integer not null primary key autoincrement,
-            name text not null)
-            '''
-
-        # 운동 루틴-종류 매핑 데이터 베이스(루틴id, 운동종류id)
-        sql3 = '''CREATE TABLE if not exists mappingR2W(
-            routineid integer not null,
-            workoutid integer not null)
-            '''
-
-        # 장기 피드백 데이터 베이스(날짜, 운동 루틴)
-        sql4 = '''CREATE TABLE if not exists daywork(
-            time DATETIME DEFAULT (strftime('%Y-%m-%d', DATETIME('now', 'localtime'))),
-            name text not null)'''
-
-
-        # 단기 피드백 데이터 베이스(시간, )
-        sql5 = '''CREATE TABLE if not exists livedata(
-            time text not null,
+        # 장단기 피드백 데이터 베이스(날짜, 운동이름, 운동시간, kcal, 세트결과, 손목 점수 1~6)
+        sql2 = '''CREATE TABLE if not exists daywork(
+            day DATETIME DEFAULT (strftime('%Y-%m-%d', DATETIME('now', 'localtime'))),
             name text not null,
-            leftFB float not null,
-            rightFB float not null,
-            leftLR float not null,
-            rightLR float not null
+            time text not null,
+            kcal float not null,
+            set_result float not null,
+            wrsit1 float not null,
+            wrsit2 float not null,
+            wrsit3 float not null,
+            wrsit4 float not null,
+            wrsit5 float not null,
+            wrsit6 float not null
             )'''
 
         self.sql_exec(sql1)
         self.sql_exec(sql2)
-        self.sql_exec(sql3)
-        self.sql_exec(sql4)
-        self.sql_exec(sql5)
         self.close()
-
-    # 운동 정보 입력 함수
-    def insertWorkoutData(self):
-        self = sqlite_lib()
-        self.open("database.db")
-
-        key = int(raw_input('운동 종류 입력 [0], 운동 루틴 이름 [1], 운동 루틴 결정 [2]'))
-
-        if key == 0:
-            name = raw_input('운동이름: ')
-            aim_set = int(raw_input('목표세트: '))
-            aim_num = int(raw_input('목표개수: '))
-
-            sqlInsert = '''INSERT INTO workout(name, aim_set, aim_num) VALUES(
-                '{}', '{}', '{}')'''.format(name, aim_set, aim_num)
-
-            self.sql_exec(sqlInsert)
-            self.close()
-
-        elif key == 1:
-            name = raw_input('루틴이름: ')
-
-            sqlInsert = '''INSERT INTO routine(name) VALUES('{}')'''.format(name)
-            self.sql_exec(sqlInsert)
-            self.close()
-
-        elif key == 2:
-            routineID = int(raw_input('루틴번호: '))
-            workoutID = int(raw_input('운동번호: (입력 중단은 0)'))
-            while workoutID:
-                workoutID = int(raw_input('운동번호: (입력 중단은 0)'))
-                sqlInsert = '''INSERT INTO mappingR2W(routineid, workoutid) VALUES('{}', '{}')'''.format(routineID, workoutID)
-                self.sql_exec(sqlInsert)
-            self.close()
-
     
-
-    # 루틴에 따른 운동정보 출력 함수
-    def printWorkoutInfo(self):
+    # for GUI INSERT DATA
+    def GuiInsertWorkout(self, row):
         self = sqlite_lib()
         self.open("database.db")
+        count = len(row)
+        for x in range(count):
+            routine_id, name, aim_set, aim_num, rest_time = row[x]
+            sql = '''INSERT INTO routine(routine_id, name, aim_set, aim_num, rest_time) VALUES('{}', '{}', '{}', '{}', '{}')'''.format(routine_id, name, aim_set, aim_num, rest_time)
+            self.sql_exec(sql)
 
-        sql = '''SELECT routine.name, workout.name, workout.aim_set, workout.aim_num
-            FROM mappingR2W
-            INNER JOIN routine ON mappingR2W.routineid = routine.id
-            INNER JOIN workout ON mappingR2W.workoutid = workout.id
-            '''
-
+    # 운동 결과 데이터 추출 함수
+    def returnDayworkoutRows(self, day):
+        self = sqlite_lib()
+        self.open("database.db")
+        sql = '''SELECT name, time FROM daywork WHERE day = "%s"'''%day
         self.sql_exec(sql)
         rows = self.cur.fetchall()
-
-        for row in rows:
-            print(row)
-
         self.close()
+        return rows
 
-    # 운동정보 출력 함수
-    def printwork(self):
+    # 운동 루틴 데이터 행렬 추출 함수
+    def returnRoutineRows(self, id):
         self = sqlite_lib()
         self.open("database.db")
-
-        sql = '''SELECT * FROM workout'''
-
+        id = "routine_"+str(id)
+        sql = '''SELECT name, aim_set, aim_num, rest_time FROM routine WHERE routine_id = "%s"'''%id
         self.sql_exec(sql)
         rows = self.cur.fetchall()
-
-        for row in rows:
-            print(row[1], row[2], row[3])
         self.close()
+        return rows
 
-    # 테이블 삭제 함수
-    def deleteDB(self):
+    # 루틴 삭제 함수
+    def deleteRoutine(self, id):
         self = sqlite_lib()
-        self.open("workout.db")
-        
-        key = int(raw_input('0-[삭제취소] 1-[운동루틴 삭제] 2-[운동종류 삭제] 3-[단기피드백 삭제] 4-[장기피드백 삭제] 5-[초기화]'))
-
-        if key == 0:
-            print("Return to menu")
-        elif key == 1:
-            option = int(raw_input('삭제할 루틴 번호: '))
-            sql1 = '''DELETE FROM mappingR2W WHERE routineid = ('{}')'''.format(option)
-            sql2 = '''DELETE FROM routine WHERE id = ('{}')'''.format(option)
-            self.sql_exec(sql1)
-            self.sql_exec(sql2)
-            self.close()
-        elif key == 2:
-            option = int(raw_input('삭제할 루틴 번호: '))
-            sql = '''DELETE FROM workout WHERE id = ('{}')'''.format(option)
-            self.sql_exec(sql)
-            self.close()
-        elif key == 3:
-            option = raw_input('삭제할 단기피드백 번호: ')
-            sql = '''DELETE FROM livedata WHERE name = ('{}')'''.format(option)
-            self.sql_exec(sql)
-            self.close()
-        elif key == 4:
-            option = raw_input('삭제할 장기피드백 번호: ')
-            sql = '''DELETE FROM daywork WHERE name = ('{}')'''.format(option)
-            self.sql_exec(sql)
-            self.close()
-        elif key == 5:
-            option = raw_input('정말 초기화를 진행하려면 0입력 취소는 아무숫자 입력: ')
-            if option == 0:
-                sql1 = '''DELETE FROM mappingR2w'''
-                sql2 = '''DELETE FROM routine'''
-                sql3 = '''DELETE FROM workout'''
-                sql4 = '''DELETE FROM livedata'''
-                sql5 = '''DELETE FROM daywork'''
-                self.sql_exec(sql1)
-                self.sql_exec(sql2)
-                self.sql_exec(sql3)
-                self.sql_exec(sql4)
-                self.sql_exec(sql5)
-                self.close()
-            else:
-                self.close()
-
-
-if __name__ == '__main__':
-    dbsql = db()
-    while True:
-        num = int(raw_input('메뉴: 테이블 생성 [0], 데이터 삽입 [1], 데이터 출력 [2], 데이터 삭제 [3]'))
-        if num == 0:
-            dbsql.createSensorTable()
-            dbsql.createWorkoutData()
-        elif num == 1:
-            dbsql.insertWorkoutData()
-        elif num == 2:
-            dbsql.printwork()
-            dbsql.printWorkoutInfo()
-    
-
+        self.open("database.db")
+        id = "routine_"+str(id)
+        sql = '''DELETE FROM routine WHERE routine_id = "%s"'''%id
+        self.sql_exec(sql)
+        self.close()
