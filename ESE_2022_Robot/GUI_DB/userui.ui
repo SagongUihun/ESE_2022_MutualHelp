@@ -50,7 +50,7 @@ appHeader{
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QFrame" name="frame">
@@ -1458,6 +1458,32 @@ appHeader{
        </property>
        <property name="text">
         <string>TextLabel</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="resttime_2">
+       <property name="geometry">
+        <rect>
+         <x>490</x>
+         <y>360</y>
+         <width>211</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="stopButton">
+       <property name="geometry">
+        <rect>
+         <x>670</x>
+         <y>60</y>
+         <width>99</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>finish</string>
        </property>
       </widget>
      </widget>

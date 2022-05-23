@@ -23,11 +23,12 @@ class UI(QtGui.QMainWindow, form_class):
         timer = QTimer(self)
         timer.timeout.connect(self.nowtime)
         timer.start(1000)
+
         self.button()
         self.nowtime()
         self.exercount()
         self.th = Thread1()
-    
+        self.th2 = Thread2()
     
     #button actions    
     def button(self):
@@ -40,7 +41,9 @@ class UI(QtGui.QMainWindow, form_class):
         self.gotohome_3.clicked.connect(self.gotohome)
         self.gotohome_4.clicked.connect(self.gotohome)
         self.goto3_5.clicked.connect(self.goto3)
-        self.startfinish_2.clicked.connect(self.start_finish)
+        #self.startfinish_2.clicked.connect(self.start_finish)
+        self.startfinish_2.clicked.connect(self.workoutestimate)
+        self.stopButton.clicked.connect(self.recordstop)
         
         self.giverecord_3.clicked.connect(self.giverecord)
         self.givefeedback_3.clicked.connect(self.givefeedback)
@@ -213,6 +216,30 @@ class UI(QtGui.QMainWindow, form_class):
                 mydb.deleteRoutine(i)
 
         mydb.GuiInsertWorkout(row)
+
+    def workoutestimate(self):
+        global a
+        a = a+1
+        if a%2 == 0:
+            self.th2.start() 
+        self.th2.exername.connect(self.label_7.setText)
+        self.th2.exerset.connect(self.leftset_2.setText)
+        self.th2.exercount.connect(self.lefttry_2.setText)
+        self.th2.resttime.connect(self.resttime_2.setText)
+
+             
+        #
+        #woondongsizak
+        # if a%2 == 0:
+        #     self.th2.estimateworkout(b,c,d,e)
+        #     self.th2.exername.connect(self.label_7.setText)
+        #     self.th2.exerset.connect(self.leftset_2.setText)
+        #     self.th2.exercount.connect(self.lefttry_2.setText)
+        #     self.th2.resttime.connect(self.resttime_2.setText)
+    
+    def recordstop(self):
+        print('asfs')
+        self.th2.stop()
             
         
 class Thread1(QThread): 
@@ -232,6 +259,50 @@ class Thread1(QThread):
             self.change_value1.emit(str(i)) 
             time.sleep(2) 
         self.change_value2.emit("arrive.")
+
+class Thread2(QThread):
+    
+    exername = pyqtSignal(str)
+    exerset = pyqtSignal(str)
+    exercount = pyqtSignal(str)
+    resttime = pyqtSignal(str)
+    def __init__(self): 
+       QThread.__init__(self)       
+
+    def run(self):
+        name = "benchpress"
+        set = 5
+        count = 10
+        rest = 20
+        global a
+
+        print("start")
+        self.exername.emit(name)
+        for i in range(set):
+            self.exerset.emit(str(set))
+            for j in range(count):
+                self.exercount.emit(str(count))
+                count =count-1
+                #print("?")
+                if a%2 == 1:
+                    print("stop")
+                    break
+                time.sleep(1)
+            set = set-1
+            for k in range(rest):
+                self.resttime.emit(str(rest-k))
+                if a%2 == 1:
+                    print("stop")
+                    break
+                time.sleep(1)
+            if a%2 ==1:
+                break
+        
+    
+    def stop(self):
+        self.quit()
+        self.wait(5000) #5000ms = 5s
+        
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)
