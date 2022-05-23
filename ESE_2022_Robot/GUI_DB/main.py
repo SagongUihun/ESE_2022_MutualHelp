@@ -14,6 +14,7 @@ set = 0
 count = [] 
 
 
+
 class UI(QtGui.QMainWindow, form_class):
     
     def __init__(self, parent=None):
@@ -29,6 +30,9 @@ class UI(QtGui.QMainWindow, form_class):
         self.exercount()
         self.th = Thread1()
         self.th2 = Thread2()
+
+        global nowroutine 
+        nowroutine= self.nowroutine_2
     
     #button actions    
     def button(self):
@@ -88,8 +92,17 @@ class UI(QtGui.QMainWindow, form_class):
         
     def goto6(self):
         mydb = database.db()
+
         self.stackedWidget.setCurrentWidget(self.page_6)
         mydb.createWorkoutData()
+
+        row = mydb.returnRoutineRows(1)
+        currentroutine = "routine_1"
+        for j in range(len(row)):
+            getattr(self, currentroutine).setItem(j, 0, QTableWidgetItem(row[j][0]))
+            getattr(self, currentroutine).setItem(j, 1, QTableWidgetItem(str(row[j][1])))
+            getattr(self, currentroutine).setItem(j, 2, QTableWidgetItem(str(row[j][2])))
+            getattr(self, currentroutine).setItem(j, 3, QTableWidgetItem(str(row[j][3])))
 
     # three button
     def gotohome(self):
@@ -270,33 +283,70 @@ class Thread2(QThread):
        QThread.__init__(self)       
 
     def run(self):
-        name = "benchpress"
-        set = 5
-        count = 10
-        rest = 20
         global a
+        global nowroutine
+        print("adsg")
+        print(nowroutine)
+        mydb = database.db()
+        for i in range(1,7,1):
+            print("asdf")
+            if nowroutine.text() == "routine " +str(i) :
+                print("dsfdsf")
+                row = mydb.returnRoutineRows(i)
+                for j in range(len(row)):
+                    name, set, count, rest = row[j]
+                    print(name, set, count, rest)
+                    print(name)
+                    print(set)
+                    print("start")
+                    self.exername.emit(name)
+                    for i in range(set):
+                        self.exerset.emit(str(set))
+                        for j in range(count):
+                            self.exercount.emit(str(count))
+                            count =count-1
+                            #print("?")
+                            if a%2 == 1:
+                                print("stop")
+                                break
+                            time.sleep(1)
+                        set = set-1
+                        for k in range(rest):
+                            self.resttime.emit(str(rest-k))
+                            if a%2 == 1:
+                                print("stop")
+                                break
+                            time.sleep(1)
+                        if a%2 ==1:
+                            break
 
-        print("start")
-        self.exername.emit(name)
-        for i in range(set):
-            self.exerset.emit(str(set))
-            for j in range(count):
-                self.exercount.emit(str(count))
-                count =count-1
-                #print("?")
-                if a%2 == 1:
-                    print("stop")
-                    break
-                time.sleep(1)
-            set = set-1
-            for k in range(rest):
-                self.resttime.emit(str(rest-k))
-                if a%2 == 1:
-                    print("stop")
-                    break
-                time.sleep(1)
-            if a%2 ==1:
-                break
+        # name = "benchpress"
+        # set = 5
+        # count = 10
+        # rest = 20
+        # global a
+
+        # print("start")
+        # self.exername.emit(name)
+        # for i in range(set):
+        #     self.exerset.emit(str(set))
+        #     for j in range(count):
+        #         self.exercount.emit(str(count))
+        #         count =count-1
+        #         #print("?")
+        #         if a%2 == 1:
+        #             print("stop")
+        #             break
+        #         time.sleep(1)
+        #     set = set-1
+        #     for k in range(rest):
+        #         self.resttime.emit(str(rest-k))
+        #         if a%2 == 1:
+        #             print("stop")
+        #             break
+        #         time.sleep(1)
+        #     if a%2 ==1:
+        #         break
         
     
     def stop(self):
