@@ -23,7 +23,6 @@ class UI(QtGui.QMainWindow, form_class):
         timer = QTimer(self)
         timer.timeout.connect(self.nowtime)
         timer.start(1000)
-        
         self.button()
         self.nowtime()
         self.exercount()
@@ -77,39 +76,7 @@ class UI(QtGui.QMainWindow, form_class):
                 name, time = row[x] 
                 workrecord = "day"+str(7-i)+str(x+1)+"_3"
                 getattr(self, workrecord).setText(name+time)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        # for x in range(count):
-        #     day, name, time = row[x]
-        #     for i in range(7):
-        #         if day == current_day.addDays(-i).toString('yyyy-MM-dd'):
-        #             for z in range(6):
-        #                 workrecord = "day"+str(7-i)+str(z+1)+"_3"
-        #                 if getattr(self, workrecord).text()!=None:
-        #                     continue
-        #                 getattr(self, workrecord).setText(name+time)
-            
-            # if day == current_day.toString('YY-MM-dd'):
-            #     print("good")
-            #     for i in range(1, 6):
-            #         day7 = "day7" +str(i)+ "_3"
-            #         getattr(self, day7).setText(name, time)
-        # self.day7_3.setText(current_day.toString('MM.dd'))
-        # self.day6_3.setText(current_day.addDays(-1).toString('MM.dd'))
-        # self.day5_3.setText(current_day.addDays(-2).toString('MM.dd'))
-        # self.day4_3.setText(current_day.addDays(-3).toString('MM.dd'))
-        # self.day3_3.setText(current_day.addDays(-4).toString('MM.dd'))
-        # self.day2_3.setText(current_day.addDays(-5).toString('MM.dd'))
-        # self.day1_3.setText(current_day.addDays(-6).toString('MM.dd'))
-        
+  
     #calibration
     def goto4(self):
         self.stackedWidget.setCurrentWidget(self.page_4) 
@@ -117,7 +84,9 @@ class UI(QtGui.QMainWindow, form_class):
         mydb.printwork()
         
     def goto6(self):
-        self.stackedWidget.setCurrentWidget(self.page_6)    
+        mydb = database.db()
+        self.stackedWidget.setCurrentWidget(self.page_6)
+        mydb.createWorkoutData()
 
     # three button
     def gotohome(self):
@@ -178,24 +147,21 @@ class UI(QtGui.QMainWindow, form_class):
         
     def exercount(self):
         global a
-    
-    # def addroutine(self):
-    #     if self.nowroutine_6.currentText() == "routine 1" :
-    #         for i in range(5):
-    #             #if self.nowroutine_6.currentText() == str("routine " + i):
-    #             if self.routine_1.item(i,0) == None:
-    #                 break
-    #         self.routine_1.setItem(i, 0, QTableWidgetItem(self.cb1_6.currentText()))
-    #         self.routine_1.setItem(i, 1, QTableWidgetItem(self.cb2_6.currentText()))
-    #         self.routine_1.setItem(i, 2, QTableWidgetItem(self.cb3_6.currentText()))
-    #         self.routine_1.setItem(i, 3, QTableWidgetItem(self.cb4_6.currentText()))
+
     def changeroutinepage(self):
+        mydb = database.db()
         for i in range(1,7,1):
             if self.nowroutine_6.currentText() == "routine " +str(i) :
-                currentroutinepage = "routinepage_"+str(i)    
+                currentroutinepage = "routinepage_"+str(i)
+                currentroutine = "routine_"+str(i)  
                 self.stackedWidget_2.setCurrentWidget(getattr(self, currentroutinepage))
-        
-        
+                row = mydb.returnRoutineRows(i)
+                for j in range(len(row)):
+                    getattr(self, currentroutine).setItem(j, 0, QTableWidgetItem(row[j][0]))
+                    getattr(self, currentroutine).setItem(j, 1, QTableWidgetItem(str(row[j][1])))
+                    getattr(self, currentroutine).setItem(j, 2, QTableWidgetItem(str(row[j][2])))
+                    getattr(self, currentroutine).setItem(j, 3, QTableWidgetItem(str(row[j][3]))) 
+
     def addroutine(self):
         for i in range(1,7,1):
             if self.nowroutine_6.currentText() == "routine " +str(i) :
@@ -207,7 +173,7 @@ class UI(QtGui.QMainWindow, form_class):
         getattr(self, currentroutine).setItem(j, 1, QTableWidgetItem(self.cb2_6.currentText()))
         getattr(self, currentroutine).setItem(j, 2, QTableWidgetItem(self.cb3_6.currentText()))
         getattr(self, currentroutine).setItem(j, 3, QTableWidgetItem(self.cb4_6.currentText()))        
-          
+        
     def deleteroutine(self):
         for i in range(1,7,1):
             if self.nowroutine_6.currentText() == "routine "+str(i):
@@ -220,7 +186,7 @@ class UI(QtGui.QMainWindow, form_class):
         getattr(self, currentroutine).setItem(j, 2, None)
         getattr(self, currentroutine).setItem(j, 3, None)
          
-    #   
+    
     def liveupdate(self):
         self.th.start()
         self.th.change_value2.connect(self.label_83.setText)
@@ -228,8 +194,25 @@ class UI(QtGui.QMainWindow, form_class):
 
     def saveroutine(self):
         mydb = database.db()
-        #mydb.insertWorkoutData()
-        print(self.routine_1.item(0, 0).text())
+        row = []
+        for i in range(1,7,1):
+            if self.nowroutine_6.currentText() == "routine "+str(i):
+                currentroutine = "routine_"+str(i)
+        for i in range(5):
+            if getattr(self, currentroutine).item(i,0) == None:
+                break 
+            row.append([])
+            row[i].append(currentroutine)
+            row[i].append(getattr(self, currentroutine).item(i, 0).text())
+            row[i].append(getattr(self, currentroutine).item(i, 1).text())
+            row[i].append(getattr(self, currentroutine).item(i, 2).text())
+            row[i].append(getattr(self, currentroutine).item(i, 3).text())
+
+        for i in range(1,7,1):
+            if row[0][0] == "routine_"+str(i):
+                mydb.deleteRoutine(i)
+
+        mydb.GuiInsertWorkout(row)
             
         
 class Thread1(QThread): 
@@ -249,13 +232,6 @@ class Thread1(QThread):
             self.change_value1.emit(str(i)) 
             time.sleep(2) 
         self.change_value2.emit("arrive.")
-
-            
-    
-            
-        
-        
-        
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)
