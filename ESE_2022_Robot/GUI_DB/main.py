@@ -87,8 +87,6 @@ class UI(QtGui.QMainWindow, form_class):
     #calibration
     def goto4(self):
         self.stackedWidget.setCurrentWidget(self.page_4) 
-        mydb = database.db()
-        mydb.printwork()
         
     def goto6(self):
         mydb = database.db()

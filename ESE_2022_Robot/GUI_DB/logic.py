@@ -37,5 +37,7 @@ class Counter:
                     self.count += 1
                     self.checkBuffer.pop(i)
                     self.checkBuffer.pop(i)
+
+        return self.count
         print(value,self.checkBuffer[-1])
         print(self.checkBuffer,self.count)
