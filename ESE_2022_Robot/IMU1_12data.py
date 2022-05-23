@@ -1,6 +1,6 @@
 from bluepy import btle
 from bluepy.btle import AssignedNumbers
-
+from logic import Counter
 import struct
 import binascii
 import time
@@ -23,7 +23,8 @@ class MyDelegate(btle.DefaultDelegate):
         self.handleroll = roll
         self.handlepitch =pitch
         self.handleyaw =yaw
-
+        self.T_before = time.time()
+        self.counter = Counter()
         self.x_acc,self.y_acc,self.z_acc,self.x_gyro ,self.y_gyro, self.z_gyro ,self.x_mag, self.y_mag, self.z_mag, self.roll, self.pitch, self.yaw= 0,0,0,0,0,0,0,0,0,0,0,0
         # ... more initialise here
 
@@ -53,11 +54,14 @@ class MyDelegate(btle.DefaultDelegate):
         elif(self.handleroll == cHandle):
             self.roll = val/100.0
         elif(self.handlepitch == cHandle):
-            self.ptich = val/100.0
+            self.pitch = val/100.0
         elif(self.handleyaw == cHandle):    
              self.yaw = val/100.0
-
-        print(self.x_acc,self.y_acc,self.z_acc,self.x_gyro,self.y_gyro,self.z_gyro, self.x_mag, self.y_mag, self.z_mag, self.roll ,self.pitch , self.yaw )
+             
+        #print(time.time() - self.T_before)
+        #self.T_before = time.time()
+        self.counter.counterAlgorithm(self.z_acc)
+        #print(self.x_acc,self.y_acc,self.z_acc,self.x_gyro,self.y_gyro,self.z_gyro, self.x_mag, self.y_mag, self.z_mag, self.roll ,self.pitch , self.yaw )
 
 print("Connecting...")
 dev = btle.Peripheral("56:ec:8a:8c:21:5d")
