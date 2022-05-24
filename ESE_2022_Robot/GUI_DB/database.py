@@ -154,14 +154,14 @@ class db(sqlite_lib):
             day DATETIME DEFAULT (strftime('%Y-%m-%d', DATETIME('now', 'localtime'))),
             name text not null,
             time text not null,
-            kcal float not null,
+            kcal float,
             set_result float not null,
-            wrsit1 float not null,
-            wrsit2 float not null,
-            wrsit3 float not null,
-            wrsit4 float not null,
-            wrsit5 float not null,
-            wrsit6 float not null
+            wrsit1 float,
+            wrsit2 float,
+            wrsit3 float,
+            wrsit4 float,
+            wrsit5 float,
+            wrsit6 float
             )'''
 
         self.sql_exec(sql1)
@@ -176,6 +176,16 @@ class db(sqlite_lib):
         for x in range(count):
             routine_id, name, aim_set, aim_num, rest_time = row[x]
             sql = '''INSERT INTO routine(routine_id, name, aim_set, aim_num, rest_time) VALUES('{}', '{}', '{}', '{}', '{}')'''.format(routine_id, name, aim_set, aim_num, rest_time)
+            self.sql_exec(sql)
+
+    # workout data save function
+    def saveDayworkoutData(self, row):
+        self = sqlite_lib()
+        self.open("database.db")
+        count = len(row)
+        for x in range(count):
+            name, time, set_result = row[x]
+            sql = '''INSERT INTO daywork(name, time, set_result) VALUES('{}', '{}', '{}')'''.format(name, time, set_result)
             self.sql_exec(sql)
 
     # 운동 결과 데이터 추출 함수

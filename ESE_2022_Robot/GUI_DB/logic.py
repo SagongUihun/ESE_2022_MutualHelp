@@ -3,8 +3,8 @@ import Queue
 class Counter:
     def __init__(self):
         self.MAXSIZE = 600 
-        self.upperBound = 1.05
-        self.lowerBound = 0.90
+        self.upperBound = 1.1
+        self.lowerBound = 0.85
         self.countBuffer = Queue.Queue(self.MAXSIZE) # 10sec buffer  
         self.checkBuffer = [] # 1sec buffer
         self.count = 0
@@ -37,5 +37,7 @@ class Counter:
                     self.count += 1
                     self.checkBuffer.pop(i)
                     self.checkBuffer.pop(i)
+
+        return self.count
         print(value,self.checkBuffer[-1])
         print(self.checkBuffer,self.count)
