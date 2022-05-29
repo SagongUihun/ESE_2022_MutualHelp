@@ -39,5 +39,5 @@ class Counter:
                     self.checkBuffer.pop(i)
 
         return self.count
-        print(value,self.checkBuffer[-1])
-        print(self.checkBuffer,self.count)
+        # print(value,self.checkBuffer[-1])
+        # print(self.checkBuffer,self.count)
