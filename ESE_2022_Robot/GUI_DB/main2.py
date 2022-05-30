@@ -1,14 +1,15 @@
-#import time
+#-*-coding:utf-8-*-
 import sys
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 from bluepy import btle
 from bluepy.btle import AssignedNumbers
 from IMU1_12data import MyDelegate 
 import database
 from time import time, sleep
-#from IMU1_12data import bleCommunication
+from playsound import playsound
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -52,7 +53,6 @@ class UI(QtGui.QMainWindow, form_class):
         self.gotohome_3.clicked.connect(self.gotohome)
         self.gotohome_4.clicked.connect(self.gotohome)
         self.goto3_5.clicked.connect(self.goto3)
-        #self.startfinish_2.clicked.connect(self.start_finish)
         self.startfinish_2.clicked.connect(self.workoutestimate)
         
         self.giverecord_3.clicked.connect(self.giverecord)
@@ -71,8 +71,8 @@ class UI(QtGui.QMainWindow, form_class):
     #silsigan pose-check
     def goto2(self):
         self.stackedWidget.setCurrentWidget(self.page_2)
-        self.nowroutine_2.setText(self.nowroutine_6.currentText())   
-    
+        self.nowroutine_2.setText(self.nowroutine_6.currentText()) 
+        
     # record
     def goto3(self):
         mydb = database.db()
@@ -128,35 +128,8 @@ class UI(QtGui.QMainWindow, form_class):
         self.time_3.setText(day +" " +time) 
         self.time_4.setText(day +" "+ time) 
         self.time_5.setText(day +" "+ time) 
+        self.time_6.setText(day +" "+ time) 
         
-    def start_finish(self):
-        global a
-        a = a+1
-        #woondongsizak
-        if a%2 == 0:       
-            print(self.cb1_2.currentText())
-            print(self.cb2_2.currentText())  
-            print(self.cb3_2.currentText())     
-            #self.nowstate_2.setText(self.cb1_2.currentText())  
-            self.leftangle1_2.setText("check")
-            self.leftangle2_2.setText("check")
-            self.rightangle1_2.setText("check")
-            self.rightangle2_2.setText("check")
-            self.leftset_2.setText(self.cb2_2.currentText())
-            self.lefttry_2.setText(self.cb3_2.currentText())
-            
-        else :
-            print(self.cb1_2.currentText())
-            print(self.cb2_2.currentText())  
-            print(self.cb3_2.currentText())     
-            #self.nowstate_2.setText("")  
-            self.leftangle1_2.setText("notcheck")
-            self.leftangle2_2.setText("notcheck")
-            self.rightangle1_2.setText("notcheck")
-            self.rightangle2_2.setText("notcheck")
-            self.leftset_2.setText("")
-            self.lefttry_2.setText("")
-
     # undong tonggue
     def giverecord(self):
         self.stackedWidget.setCurrentWidget(self.page_5) 
@@ -247,23 +220,14 @@ class UI(QtGui.QMainWindow, form_class):
         self.th2.exercount.connect(self.lefttry_2.setText)
         self.th2.resttime.connect(self.resttime_2.setText)
 
-             
-        #
-        #woondongsizak
-        # if a%2 == 0:
-        #     self.th2.estimateworkout(b,c,d,e)
-        #     self.th2.exername.connect(self.label_7.setText)
-        #     self.th2.exerset.connect(self.leftset_2.setText)
-        #     self.th2.exercount.connect(self.lefttry_2.setText)
-        #     self.th2.resttime.connect(self.resttime_2.setText)
-    
-
     def getval(self):
         global counttry
         counttry = counttry + 1 
     
     def nowconnect(self):
-        QMessageBox.about(self,'Ble Notice','Connect Success')
+        QMessageBox.about(self,'Ble Notice','Success Connect ')
+        playsound('./sound/eng.wav')
+        
         
 class Thread1(QThread): 
     
@@ -334,14 +298,19 @@ class Thread2(QThread):
                                 break
 
                         goalset = goalset-1
-                        for l in range(rest):
-                            self.resttime.emit(str(rest-l))
-                            if a%2 == 1:
-                                print("stop")
-                                break
-                            #time.sleep(1)
-                            sleep(1)
+                        if k < range(goalset):
+                            for l in range(rest):
+                                self.resttime.emit(str(rest-l))
+                                if a%2 == 1:
+                                    print("stop")
+                                    break
+                                sleep(1)
+
                         if a%2 ==1:
+                            self.exercount.emit("")
+                            self.resttime.emit("")
+                            self.exerset.emit("")
+                            self.exername.emit("")
                             break
                     #saverecord
                     endtime = time()
@@ -354,6 +323,7 @@ class Thread2(QThread):
                     totaltry = 0
                 # save workout data to DB
                 mydb.saveDayworkoutData(record)
+        a=a+1
 
 
         

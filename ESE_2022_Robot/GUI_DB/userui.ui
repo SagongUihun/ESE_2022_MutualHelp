@@ -15,13 +15,8 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">#centralwidget{
-	background-color:#fdfdff;
-	background-color:#fbe9b7;
-}
-
-#gridLayout_2{
-	background-color:#fbe9b7;
+    <string notr="true">#centralwidget,#gridLayout_2{
+	background-color:#D8E5C4;
 }
 
 
@@ -96,22 +91,25 @@ appHeader{
       <widget class="QFrame" name="frame_2">
        <property name="geometry">
         <rect>
-         <x>50</x>
-         <y>90</y>
-         <width>671</width>
-         <height>301</height>
+         <x>65</x>
+         <y>120</y>
+         <width>670</width>
+         <height>250</height>
         </rect>
        </property>
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>20</number>
+        </property>
         <item>
          <widget class="QPushButton" name="start_1">
           <property name="sizePolicy">
@@ -120,8 +118,20 @@ appHeader{
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>25</pointsize>
+            <strikeout>false</strikeout>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
           <property name="text">
-           <string>start</string>
+           <string>운동 시작하기</string>
           </property>
          </widget>
         </item>
@@ -133,8 +143,16 @@ appHeader{
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>25</pointsize>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="text">
-           <string>record</string>
+           <string>운동 기록 보기</string>
           </property>
          </widget>
         </item>
@@ -146,8 +164,16 @@ appHeader{
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>25</pointsize>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="text">
-           <string>calibration</string>
+           <string>센서 조정하기</string>
           </property>
          </widget>
         </item>
@@ -156,19 +182,70 @@ appHeader{
       <widget class="QLabel" name="label">
        <property name="geometry">
         <rect>
-         <x>270</x>
-         <y>50</y>
+         <x>260</x>
+         <y>40</y>
          <width>261</width>
-         <height>17</height>
+         <height>41</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>well... come</string>
+        <string>걸어가면 근손실 나요</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>0</y>
+         <width>201</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>image/kimegg.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_18">
+       <property name="geometry">
+        <rect>
+         <x>530</x>
+         <y>20</y>
+         <width>231</width>
+         <height>141</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>image/kimegg2.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <zorder>label_18</zorder>
+      <zorder>label_16</zorder>
+      <zorder>time_1</zorder>
+      <zorder>frame_2</zorder>
+      <zorder>label</zorder>
      </widget>
     </widget>
     <widget class="QWidget" name="page_6">
@@ -177,8 +254,8 @@ appHeader{
        <rect>
         <x>0</x>
         <y>400</y>
-        <width>800</width>
-        <height>40</height>
+        <width>791</width>
+        <height>63</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -188,19 +265,13 @@ appHeader{
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="margin">
-        <number>0</number>
-       </property>
        <item>
         <widget class="QComboBox" name="cb1_6">
-         <item>
-          <property name="text">
-           <string>wow</string>
-          </property>
-         </item>
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+          </font>
+         </property>
          <item>
           <property name="text">
            <string>bench press</string>
@@ -213,18 +284,28 @@ appHeader{
          </item>
          <item>
           <property name="text">
-           <string>awesome</string>
+           <string>팔굽혀펴기</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>help me</string>
+           <string>사이드 레터럴 레이즈</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>스쿼트</string>
           </property>
          </item>
         </widget>
        </item>
        <item>
         <widget class="QComboBox" name="cb2_6">
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+          </font>
+         </property>
          <item>
           <property name="text">
            <string>1</string>
@@ -279,6 +360,11 @@ appHeader{
        </item>
        <item>
         <widget class="QComboBox" name="cb3_6">
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+          </font>
+         </property>
          <item>
           <property name="text">
            <string>1</string>
@@ -383,29 +469,14 @@ appHeader{
        </item>
        <item>
         <widget class="QComboBox" name="cb4_6">
-         <item>
-          <property name="text">
-           <string>10</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>20</string>
-          </property>
-         </item>
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+          </font>
+         </property>
          <item>
           <property name="text">
            <string>30</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>40</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>50</string>
           </property>
          </item>
          <item>
@@ -415,27 +486,7 @@ appHeader{
          </item>
          <item>
           <property name="text">
-           <string>70</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>80</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
            <string>90</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>100</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>110</string>
           </property>
          </item>
          <item>
@@ -447,8 +498,13 @@ appHeader{
        </item>
        <item>
         <widget class="QPushButton" name="finsave_6">
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+          </font>
+         </property>
          <property name="text">
-          <string>측정 화면</string>
+          <string>측정 화면 이동</string>
          </property>
         </widget>
        </item>
@@ -457,11 +513,16 @@ appHeader{
      <widget class="QComboBox" name="nowroutine_6">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>10</y>
-        <width>211</width>
+        <x>40</x>
+        <y>30</y>
+        <width>241</width>
         <height>41</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>23</pointsize>
+       </font>
       </property>
       <item>
        <property name="text">
@@ -515,13 +576,19 @@ appHeader{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>431</width>
-          <height>231</height>
+          <width>471</width>
+          <height>261</height>
          </rect>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>110</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>45</number>
+        </attribute>
         <row>
          <property name="text">
           <string>1</string>
@@ -573,12 +640,21 @@ appHeader{
        <widget class="QTableWidget" name="routine_2">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>421</width>
-          <height>231</height>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>261</height>
          </rect>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>110</number>
+        </attribute>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>45</number>
+        </attribute>
         <row>
          <property name="text">
           <string>1</string>
@@ -631,11 +707,17 @@ appHeader{
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>421</width>
-          <height>231</height>
+          <y>0</y>
+          <width>471</width>
+          <height>264</height>
          </rect>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>110</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>45</number>
+        </attribute>
         <row>
          <property name="text">
           <string>1</string>
@@ -688,11 +770,17 @@ appHeader{
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>10</y>
-          <width>421</width>
-          <height>231</height>
+          <y>0</y>
+          <width>471</width>
+          <height>265</height>
          </rect>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>110</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>45</number>
+        </attribute>
         <row>
          <property name="text">
           <string>1</string>
@@ -744,12 +832,18 @@ appHeader{
        <widget class="QTableWidget" name="routine_5">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>421</width>
-          <height>231</height>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>265</height>
          </rect>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>110</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>45</number>
+        </attribute>
         <row>
          <property name="text">
           <string>1</string>
@@ -801,15 +895,21 @@ appHeader{
        <widget class="QTableWidget" name="routine_6">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>421</width>
-          <height>231</height>
+          <x>0</x>
+          <y>0</y>
+          <width>471</width>
+          <height>265</height>
          </rect>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>110</number>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>45</number>
+        </attribute>
         <row>
          <property name="text">
           <string>1</string>
@@ -861,14 +961,14 @@ appHeader{
      <widget class="QFrame" name="frame_20">
       <property name="geometry">
        <rect>
-        <x>590</x>
+        <x>510</x>
         <y>80</y>
-        <width>171</width>
+        <width>261</width>
         <height>271</height>
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -876,10 +976,10 @@ appHeader{
       <widget class="QPushButton" name="addroutine_6">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>0</y>
-         <width>111</width>
-         <height>80</height>
+         <x>10</x>
+         <y>40</y>
+         <width>110</width>
+         <height>100</height>
         </rect>
        </property>
        <property name="text">
@@ -899,10 +999,10 @@ appHeader{
       <widget class="QPushButton" name="deleteroutine_6">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>90</y>
-         <width>111</width>
-         <height>80</height>
+         <x>10</x>
+         <y>160</y>
+         <width>110</width>
+         <height>100</height>
         </rect>
        </property>
        <property name="text">
@@ -916,28 +1016,34 @@ appHeader{
       <widget class="QPushButton" name="saveroutinedb_6">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>180</y>
-         <width>111</width>
-         <height>80</height>
+         <x>130</x>
+         <y>40</y>
+         <width>131</width>
+         <height>221</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>25</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>저장</string>
+        <string>루틴
+저장</string>
        </property>
       </widget>
      </widget>
      <widget class="QFrame" name="frame_21">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>80</x>
         <y>360</y>
-        <width>641</width>
+        <width>561</width>
         <height>37</height>
        </rect>
       </property>
       <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
@@ -945,6 +1051,11 @@ appHeader{
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
         <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>운동 종류</string>
          </property>
@@ -955,6 +1066,11 @@ appHeader{
        </item>
        <item>
         <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>세트 수</string>
          </property>
@@ -965,6 +1081,11 @@ appHeader{
        </item>
        <item>
         <widget class="QLabel" name="label_6">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>세트별 운동 횟수</string>
          </property>
@@ -975,8 +1096,13 @@ appHeader{
        </item>
        <item>
         <widget class="QLabel" name="label_15">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="text">
-          <string>쉬는 시간</string>
+          <string>쉬는 시간(초)</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -984,6 +1110,25 @@ appHeader{
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QLabel" name="time_6">
+      <property name="geometry">
+       <rect>
+        <x>650</x>
+        <y>0</y>
+        <width>250</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>HELLO</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">
@@ -1026,6 +1171,11 @@ appHeader{
         </property>
         <item>
          <widget class="QPushButton" name="info_3">
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>운동 정보</string>
           </property>
@@ -1033,6 +1183,11 @@ appHeader{
         </item>
         <item>
          <widget class="QPushButton" name="startfinish_2">
+          <property name="font">
+           <font>
+            <pointsize>22</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>시작/종료 </string>
           </property>
@@ -1044,7 +1199,7 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>50</y>
+         <y>10</y>
          <width>70</width>
          <height>60</height>
         </rect>
@@ -1062,8 +1217,8 @@ appHeader{
         <rect>
          <x>250</x>
          <y>10</y>
-         <width>271</width>
-         <height>37</height>
+         <width>351</width>
+         <height>61</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -1075,6 +1230,11 @@ appHeader{
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>현재 routine: </string>
           </property>
@@ -1082,6 +1242,11 @@ appHeader{
         </item>
         <item>
          <widget class="QLabel" name="nowroutine_2">
+          <property name="font">
+           <font>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -1195,10 +1360,15 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>310</x>
-         <y>60</y>
-         <width>141</width>
-         <height>17</height>
+         <y>80</y>
+         <width>171</width>
+         <height>31</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>15</pointsize>
+        </font>
        </property>
        <property name="text">
         <string>실시간 Pose-Check</string>
@@ -1208,9 +1378,9 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>60</x>
-         <y>310</y>
+         <y>276</y>
          <width>671</width>
-         <height>37</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -1219,50 +1389,146 @@ appHeader{
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="QLabel" name="label_88">
-          <property name="text">
-           <string>현재 운동:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_20">
-          <property name="text">
-           <string>남은 세트:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="leftset_2">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_89">
-          <property name="text">
-           <string>남은 횟수:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="lefttry_2">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QFrame" name="frame_22">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>231</width>
+          <height>43</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label_88">
+           <property name="text">
+            <string>현재 운동:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="font">
+            <font>
+             <pointsize>20</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QFrame" name="frame_23">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>10</y>
+          <width>156</width>
+          <height>43</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>남은 세트:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="leftset_2">
+           <property name="font">
+            <font>
+             <pointsize>20</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QFrame" name="frame_24">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>10</y>
+          <width>231</width>
+          <height>43</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="lefttry_2">
+         <property name="geometry">
+          <rect>
+           <x>89</x>
+           <y>10</y>
+           <width>131</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_89">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>62</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>남은 횟수:</string>
+         </property>
+        </widget>
+       </widget>
       </widget>
       <widget class="QLabel" name="time_2">
        <property name="geometry">
@@ -1280,27 +1546,27 @@ appHeader{
       <widget class="QLabel" name="label_9">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>173</width>
+         <x>100</x>
+         <y>20</y>
+         <width>61</width>
          <height>17</height>
         </rect>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string>운동 하기!</string>
        </property>
       </widget>
       <widget class="QFrame" name="frame_6">
        <property name="geometry">
         <rect>
-         <x>310</x>
+         <x>260</x>
          <y>350</y>
-         <width>181</width>
+         <width>261</width>
          <height>43</height>
         </rect>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
@@ -1308,6 +1574,11 @@ appHeader{
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QLabel" name="label_12">
+          <property name="font">
+           <font>
+            <pointsize>18</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>휴식 시간:</string>
           </property>
@@ -1315,8 +1586,13 @@ appHeader{
         </item>
         <item>
          <widget class="QLabel" name="resttime_2">
+          <property name="font">
+           <font>
+            <pointsize>20</pointsize>
+           </font>
+          </property>
           <property name="text">
-           <string>TextLabel</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1875,7 +2151,7 @@ appHeader{
       <widget class="QPushButton" name="gotohome_4">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>10</y>
          <width>70</width>
          <height>60</height>
@@ -2309,7 +2585,7 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>0</y>
+         <y>10</y>
          <width>70</width>
          <height>60</height>
         </rect>
