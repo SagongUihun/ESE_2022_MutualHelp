@@ -198,6 +198,18 @@ class db(sqlite_lib):
         self.close()
         return rows
 
+    # 운동 상세 결과 데이터 추출 함수
+    def returnNameWorkoutRows(self):
+        self = sqlite_lib()
+        self.open("database.db")
+        sql = '''SELECT name, sum(time), max(time), min(time), avg(time),
+        sum(kcal), max(kcal), min(kcal), avg(kcal),
+        sum(set_result), max(set_result), min(set_result), avg(set_result) FROM daywork GROUP BY name'''
+        self.sql_exec(sql)
+        rows = self.cur.fetchall()
+        self.close()
+        return rows
+
     # 운동 루틴 데이터 행렬 추출 함수
     def returnRoutineRows(self, id):
         self = sqlite_lib()

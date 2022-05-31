@@ -1650,7 +1650,7 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>340</x>
-         <y>30</y>
+         <y>10</y>
          <width>101</width>
          <height>17</height>
         </rect>
@@ -2226,30 +2226,10 @@ appHeader{
           </property>
          </widget>
         </item>
-        <item row="0" column="5">
-         <widget class="QLabel" name="label_27">
-          <property name="text">
-           <string>동향</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="QLabel" name="label_23">
           <property name="text">
            <string>합계</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_32">
-          <property name="text">
-           <string>반복</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -2286,16 +2266,6 @@ appHeader{
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_31">
-          <property name="text">
-           <string>무게</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_22">
           <property name="text">
@@ -2317,7 +2287,7 @@ appHeader{
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLabel" name="label_33">
+         <widget class="QLabel" name="detail_1">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2327,7 +2297,7 @@ appHeader{
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QLabel" name="label_39">
+         <widget class="QLabel" name="detail_5">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2337,27 +2307,7 @@ appHeader{
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QLabel" name="label_45">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLabel" name="label_51">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QLabel" name="label_57">
+         <widget class="QLabel" name="detail_9">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2367,7 +2317,7 @@ appHeader{
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="QLabel" name="label_63">
+         <widget class="QLabel" name="detail_2">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2377,7 +2327,7 @@ appHeader{
          </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QLabel" name="label_69">
+         <widget class="QLabel" name="detail_3">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2387,17 +2337,7 @@ appHeader{
          </widget>
         </item>
         <item row="1" column="4">
-         <widget class="QLabel" name="label_70">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="5">
-         <widget class="QLabel" name="label_71">
+         <widget class="QLabel" name="detail_4">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2407,7 +2347,7 @@ appHeader{
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="QLabel" name="label_72">
+         <widget class="QLabel" name="detail_6">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2417,7 +2357,7 @@ appHeader{
          </widget>
         </item>
         <item row="2" column="3">
-         <widget class="QLabel" name="label_73">
+         <widget class="QLabel" name="detail_7">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2427,17 +2367,7 @@ appHeader{
          </widget>
         </item>
         <item row="2" column="4">
-         <widget class="QLabel" name="label_74">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="5">
-         <widget class="QLabel" name="label_75">
+         <widget class="QLabel" name="detail_8">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2447,7 +2377,7 @@ appHeader{
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="QLabel" name="label_76">
+         <widget class="QLabel" name="detail_10">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2457,7 +2387,7 @@ appHeader{
          </widget>
         </item>
         <item row="3" column="3">
-         <widget class="QLabel" name="label_77">
+         <widget class="QLabel" name="detail_11">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2467,97 +2397,7 @@ appHeader{
          </widget>
         </item>
         <item row="3" column="4">
-         <widget class="QLabel" name="label_78">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="5">
-         <widget class="QLabel" name="label_79">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QLabel" name="label_80">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="3">
-         <widget class="QLabel" name="label_81">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="4">
-         <widget class="QLabel" name="label_82">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="5">
-         <widget class="QLabel" name="label_83">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QLabel" name="label_84">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="3">
-         <widget class="QLabel" name="label_85">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="4">
-         <widget class="QLabel" name="label_86">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="5">
-         <widget class="QLabel" name="label_87">
+         <widget class="QLabel" name="detail_12">
           <property name="text">
            <string>TextLabel</string>
           </property>
@@ -2571,7 +2411,7 @@ appHeader{
       <widget class="QLabel" name="label_21">
        <property name="geometry">
         <rect>
-         <x>210</x>
+         <x>360</x>
          <y>10</y>
          <width>67</width>
          <height>17</height>
@@ -2623,6 +2463,46 @@ appHeader{
        <property name="text">
         <string>PushButton</string>
        </property>
+      </widget>
+      <widget class="QComboBox" name="selectworkout">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>30</y>
+         <width>228</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>bench press</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>shoulder press</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>팔굽혀펴기</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>사이드 레터럴 레이즈</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>스쿼트</string>
+        </property>
+       </item>
       </widget>
      </widget>
     </widget>

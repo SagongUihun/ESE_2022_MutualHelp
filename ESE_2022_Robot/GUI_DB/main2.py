@@ -63,6 +63,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.addroutine_6.clicked.connect(self.addroutine)
         self.deleteroutine_6.clicked.connect(self.deleteroutine)
         self.nowroutine_6.activated[str].connect(self.changeroutinepage)
+        self.selectworkout.activated[str].connect(self.updaterecord)
         self.saveroutinedb_6.clicked.connect(self.saveroutine)
         
 
@@ -130,10 +131,34 @@ class UI(QtGui.QMainWindow, form_class):
         self.time_5.setText(day +" "+ time) 
         self.time_6.setText(day +" "+ time) 
         
-    # undong tonggue
+    # undong tonggue 
     def giverecord(self):
         self.stackedWidget.setCurrentWidget(self.page_5) 
         print(" giverecord.")
+
+    def updaterecord(self):
+        mydb = database.db()
+        row = mydb.returnNameWorkoutRows()
+        for x in range(len(row)):
+            if row[x][0] == self.selectworkout.currentText():
+                for i in range(12):
+                    target = "detail_"+str(i+1)
+                    getattr(self, target).setText(str(row[x][i+1])) 
+
+
+        # for i in range(1,8,1):
+        #     nowday = "day"+str(i)+"_3"
+        #     getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
+
+        # for i in range(7):
+        #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
+        #     row = mydb.returnDayworkoutRows(nowday)
+        #     count = len(row)
+
+        #     for x in range(count):
+        #         name, time, kcal = row[x] 
+        #         workrecord = "day"+str(7-i)+str(x+1)+"_3"
+        #         getattr(self, workrecord).setText(name+time)
         
     # feedback
     def givefeedback(self):     
