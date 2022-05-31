@@ -67,7 +67,7 @@ class MyDelegate(btle.DefaultDelegate):
     def countReturn(self):
         return self.count
 
-def bleCommunication(count):
+def bleCommunication():
 
     print("Connecting...")
     dev = btle.Peripheral("56:ec:8a:8c:21:5d")
@@ -139,9 +139,12 @@ def bleCommunication(count):
 
         while True:
             if dev.waitForNotifications(1):
-                count = object.countReturn()
                 # handleNotification() was called
                 continue
 
     finally:
         dev.disconnect()
+
+
+if __name__ =="__main__":
+    bleCommunication()
