@@ -77,7 +77,7 @@ class MyDelegate(btle.DefaultDelegate):
             
         # print(time.time() - self.T_before)
         # self.T_before = time.time()
-        #self.count = self.counter.counterAlgorithm(self.z_acc)
+        self.count = self.counter.counterAlgorithm(self.z_acc2)
         print("IMU1",self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1)
         print("IMU2",self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2)
 
