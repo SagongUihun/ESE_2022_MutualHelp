@@ -37,39 +37,39 @@ class MyDelegate(btle.DefaultDelegate):
 
         if(self.IMU1acc == cHandle):
             val = val.split()
-            self.x_acc1 = val[0]
-            self.y_acc1 = val[1]
-            self.z_acc1 = val[2]
+            self.x_acc1 = float(val[0])
+            self.y_acc1 = float(val[1])
+            self.z_acc1 = float(val[2])
             
         elif(self.IMU1gyro == cHandle):
             val = val.split()
-            self.x_gyro1 = val[0]
-            self.y_gyro1 = val[1]
-            self.z_gyro1 = val[2]
+            self.x_gyro1 = float(val[0])
+            self.y_gyro1 = float(val[1])
+            self.z_gyro1 = float(val[2])
 
         elif(self.IMU1pose == cHandle):
             val = val.split()
-            self.roll1 = val[0]
-            self.pitch1 = val[1]
-            self.yaw1 = val[2]
+            self.roll1 = float(val[0])
+            self.pitch1 = float(val[1])
+            self.yaw1 = float(val[2])
         
         elif(self.IMU2acc == cHandle):
             val = val.split()
-            self.x_acc2 = val[0]
-            self.y_acc2 = val[1]
-            self.z_acc2 = val[2]
+            self.x_acc2 = float(val[0])
+            self.y_acc2 = float(val[1])
+            self.z_acc2 = float(val[2])
             
         elif(self.IMU2gyro == cHandle):
             val = val.split()
-            self.x_gyro2 = val[0]
-            self.y_gyro2 = val[1]
-            self.z_gyro2 = val[2]
+            self.x_gyro2 = float(val[0])
+            self.y_gyro2 = float(val[1])
+            self.z_gyro2 = float(val[2])
 
         elif(self.IMU2pose == cHandle):
             val = val.split()
-            self.roll2 = val[0]
-            self.pitch2 = val[1]
-            self.yaw2 = val[2]
+            self.roll2 = float(val[0])
+            self.pitch2 = float(val[1])
+            self.yaw2 = float(val[2])
 
         elif(self.FSR == cHandle):    
              self.FSR_data = val
@@ -78,8 +78,8 @@ class MyDelegate(btle.DefaultDelegate):
         # print(time.time() - self.T_before)
         # self.T_before = time.time()
         self.count = self.counter.counterAlgorithm(self.z_acc2)
-        print("IMU1",self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1)
-        print("IMU2",self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2)
+        #print("IMU1",self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1)
+        #print("IMU2",self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2)
 
 
     def countReturn(self):

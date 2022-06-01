@@ -6,7 +6,7 @@ from PyQt4.QtGui import *
 
 from bluepy import btle
 from bluepy.btle import AssignedNumbers
-from IMU1_12data import MyDelegate 
+from IMU1_multi_data import MyDelegate 
 import database
 from time import time, sleep
 from playsound import playsound
@@ -383,9 +383,10 @@ class Thread3(QThread):
     def run(self): 
 
         print("Connecting...")
-        dev = btle.Peripheral("56:ec:8a:8c:21:5d")
+        #56:ec:8a:8c:21:5d
+        dev = btle.Peripheral("df:e6:f4:32:69:6d")
 
-    
+ 
         print("Device services list:")
         for svc in dev.services:
             print (str(svc))
@@ -398,22 +399,18 @@ class Thread3(QThread):
         for char in HRService.getCharacteristics():
             print("HRService char[", char.getHandle(), "]: ", char)
 
-        x_ACC = HRService.getCharacteristics("6e400002-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        y_ACC = HRService.getCharacteristics("6e400003-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        z_ACC = HRService.getCharacteristics("6e400004-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        x_GYRO = HRService.getCharacteristics("6e400005-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        y_GYRO = HRService.getCharacteristics("6e400006-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        z_GYRO = HRService.getCharacteristics("6e400007-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        x_MAG = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        y_MAG = HRService.getCharacteristics("6e400009-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        z_MAG = HRService.getCharacteristics("6e400010-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        Roll = HRService.getCharacteristics("6e400011-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        Pitch = HRService.getCharacteristics("6e400012-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        Yaw = HRService.getCharacteristics("6e400013-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU1ACC = HRService.getCharacteristics("6e400002-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU1Gyro = HRService.getCharacteristics("6e400003-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU1Pose = HRService.getCharacteristics("6e400004-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
 
-        print(x_ACC.getHandle())
+        IMU2ACC = HRService.getCharacteristics("6e400005-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU2Gyro = HRService.getCharacteristics("6e400006-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU2Pose = HRService.getCharacteristics("6e400007-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+
+        #FSR = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+
         # Assign delegate to target characteristic
-        object1 = MyDelegate(x_ACC.getHandle() , y_ACC.getHandle(), z_ACC.getHandle(),x_GYRO.getHandle(),y_GYRO.getHandle(),z_GYRO.getHandle(),x_MAG.getHandle(),y_MAG.getHandle(),z_MAG.getHandle(),Roll.getHandle(),Pitch.getHandle(),Yaw.getHandle() )
+        object1 = MyDelegate(IMU1ACC.getHandle() , IMU1Gyro.getHandle(),IMU1Pose.getHandle(),IMU2ACC.getHandle(),IMU2Gyro.getHandle(),IMU2Pose.getHandle(),0 )
         dev.setDelegate(object1)
         # dev.setDelegate(MyDelegate(y_ACC.getHandle()))
         # dev.setDelegate(MyDelegate(z_ACC.getHandle()))
@@ -421,33 +418,29 @@ class Thread3(QThread):
         # We need to write into org.bluetooth.descriptor.gatt.client_characteristic_configuration descriptor to enabe notifications
         # to do so, we must get this descriptor from characteristic first
         # more details you can find in bluepy source (def getDescriptors(self, forUUID=None, hndEnd=0xFFFF))
-        desc_x_acc = x_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_y_acc = y_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_z_acc = z_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_x_gyro = x_GYRO.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_y_gyro = y_GYRO.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_z_gyro = z_GYRO.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_x_mag = x_MAG.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_y_mag = y_MAG.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_z_mag = z_MAG.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_roll = Roll.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_pitch = Pitch.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_yaw = Yaw.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU1ACC = IMU1ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU1Gyro = IMU1Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU1Pose = IMU1Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
 
+        desc_IMU2ACC = IMU2ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU2Gyro = IMU2Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU2Pose = IMU2Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+
+        
+        #desc_z_acc = z_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+       
         # print("Writing \"notification\" flag to descriptor with handle: ", desc[0].handle)
-        dev.writeCharacteristic(desc_x_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_y_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_x_gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_y_gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_z_gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_x_mag[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_y_mag[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_z_mag[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_roll[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_pitch[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_yaw[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU1ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU1Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU1Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
 
+        dev.writeCharacteristic(desc_IMU2ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU2Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU2Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+
+
+        #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+       
         print("Waiting for notifications...")
         before_val = 0
         self.connecton.emit()
