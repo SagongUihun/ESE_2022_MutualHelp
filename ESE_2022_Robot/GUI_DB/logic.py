@@ -25,7 +25,6 @@ class Counter:
                 self.checkBuffer.append(1) 
         elif(value < self.lowerBound):
             # before value check ( -1 -1 X) (1 -1 O)
-            print("lower")
             if(len(self.checkBuffer) == 0 or self.checkBuffer[-1] == 1):
                 self.checkBuffer.append(-1)
 
@@ -39,6 +38,6 @@ class Counter:
                     self.checkBuffer.pop(i)
                     self.checkBuffer.pop(i)
 
-        print(value,self.checkBuffer[-1])
-        print(self.checkBuffer,self.count)
+        #print(value,self.checkBuffer[-1])
+        #print(self.checkBuffer,self.count)
         return self.count

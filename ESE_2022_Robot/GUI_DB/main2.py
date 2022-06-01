@@ -46,18 +46,19 @@ class UI(QtGui.QMainWindow, form_class):
         self.th = Thread1()
         self.th2 = Thread2()
         self.th3 = Thread3()
+        self.th.start()
         self.th3.start()
         self.th3.count.connect(self.getval)
         self.th3.connecton.connect(self.nowconnect)
-        self.th3.pose.connect(self.drawgraph)
+        self.th.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
         
         self.fig = plt.Figure()
         self.canvas = FigureCanvas(self.fig)
-
         self.forgraph.addWidget(self.canvas)
-    
+        self.triger = True
+
     #button actions    
     def button(self):
         self.start_1.clicked.connect(self.goto6)
@@ -277,28 +278,34 @@ class UI(QtGui.QMainWindow, form_class):
         global hand_r
         global hand_p
         global hand_y
-        u = np.array([hand_r, hand_p, hand_y])   # vector u
-        v = np.array([5, 6, 2])
+        #print(hand_r, hand_p, hand_y)
+        
+        if self.stackedWidget.currentWidget() == self.page_4:
+            u = np.array([hand_r/10, hand_p/10, hand_y/10])   # vector u
+            v = np.array([5, 6, 2])
 
-        ax = self.fig.add_subplot(111, projection='3d')
+            if(self.triger):
+                self.ax = self.fig.add_subplot(111, projection='3d')
+                self.triger = False
 
-        start = [0,0,0]
-        ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
-        ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
-        ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
-        ax.set_xlim([-8,8])
-        ax.set_ylim([-8,8])
-        ax.set_zlim([-8,8])
-        self.canvas.draw()
+            start = [0,0,0]
+            self.ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
+            #ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
+            # ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
+            self.ax.set_xlim([-8,8])
+            self.ax.set_ylim([-8,8])
+            self.ax.set_zlim([-8,8])
+            self.canvas.draw()
+            self.ax.axes.clear()
+            print("update")
+
 
 
         
         
 class Thread1(QThread): 
     
-    change_value1 = pyqtSignal(str)
-    change_value2 = pyqtSignal(str)
-   
+    pose = pyqtSignal()
     def __init__(self): 
         QThread.__init__(self) 
         #self.cond = QWaitCondition()
@@ -306,11 +313,10 @@ class Thread1(QThread):
         
         
     def run(self): 
-        self.change_value2.emit("1start.") 
-        for i in range(20): 
-            self.change_value1.emit(str(i)) 
-            sleep(2) 
-        self.change_value2.emit("arrive.")
+        while True: 
+            self.pose.emit()
+            sleep(0.1) 
+        
 
 class Thread2(QThread):
     
@@ -399,12 +405,9 @@ class Thread2(QThread):
 
 class Thread3(QThread): 
 
-    global hand_r
-    global hand_p
-    global hand_y
+   
     
     count = pyqtSignal()
-    pose = pyqtSignal(list)
     connecton = pyqtSignal()
 
     def __init__(self): 
@@ -414,7 +417,9 @@ class Thread3(QThread):
         
         
     def run(self): 
-
+        global hand_r
+        global hand_p
+        global hand_y
         print("Connecting...")
         #56:ec:8a:8c:21:5d
         dev = btle.Peripheral("df:e6:f4:32:69:6d")
@@ -484,10 +489,11 @@ class Thread3(QThread):
                 if (before_val != object1.countReturn()):
                     self.count.emit()
                     print("change signal\n\n\n")
-                hand_r = object1.relativePose()[0]
-                hand_p = object1.relativePose()[1]
-                hand_y = object1.relativePose()[2]
-                self.pose.emit()
+                temp =  object1.relativePose()
+                hand_r = temp[0]
+                hand_p = temp[1]
+                hand_y = temp[2]
+                
                 before_val =object1.countReturn()
                 # handleNotification() was called
                 continue
