@@ -20,6 +20,9 @@
 }
 
 
+#lefttry_2,#label_7,#leftset_2,#resttime_2{
+	color: orange;
+}
 
 #start_1,#seerecord_1,#calibration_1{
 	
@@ -274,12 +277,22 @@ appHeader{
          </property>
          <item>
           <property name="text">
-           <string>bench press</string>
+           <string>벤치프레스</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>shoulder press</string>
+           <string>바벨 컬</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>데드리프트</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>숄더프레스</string>
           </property>
          </item>
          <item>
@@ -1257,8 +1270,8 @@ appHeader{
       <widget class="QWidget" name="gridLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>470</x>
-         <y>120</y>
+         <x>400</x>
+         <y>170</y>
          <width>261</width>
          <height>141</height>
         </rect>
@@ -1359,8 +1372,8 @@ appHeader{
       <widget class="QLabel" name="label_17">
        <property name="geometry">
         <rect>
-         <x>310</x>
-         <y>80</y>
+         <x>580</x>
+         <y>350</y>
          <width>171</width>
          <height>31</height>
         </rect>
@@ -1377,10 +1390,10 @@ appHeader{
       <widget class="QFrame" name="frame_18">
        <property name="geometry">
         <rect>
-         <x>60</x>
-         <y>276</y>
+         <x>70</x>
+         <y>70</y>
          <width>671</width>
-         <height>71</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -1395,7 +1408,7 @@ appHeader{
           <x>10</x>
           <y>10</y>
           <width>231</width>
-          <height>43</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -1416,7 +1429,7 @@ appHeader{
           <widget class="QLabel" name="label_7">
            <property name="font">
             <font>
-             <pointsize>20</pointsize>
+             <pointsize>35</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1434,7 +1447,7 @@ appHeader{
           <x>260</x>
           <y>10</y>
           <width>156</width>
-          <height>43</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -1455,7 +1468,7 @@ appHeader{
           <widget class="QLabel" name="leftset_2">
            <property name="font">
             <font>
-             <pointsize>20</pointsize>
+             <pointsize>50</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
@@ -1470,10 +1483,10 @@ appHeader{
        <widget class="QFrame" name="frame_24">
         <property name="geometry">
          <rect>
-          <x>440</x>
+          <x>470</x>
           <y>10</y>
-          <width>231</width>
-          <height>43</height>
+          <width>163</width>
+          <height>81</height>
          </rect>
         </property>
         <property name="font">
@@ -1488,46 +1501,36 @@ appHeader{
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLabel" name="lefttry_2">
-         <property name="geometry">
-          <rect>
-           <x>89</x>
-           <y>10</y>
-           <width>131</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>20</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_89">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>62</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>남은 횟수:</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <widget class="QLabel" name="label_89">
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>남은 횟수:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lefttry_2">
+           <property name="font">
+            <font>
+             <pointsize>50</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>55</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
       <widget class="QLabel" name="time_2">
@@ -1560,9 +1563,9 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>260</x>
-         <y>350</y>
+         <y>320</y>
          <width>261</width>
-         <height>43</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -1588,7 +1591,7 @@ appHeader{
          <widget class="QLabel" name="resttime_2">
           <property name="font">
            <font>
-            <pointsize>20</pointsize>
+            <pointsize>55</pointsize>
            </font>
           </property>
           <property name="text">
@@ -2177,6 +2180,17 @@ appHeader{
        <property name="text">
         <string>TextLabel</string>
        </property>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>480</x>
+         <y>180</y>
+         <width>221</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="forgraph"/>
       </widget>
      </widget>
     </widget>

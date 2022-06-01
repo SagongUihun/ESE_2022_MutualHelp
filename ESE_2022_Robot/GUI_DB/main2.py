@@ -10,6 +10,13 @@ from IMU1_12data import MyDelegate
 import database
 from time import time, sleep
 from playsound import playsound
+
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas 
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -96,7 +103,27 @@ class UI(QtGui.QMainWindow, form_class):
   
     #calibration
     def goto4(self):
-        self.stackedWidget.setCurrentWidget(self.page_4) 
+        self.stackedWidget.setCurrentWidget(self.page_4)
+        self.fig = plt.Figure()
+        self.canvas = FigureCanvas(self.fig)
+
+        self.forgraph.addWidget(self.canvas)
+
+        u = np.array([-8, -8, 0])   # vector u
+        v = np.array([5, 6, 2])
+
+        ax = self.fig.add_subplot(111, projection='3d')
+
+        start = [0,0,0]
+        ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
+        ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
+        ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
+        ax.set_xlim([-8,8])
+        ax.set_ylim([-8,8])
+        ax.set_zlim([-8,8])
+        self.canvas.draw()
+
+
         
     def goto6(self):
         # self.th3.start()
@@ -144,21 +171,6 @@ class UI(QtGui.QMainWindow, form_class):
                 for i in range(12):
                     target = "detail_"+str(i+1)
                     getattr(self, target).setText(str(row[x][i+1])) 
-
-
-        # for i in range(1,8,1):
-        #     nowday = "day"+str(i)+"_3"
-        #     getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
-
-        # for i in range(7):
-        #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
-        #     row = mydb.returnDayworkoutRows(nowday)
-        #     count = len(row)
-
-        #     for x in range(count):
-        #         name, time, kcal = row[x] 
-        #         workrecord = "day"+str(7-i)+str(x+1)+"_3"
-        #         getattr(self, workrecord).setText(name+time)
         
     # feedback
     def givefeedback(self):     
@@ -449,6 +461,28 @@ class Thread3(QThread):
                 # handleNotification() was called
                 continue
         
+
+class PlotCanvas(FigureCanvas):
+
+    def __init__(self, parent=None, width=10, height=8, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+        #self.addWidget(toolbar)
+
+
+        FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot()
+
+    def plot(self):
+        data = [random.random() for i in range(250)]
+        ax = self.figure.add_subplot(111)
+        ax.plot(data, 'r-', linewidth = 0.5)
+        ax.set_title('PyQt Matplotlib Example')
+        self.draw()
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)
