@@ -24,6 +24,9 @@ form_class = uic.loadUiType("userui.ui")[0]
 
 a=1
 counttry =0 
+hand_r = 0
+hand_p = 0
+hand_y = 0
  
 
 
@@ -46,8 +49,14 @@ class UI(QtGui.QMainWindow, form_class):
         self.th3.start()
         self.th3.count.connect(self.getval)
         self.th3.connecton.connect(self.nowconnect)
+        self.th3.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
+        
+        self.fig = plt.Figure()
+        self.canvas = FigureCanvas(self.fig)
+
+        self.forgraph.addWidget(self.canvas)
     
     #button actions    
     def button(self):
@@ -104,11 +113,10 @@ class UI(QtGui.QMainWindow, form_class):
     #calibration
     def goto4(self):
         self.stackedWidget.setCurrentWidget(self.page_4)
-        self.fig = plt.Figure()
-        self.canvas = FigureCanvas(self.fig)
+        # self.fig = plt.Figure()
+        # self.canvas = FigureCanvas(self.fig)
 
-        self.forgraph.addWidget(self.canvas)
-
+        # self.forgraph.addWidget(self.canvas)
         u = np.array([-8, -8, 0])   # vector u
         v = np.array([5, 6, 2])
 
@@ -264,6 +272,26 @@ class UI(QtGui.QMainWindow, form_class):
     def nowconnect(self):
         QMessageBox.about(self,'Ble Notice','Success Connect ')
         playsound('./sound/eng.wav')
+    
+    def drawgraph(self):
+        global hand_r
+        global hand_p
+        global hand_y
+        u = np.array([hand_r, hand_p, hand_y])   # vector u
+        v = np.array([5, 6, 2])
+
+        ax = self.fig.add_subplot(111, projection='3d')
+
+        start = [0,0,0]
+        ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
+        ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
+        ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
+        ax.set_xlim([-8,8])
+        ax.set_ylim([-8,8])
+        ax.set_zlim([-8,8])
+        self.canvas.draw()
+
+
         
         
 class Thread1(QThread): 
@@ -370,8 +398,13 @@ class Thread2(QThread):
         self.wait(5000) #5000ms = 5s
 
 class Thread3(QThread): 
+
+    global hand_r
+    global hand_p
+    global hand_y
     
     count = pyqtSignal()
+    pose = pyqtSignal(list)
     connecton = pyqtSignal()
 
     def __init__(self): 
@@ -443,6 +476,7 @@ class Thread3(QThread):
        
         print("Waiting for notifications...")
         before_val = 0
+        beforepose = []
         self.connecton.emit()
         while True:
             if dev.waitForNotifications(0.5):
@@ -450,32 +484,36 @@ class Thread3(QThread):
                 if (before_val != object1.countReturn()):
                     self.count.emit()
                     print("change signal\n\n\n")
+                hand_r = object1.relativePose()[0]
+                hand_p = object1.relativePose()[1]
+                hand_y = object1.relativePose()[2]
+                self.pose.emit()
                 before_val =object1.countReturn()
                 # handleNotification() was called
                 continue
         
 
-class PlotCanvas(FigureCanvas):
+# class PlotCanvas(FigureCanvas):
 
-    def __init__(self, parent=None, width=10, height=8, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
+#     def __init__(self, parent=None, width=10, height=8, dpi=100):
+#         fig = Figure(figsize=(width, height), dpi=dpi)
+#         self.axes = fig.add_subplot(111)
 
-        FigureCanvas.__init__(self, fig)
-        self.setParent(parent)
-        #self.addWidget(toolbar)
+#         FigureCanvas.__init__(self, fig)
+#         self.setParent(parent)
+#         #self.addWidget(toolbar)
 
 
-        FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-        self.plot()
+#         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
+#         FigureCanvas.updateGeometry(self)
+#         self.plot()
 
-    def plot(self):
-        data = [random.random() for i in range(250)]
-        ax = self.figure.add_subplot(111)
-        ax.plot(data, 'r-', linewidth = 0.5)
-        ax.set_title('PyQt Matplotlib Example')
-        self.draw()
+#     def plot(self):
+#         data = [random.random() for i in range(250)]
+#         ax = self.figure.add_subplot(111)
+#         ax.plot(data, 'r-', linewidth = 0.5)
+#         ax.set_title('PyQt Matplotlib Example')
+#         self.draw()
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)

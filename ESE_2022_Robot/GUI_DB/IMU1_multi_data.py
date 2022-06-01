@@ -85,6 +85,9 @@ class MyDelegate(btle.DefaultDelegate):
     def countReturn(self):
         return self.count
 
+    def relativePose(self):
+        return [(self.roll1 - self.roll2),(self.pitch1 - self.pitch2),(self.yaw1 - self.yaw2)]
+
 def bleCommunication():
 
     print("Connecting...")
