@@ -279,22 +279,28 @@ class UI(QtGui.QMainWindow, form_class):
         global hand_p
         global hand_y
         #print(hand_r, hand_p, hand_y)
-        
+        hr = np.deg2rad(hand_r+180)
+        hp = np.deg2rad(hand_p+180)
         if self.stackedWidget.currentWidget() == self.page_4:
-            u = np.array([hand_r/10, hand_p/10, hand_y/10])   # vector u
+           # u = np.array([hand_r/10, hand_p/10, hand_y/10])   # vector u
+            z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
+            y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
+            x = np.array([np.cos(hp),0 ,-np.cos(hp)])
             v = np.array([5, 6, 2])
 
             if(self.triger):
                 self.ax = self.fig.add_subplot(111, projection='3d')
                 self.triger = False
-
+            print( hand_p, hand_r, hand_y, hr, hp)
             start = [0,0,0]
-            self.ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
+            self.ax.quiver(start[0],start[1],start[2],x[0],x[1],x[2],color='red')
+            self.ax.quiver(start[0],start[1],start[2],y[0],y[1],y[2],color='green')
+            self.ax.quiver(start[0],start[1],start[2],z[0],z[1],z[2])
             #ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
-            # ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
-            self.ax.set_xlim([-8,8])
-            self.ax.set_ylim([-8,8])
-            self.ax.set_zlim([-8,8])
+            # self.ax.quiver(0,0,-5,0,0,0,color="green")
+            self.ax.set_xlim([-1,1])
+            self.ax.set_ylim([-1,1])
+            self.ax.set_zlim([-1,1])
             self.canvas.draw()
             self.ax.axes.clear()
             print("update")
@@ -315,7 +321,7 @@ class Thread1(QThread):
     def run(self): 
         while True: 
             self.pose.emit()
-            sleep(0.1) 
+            sleep(0.2) 
         
 
 class Thread2(QThread):
@@ -489,7 +495,8 @@ class Thread3(QThread):
                 if (before_val != object1.countReturn()):
                     self.count.emit()
                     print("change signal\n\n\n")
-                temp =  object1.relativePose()
+                # temp =  object1.relativePose()
+                temp =  object1.ArduinoPose()
                 hand_r = temp[0]
                 hand_p = temp[1]
                 hand_y = temp[2]
