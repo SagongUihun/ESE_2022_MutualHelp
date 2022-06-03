@@ -62,12 +62,11 @@ class Counter():
 
         #check numerical alogrithm ([-1 1 -1] , counter ++ )-> [-1]
         if len(self.checkBuffer) > 2 :
-            for i in range(len(self.checkBuffer)-2):
                 if(self.checkBuffer[i] == -1 and self.checkBuffer[i+1] == 1 and self.checkBuffer[i+2] == -1 ):
                     self.count += 1
-                    self.checkBuffer.pop(i)
-                    self.checkBuffer.pop(i)
+                    self.checkBuffer.pop(0)
+                    self.checkBuffer.pop(0)
 
-        #print(value,self.checkBuffer[-1])
-        #print(self.checkBuffer,self.count)
+
+        print(value,self.checkBuffer,self.count)
         return self.count
