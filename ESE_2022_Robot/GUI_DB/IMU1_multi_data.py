@@ -28,6 +28,9 @@ class MyDelegate(btle.DefaultDelegate):
         self.dumbelCount = 0
         self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1= 0,0,0,0,0,0,0,0,0
         self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2= 0,0,0,0,0,0,0,0,0
+        getcount1 = 0
+        getcount2 = 0
+        getcount3 = 0
         # ... more initialise here
 
     def handleNotification(self, cHandle, data):
@@ -79,23 +82,34 @@ class MyDelegate(btle.DefaultDelegate):
             
         # print(time.time() - self.T_before)
         # self.T_before = time.time()
-        self.shoulderCount = self.counter.shoulderPress(self.z_acc2)
-        self.dumbelCount = self.counter.dumbelCurl(self.roll1)
-        # print("IMU1",self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1)
-        # print("IMU2",self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2)
+        #self.shoulderCount = self.counter.shoulderPress(self.z_acc1)
+        #self.KcCount = self.counter.KcCurl(self.x_gyro1)
+        #self.dumbelCount = self.counter.dumbelCurl(self.roll1)
+        #print("IMU1",self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1)
+        #print("IMU2",self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2)
         # print(self.roll1 , self.pitch1, self.yaw1 ,self.roll2, self.pitch2, self.yaw2)
 
-    def countReturn(self):
-        # if (health == 'dumbel'):
+    def count1Return(self):
+        return self.counter.KcCurl(self.x_gyro1)
+
+    def count2Return(self):
         return self.dumbelCount
-        # if(health == 'shoulderpress'):
-            # return self.shoulderCount
+
+    def count3Return(self):
+        return self.shoulderCount
+
+    # def count4Return(self):
+    #     # if (health == 'dumbel'):
+    #     return self.KcCount        
 
     def relativePose(self):
         return [round((self.roll1 - self.roll2),2),round((self.pitch1 - self.pitch2),2),round((self.yaw1 - self.yaw2),2)]
 
     def ArduinoPose(self):
         return [round((self.roll1),2),round((self.pitch1),2),round((self.yaw1),2)]
+
+
+
  
 
 def bleCommunication():

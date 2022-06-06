@@ -48,7 +48,7 @@ appHeader{
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QFrame" name="frame">
@@ -1372,8 +1372,8 @@ appHeader{
       <widget class="QLabel" name="label_17">
        <property name="geometry">
         <rect>
-         <x>580</x>
-         <y>350</y>
+         <x>620</x>
+         <y>20</y>
          <width>171</width>
          <height>31</height>
         </rect>
@@ -1600,6 +1600,17 @@ appHeader{
          </widget>
         </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>180</y>
+         <width>221</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="forgraph"/>
       </widget>
      </widget>
     </widget>
@@ -2180,17 +2191,6 @@ appHeader{
        <property name="text">
         <string>TextLabel</string>
        </property>
-      </widget>
-      <widget class="QWidget" name="verticalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>480</x>
-         <y>180</y>
-         <width>221</width>
-         <height>211</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="forgraph"/>
       </widget>
      </widget>
     </widget>

@@ -23,10 +23,17 @@ sys.setdefaultencoding('utf-8')
 form_class = uic.loadUiType("userui.ui")[0]
 
 a=1
-counttry =0 
+counttry1 = 0
+counttry2 = 0
+counttry3 = 0 
 hand_r = 0
 hand_p = 0
 hand_y = 0
+
+nowrunname = ""
+nowpage = ""
+
+figure = None
 
 
 
@@ -45,18 +52,25 @@ class UI(QtGui.QMainWindow, form_class):
         self.th = Thread1()
         self.th2 = Thread2()
         self.th3 = Thread3()
+        #self.th4 = Thread4()
         self.th.start()
         self.th3.start()
-        self.th3.count.connect(self.getval)
+        self.th3.count1.connect(self.getval1)
+        self.th3.count2.connect(self.getval2)
+        self.th3.count3.connect(self.getval3)
         self.th3.connecton.connect(self.nowconnect)
         self.th.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
         
         self.fig = plt.Figure()
+        # global figure
+        # figure = self.fig
         self.canvas = FigureCanvas(self.fig)
         self.forgraph.addWidget(self.canvas)
         self.triger = True
+
+        #self.th4.start()
 
     #button actions    
     def button(self):
@@ -87,6 +101,8 @@ class UI(QtGui.QMainWindow, form_class):
         
     #silsigan pose-check
     def goto2(self):
+        global nowpage
+        nowpage = "self.page_2"
         self.stackedWidget.setCurrentWidget(self.page_2)
         self.nowroutine_2.setText(self.nowroutine_6.currentText()) 
         
@@ -102,13 +118,15 @@ class UI(QtGui.QMainWindow, form_class):
 
         for i in range(7):
             nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
-            row = mydb.returnDayworkoutRows(nowday)
+            row = mydb.returnDayworkoutRows()
             count = len(row)
-
+            j = 0
             for x in range(count):
-                name, time = row[x] 
-                workrecord = "day"+str(7-i)+str(x+1)+"_3"
-                getattr(self, workrecord).setText(name+time)
+                day, name, time = row[x]
+                if day == nowday:
+                    workrecord = "day"+str(7-i)+str(j+1)+"_3"
+                    j = j + 1
+                    getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
   
     #calibration
     def goto4(self):
@@ -117,19 +135,19 @@ class UI(QtGui.QMainWindow, form_class):
         # self.canvas = FigureCanvas(self.fig)
 
         # self.forgraph.addWidget(self.canvas)
-        u = np.array([-8, -8, 0])   # vector u
-        v = np.array([5, 6, 2])
+        # u = np.array([-8, -8, 0])   # vector u
+        # v = np.array([5, 6, 2])
 
-        ax = self.fig.add_subplot(111, projection='3d')
+        # ax = self.fig.add_subplot(111, projection='3d')
 
-        start = [0,0,0]
-        ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
-        ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
-        ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
-        ax.set_xlim([-8,8])
-        ax.set_ylim([-8,8])
-        ax.set_zlim([-8,8])
-        self.canvas.draw()
+        # start = [0,0,0]
+        # ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
+        # ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
+        # ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
+        # ax.set_xlim([-8,8])
+        # ax.set_ylim([-8,8])
+        # ax.set_zlim([-8,8])
+        # self.canvas.draw()
 
 
         
@@ -265,9 +283,17 @@ class UI(QtGui.QMainWindow, form_class):
         self.th2.exercount.connect(self.lefttry_2.setText)
         self.th2.resttime.connect(self.resttime_2.setText)
 
-    def getval(self):
-        global counttry
-        counttry = counttry + 1 
+    def getval1(self):
+        global counttry1
+        counttry1 = counttry1 + 1 
+    
+    def getval2(self):
+        global counttry2
+        counttry2 = counttry2 + 1 
+
+    def getval3(self):
+        global counttry3
+        counttry3 = counttry3 + 1 
     
     def nowconnect(self):
         QMessageBox.about(self,'Ble Notice','Success Connect ')
@@ -280,18 +306,24 @@ class UI(QtGui.QMainWindow, form_class):
         #print(hand_r, hand_p, hand_y)
         hr = np.deg2rad(hand_r)
         hp = np.deg2rad(hand_p)
-        if self.stackedWidget.currentWidget() == self.page_4:
-           # u = np.array([hand_r/10, hand_p/10, hand_y/10])   # vector u
-            z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
-            y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
+        hy = np.deg2rad(hand_y)
+        if self.stackedWidget.currentWidget() == self.page_2:
             x = np.array([np.cos(hp),0 ,-np.sin(hp)])
+            y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
+            z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
+            
+            # x = np.array([np.cos(hp),np.sin(hp) ,0])
+            # y = np.array([-np.sin(hp)*np.cos(hr), np.cos(hp)*np.cos(hr), np.sin(hr)])
+            # z = np.array([np.sin(hp)*np.sin(hr), -np.cos(hp)*np.sin(hr), np.cos(hr)])
+            
+            
             v = np.array([5, 6, 2])
             
            
             if(self.triger):
                 self.ax = self.fig.add_subplot(111, projection='3d')
                 self.triger = False
-            print( hand_p, hand_r, hand_y, hr, hp)
+            #print( hand_p, hand_r, hand_y, hr, hp)
             start = [0,0,0]
             
             self.ax.quiver(start[0],start[1],start[2],x[0],x[1],x[2],color='red')
@@ -336,8 +368,12 @@ class Thread2(QThread):
 
     def run(self):
         global a
-        global counttry
+        global counttry1
+        global counttry2
+        global counttry3
+
         global nowroutine
+        global nowrunname
         goal = 0
         goal2 = 0
         totaltry = 0
@@ -353,29 +389,70 @@ class Thread2(QThread):
                     print(name, goalset, count, rest)
                     print("start")
                     self.exername.emit(name)
+                    print(name)
+                    nowrunname = name
                     for k in range(goalset):
                         self.exerset.emit(str(goalset))
                         self.resttime.emit(str(rest))
                         goal = count
                         goal2 = count
-                        counttry = 0
-                        while True:
-                            self.exercount.emit(str(goal2))
-                            goal2 = goal - counttry
-                            if goal2 == 0:
+                        counttry1 = 0
+                        counttry2 = 0
+                        counttry3 = 0
+                        if (name =="바벨 컬"):
+                            while True:
+                                #print(counttry1,counttry2,counttry3)
                                 self.exercount.emit(str(goal2))
-                                print("finish 1set")
-                                #saverecord
-                                #row.append([])
-                                totaltry = totaltry + counttry
-                                break
-                            elif a%2 == 1:
-                                print("stop")
-                                #saverecord
-                                totaltry = totaltry + counttry
-                                break
+                                goal2 = goal - counttry1
+                                if goal2 == 0:
+                                    self.exercount.emit(str(goal2))
+                                    print("finish 1set")
+                                    totaltry = totaltry + counttry1
+                                    break
+                                elif a%2 == 1:
+                                    print("stop")
+                                    #saverecord
+                                    totaltry = totaltry + counttry1
+                                    break
+                                sleep(0.01)
+                    
+                        if (name =="벤치프레스"):
+                            while True:
+                                print("벤치프레스")
+                                self.exercount.emit(str(goal2))
+                                goal2 = goal - counttry2
+                                if goal2 == 0:
+                                    self.exercount.emit(str(goal2))
+                                    print("finish 1set")
+                                    #saverecord
+                                    #row.append([])
+                                    totaltry = totaltry + counttry2
+                                    break
+                                elif a%2 == 1:
+                                    print("stop")
+                                    #saverecord
+                                    totaltry = totaltry + counttry2
+                                    break
+
+                        if (name =="숄더프레스"):
+                            while True:
+                                self.exercount.emit(str(goal2))
+                                goal2 = goal - counttry3
+                                if goal2 == 0:
+                                    self.exercount.emit(str(goal2))
+                                    print("finish 1set")
+                                    #saverecord
+                                    #row.append([])
+                                    totaltry = totaltry + counttry3
+                                    break
+                                elif a%2 == 1:
+                                    print("stop")
+                                    #saverecord
+                                    totaltry = totaltry + counttry3
+                                    break
 
                         goalset = goalset-1
+                        self.exerset.emit(str(goalset))
                         if k < range(goalset):
                             for l in range(rest):
                                 self.resttime.emit(str(rest-l))
@@ -399,6 +476,15 @@ class Thread2(QThread):
                     record[j].append(totaltry)
                     print(record[j])
                     totaltry = 0
+                    nowrunname = ""
+                    if j == len(row)-1:
+                        a=a+1
+                    if a%2 ==1:
+                            self.exercount.emit("")
+                            self.resttime.emit("")
+                            self.exerset.emit("")
+                            self.exername.emit("")
+                            break
                 # save workout data to DB
                 mydb.saveDayworkoutData(record)
         a=a+1
@@ -414,7 +500,9 @@ class Thread3(QThread):
 
    
     
-    count = pyqtSignal()
+    count1 = pyqtSignal()
+    count2 = pyqtSignal()
+    count3 = pyqtSignal()
     connecton = pyqtSignal()
 
     def __init__(self): 
@@ -427,6 +515,7 @@ class Thread3(QThread):
         global hand_r
         global hand_p
         global hand_y
+        global nowrunname
         print("Connecting...")
         #56:ec:8a:8c:21:5d
         dev = btle.Peripheral("df:e6:f4:32:69:6d")
@@ -487,50 +576,99 @@ class Thread3(QThread):
         #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
        
         print("Waiting for notifications...")
-        before_val = 0
+        before_val1 = 0
+        before_val2 = 0
+        before_val3 = 0
         beforepose = []
         self.connecton.emit()
         while True:
-            if dev.waitForNotifications(0.5):
+            if dev.waitForNotifications(1):
                 #print(object1.countReturn())
-                if (before_val != object1.countReturn()):
-                    self.count.emit()
-                    print("change signal\n\n\n")
+                if nowrunname == "바벨 컬":
+                    if (before_val1 != object1.count1Return()):
+                        self.count1.emit()
+                        print("change signal\n\n\n")
+                        before_val1 =object1.count1Return()
+
+                if nowrunname == "벤치프레스":    
+                    if (before_val2 != object1.count2Return()):
+                        self.count2.emit()
+                        print("change signal\n\n\n")
+                        before_val2 =object1.count2Return()
+
+                if nowrunname == "숄더프레스":
+                    if (before_val3 != object1.count3Return()):
+                        self.count3.emit()
+                        print("change signal\n\n\n")
+                        before_val3 =object1.count3Return()    
+               
+                # before_val1 =object1.count1Return()
+                # before_val2 =object1.count2Return()
+                # before_val3 =object1.count3Return()
+                # handleNotification() was called
                 temp =  object1.relativePose()
                 # temp =  object1.ArduinoPose()
                 hand_r = temp[0]
                 hand_p = temp[1]
                 hand_y = temp[2]
-                
-                before_val =object1.countReturn()
-                # handleNotification() was called
                 continue
         
+# class Thread4(QThread): 
+    
+#     global hand_r
+#     global hand_p
+#     global hand_y
+#     global nowpage
+#     global figure
 
-# class PlotCanvas(FigureCanvas):
-
-#     def __init__(self, parent=None, width=10, height=8, dpi=100):
-#         fig = Figure(figsize=(width, height), dpi=dpi)
-#         self.axes = fig.add_subplot(111)
-
-#         FigureCanvas.__init__(self, fig)
-#         self.setParent(parent)
-#         #self.addWidget(toolbar)
-
-
-#         FigureCanvas.setSizePolicy(self, QSizePolicy.Expanding, QSizePolicy.Expanding)
-#         FigureCanvas.updateGeometry(self)
-#         self.plot()
-
-#     def plot(self):
-#         data = [random.random() for i in range(250)]
-#         ax = self.figure.add_subplot(111)
-#         ax.plot(data, 'r-', linewidth = 0.5)
-#         ax.set_title('PyQt Matplotlib Example')
-#         self.draw()
+#     def __init__(self): 
+#         QThread.__init__(self) 
+#         #self.cond = QWaitCondition()
+#         #self.mutex = QMutex()
+        
+#     def run(self): 
+        
+#         #print(hand_r, hand_p, hand_y)
+#         while True:
+#             hr = np.deg2rad(hand_r)
+#             hp = np.deg2rad(hand_p)
+#             hy = np.deg2rad(hand_y)
+#             if nowpage == "self.page_2":
+#                 x = np.array([np.cos(hp),0 ,-np.sin(hp)])
+#                 y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
+#                 z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
+                
+#                 # x = np.array([np.cos(hp),np.sin(hp) ,0])
+#                 # y = np.array([-np.sin(hp)*np.cos(hr), np.cos(hp)*np.cos(hr), np.sin(hr)])
+#                 # z = np.array([np.sin(hp)*np.sin(hr), -np.cos(hp)*np.sin(hr), np.cos(hr)])
+                
+                
+#                 v = np.array([5, 6, 2])
+                
+            
+#                 if(self.triger):
+#                     self.ax = figure.add_subplot(111, projection='3d')
+#                     self.triger = False
+#                 #print( hand_p, hand_r, hand_y, hr, hp)
+#                 start = [0,0,0]
+                
+#                 self.ax.quiver(start[0],start[1],start[2],x[0],x[1],x[2],color='red')
+#                 self.ax.quiver(start[0],start[1],start[2],y[0],y[1],y[2],color='orange')
+#                 self.ax.quiver(start[0],start[1],start[2],z[0],z[1],z[2],color='yellow')
+#                 self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
+                
+#                 self.ax.set_xlim([-1,1])
+#                 self.ax.set_ylim([-1,1])
+#                 self.ax.set_zlim([-1,1])
+#                 self.canvas.draw()
+#                 self.ax.axes.clear()
+#                 print("update") 
+#                 sleep(0.4)
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)
     mainWindow = UI()
     mainWindow.show()
+    #mainWindow.showFullScreen()
     sys.exit(app.exec_())
+

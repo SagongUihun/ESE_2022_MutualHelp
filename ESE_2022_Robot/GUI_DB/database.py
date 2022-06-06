@@ -189,10 +189,10 @@ class db(sqlite_lib):
             self.sql_exec(sql)
 
     # 운동 결과 데이터 추출 함수
-    def returnDayworkoutRows(self, day):
+    def returnDayworkoutRows(self):
         self = sqlite_lib()
         self.open("database.db")
-        sql = '''SELECT name, time FROM daywork WHERE day = "%s"'''%day
+        sql = '''SELECT day, name, sum(set_result) FROM daywork GROUP BY name, day'''
         self.sql_exec(sql)
         rows = self.cur.fetchall()
         self.close()
