@@ -14,6 +14,8 @@ class Counter():
         self.asd = 0
         self.up = 0
         self.down = 0
+        self.timerShoulder = time.time()
+        self.stopTimer = time.time()
         pass
 
     def shoulderPress(self, value):
@@ -27,25 +29,34 @@ class Counter():
 
         if (value > 1.1):
             # before value check ( 1 1 X) (-1 1 O)
-            if (len(self.checkBuffer) == 0 or self.checkBuffer[-1] ==  -1):
+            if (len(self.checkBuffer) != 0 and self.checkBuffer[-1] ==  -1):
                 self.checkBuffer.append(1) 
         elif(value <0.85):
             # before value check ( -1 -1 X) (1 -1 O)
             if(len(self.checkBuffer) == 0 or self.checkBuffer[-1] == 1):
                 self.checkBuffer.append(-1)
+        # else:
+        #     if(time.time() - self.stopTimer>3):
+        #         self.checkBuffer = []
+        #         self.stopTimer = time.time()
 
 
 
         #check numerical alogrithm ([-1 1 -1] , counter ++ )-> [-1]
         if len(self.checkBuffer) > 2 :
-            for i in range(len(self.checkBuffer)-2):
-                if(self.checkBuffer[i] == -1 and self.checkBuffer[i+1] == 1 and self.checkBuffer[i+2] == -1 ):
+            if(self.checkBuffer[0] == -1 and self.checkBuffer[1] == 1 and self.checkBuffer[2] == -1 ):
+            
+                self.checkBuffer.pop(0)
+                self.checkBuffer.pop(0)
+                # timer add 
+                if(time.time() - self.timerShoulder > 1):
                     self.count2 += 1
-                    self.checkBuffer.pop(i)
-                    self.checkBuffer.pop(i)
+                    self.timerShoulder = time.time()
+
+
 
         #print(value,self.checkBuffer[-1])
-        #print(self.checkBuffer,self.count)
+        print(self.checkBuffer,self.count2)
         time.sleep(0.01)
         return self.count2
 
@@ -106,8 +117,10 @@ class Counter():
                 #     #downnum = self.asd
                 #     self.count1 = self.count1 + 1
                 #     #high = max(self.kcBuffer[upnum:downnum])
+            
                 #     #print(high)
-                print(self.count1, self.pole[50], self.up, self.down)
+            
+                print(self.count1, self.pole2[50], self.up, self.down)
                 self.pole.pop(0)
                 if(len(self.pole2)>100):
                     self.pole2.pop(0)

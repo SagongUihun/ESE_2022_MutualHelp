@@ -336,7 +336,7 @@ class UI(QtGui.QMainWindow, form_class):
             self.ax.set_zlim([-1,1])
             self.canvas.draw()
             self.ax.axes.clear()
-            print("update")
+            # print("update")
 
 
 
@@ -581,26 +581,31 @@ class Thread3(QThread):
         before_val3 = 0
         beforepose = []
         self.connecton.emit()
+          
+
         while True:
-            if dev.waitForNotifications(1):
+            if dev.waitForNotifications(0.5):
                 #print(object1.countReturn())
                 if nowrunname == "바벨 컬":
-                    if (before_val1 != object1.count1Return()):
+                    temp = object1.count1Return()
+                    if (before_val1 != temp):
                         self.count1.emit()
                         print("change signal\n\n\n")
-                        before_val1 =object1.count1Return()
+                        before_val1 =temp
 
-                if nowrunname == "벤치프레스":    
-                    if (before_val2 != object1.count2Return()):
+                elif nowrunname == "벤치프레스":   
+                    temp = object1.count2Return() 
+                    if (before_val2 != temp):
                         self.count2.emit()
                         print("change signal\n\n\n")
-                        before_val2 =object1.count2Return()
+                        before_val2 =temp
 
-                if nowrunname == "숄더프레스":
-                    if (before_val3 != object1.count3Return()):
+                elif nowrunname == "숄더프레스":
+                    temp = object1.count3Return()
+                    if (before_val3 != temp):
                         self.count3.emit()
                         print("change signal\n\n\n")
-                        before_val3 =object1.count3Return()    
+                        before_val3 =temp  
                
                 # before_val1 =object1.count1Return()
                 # before_val2 =object1.count2Return()
