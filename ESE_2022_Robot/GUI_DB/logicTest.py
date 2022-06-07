@@ -120,7 +120,7 @@ class Counter():
             
                 #     #print(high)
             
-                print(self.count1, self.pole2[50], self.up, self.down)
+                #print(self.count1, self.pole2[50], self.up, self.down)
                 self.pole.pop(0)
                 if(len(self.pole2)>100):
                     self.pole2.pop(0)

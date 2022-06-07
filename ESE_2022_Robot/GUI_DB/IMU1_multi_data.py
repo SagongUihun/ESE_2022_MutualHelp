@@ -82,9 +82,9 @@ class MyDelegate(btle.DefaultDelegate):
             
         # print(time.time() - self.T_before)
         # self.T_before = time.time()
-        self.shoulderCount = self.counter.shoulderPress(self.z_acc1)
-        self.KcCount = self.counter.KcCurl(self.x_gyro1)
-        self.dumbelCount = self.counter.dumbelCurl(self.roll1)
+        # self.shoulderCount = self.counter.shoulderPress(self.z_acc1)
+        # self.KcCount = self.counter.KcCurl(self.x_gyro1)
+        # self.dumbelCount = self.counter.dumbelCurl(self.roll1)
         # print("IMU1",self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1)
         #print("IMU2",self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2)
         # print(self.roll1 , self.pitch1, self.yaw1 ,self.roll2, self.pitch2, self.yaw2)
@@ -97,6 +97,9 @@ class MyDelegate(btle.DefaultDelegate):
 
     def count3Return(self):
         return self.shoulderCount
+    
+    def absolute_data(self):
+        return round([[self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1],[self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2]],2)
 
     # def count4Return(self):
     #     # if (health == 'dumbel'):

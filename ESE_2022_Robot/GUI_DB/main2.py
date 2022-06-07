@@ -7,6 +7,7 @@ from PyQt4.QtGui import *
 from bluepy import btle
 from bluepy.btle import AssignedNumbers
 from IMU1_multi_data import MyDelegate 
+from logicTest import Counter
 import database
 from time import time, sleep
 from playsound import playsound
@@ -611,11 +612,11 @@ class Thread3(QThread):
                 # before_val2 =object1.count2Return()
                 # before_val3 =object1.count3Return()
                 # handleNotification() was called
-                temp =  object1.relativePose()
+                temp1 =  object1.relativePose()
                 # temp =  object1.ArduinoPose()
-                hand_r = temp[0]
-                hand_p = temp[1]
-                hand_y = temp[2]
+                hand_r = temp1[0]
+                hand_p = temp1[1]
+                hand_y = temp1[2]
                 continue
         
 # class Thread4(QThread): 
