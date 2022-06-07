@@ -27,9 +27,8 @@ a=1
 counttry1 = 0
 counttry2 = 0
 counttry3 = 0 
-hand_r = 0
-hand_p = 0
-hand_y = 0
+L_hand_rpy = [0,0,0]
+R_hand_rpy = [0,0,0]
 L_data = [] #[[imu1][imu2][fsr]]
 R_data = [] 
 
@@ -56,23 +55,30 @@ class UI(QtGui.QMainWindow, form_class):
         self.th2 = Thread2()
         self.th3 = Thread3()
         self.th4 = Thread4()
+        self.th5 = Thread5()
         self.th.start()
         self.th3.start()
+        self.th5.start()
         self.th4.count1.connect(self.getval1)
         self.th4.count2.connect(self.getval2)
         self.th4.count3.connect(self.getval3)
         self.th3.connecton.connect(self.nowconnect)
         self.th3.connecton.connect(self.th4.start)
+        self.th5.connecton.connect(self.nowconnect)
         self.th.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
         
         self.fig = plt.Figure()
+        self.fig_r = plt.Figure()
         # global figure
         # figure = self.fig
         self.canvas = FigureCanvas(self.fig)
+        self.canvas_r = FigureCanvas(self.fig_r)
         self.forgraph.addWidget(self.canvas)
+        self.forgraph_2.addWidget(self.canvas_r)
         self.triger = True
+        self.triger_r = True
 
         #self.th4.start()
 
@@ -99,6 +105,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.nowroutine_6.activated[str].connect(self.changeroutinepage)
         self.selectworkout.activated[str].connect(self.updaterecord)
         self.saveroutinedb_6.clicked.connect(self.saveroutine)
+        self.exitbutton.clicked.connect(QtCore.QCoreApplication.instance().quit)
         
 
         
@@ -304,17 +311,24 @@ class UI(QtGui.QMainWindow, form_class):
         playsound('./sound/eng.wav')
     
     def drawgraph(self):
-        global hand_r
-        global hand_p
-        global hand_y
-        #print(hand_r, hand_p, hand_y)
-        hr = np.deg2rad(hand_r)
-        hp = np.deg2rad(hand_p)
-        hy = np.deg2rad(hand_y)
+        global L_hand_rpy
+        global R_hand_rpy
+        hr = np.deg2rad(L_hand_rpy[0])
+        hp = np.deg2rad(L_hand_rpy[1])
+        hy = np.deg2rad(L_hand_rpy[2])
+
+        rhr = np.deg2rad(R_hand_rpy[0])
+        rhp = np.deg2rad(R_hand_rpy[1])
+        rhy = np.deg2rad(R_hand_rpy[2])
+        
         if self.stackedWidget.currentWidget() == self.page_2:
-            x = np.array([np.cos(hp),0 ,-np.sin(hp)])
-            y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
-            z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
+            L_x = np.array([np.cos(hp),0 ,-np.sin(hp)])
+            L_y = -np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
+            L_z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
+
+            R_x = np.array([np.cos(rhp),0 ,-np.sin(rhp)])
+            R_y = -np.array([np.sin(rhp)*np.sin(rhr),np.cos(rhr),np.cos(rhp)*np.sin(rhr)])
+            R_z = np.array([np.sin(rhp)*np.cos(rhr),-np.sin(rhr),np.cos(rhp)*np.cos(rhr)])
             
             # x = np.array([np.cos(hp),np.sin(hp) ,0])
             # y = np.array([-np.sin(hp)*np.cos(hr), np.cos(hp)*np.cos(hr), np.sin(hr)])
@@ -327,12 +341,26 @@ class UI(QtGui.QMainWindow, form_class):
             if(self.triger):
                 self.ax = self.fig.add_subplot(111, projection='3d')
                 self.triger = False
+            if(self.triger_r):
+                self.axr = self.fig_r.add_subplot(111, projection='3d')
+                self.triger_r = False        
             #print( hand_p, hand_r, hand_y, hr, hp)
             start = [0,0,0]
+
+            self.axr.quiver(start[0],start[1],start[2],R_x[0],R_x[1],R_x[2],color='red')
+            self.axr.quiver(start[0],start[1],start[2],R_y[0],R_y[1],R_y[2],color='orange')
+            self.axr.quiver(start[0],start[1],start[2],R_z[0],R_z[1],R_z[2],color='magenta')
+            self.axr.quiver(start[0],start[1],-1,0,0,1,color = 'black')
             
-            self.ax.quiver(start[0],start[1],start[2],x[0],x[1],x[2],color='red')
-            self.ax.quiver(start[0],start[1],start[2],y[0],y[1],y[2],color='orange')
-            self.ax.quiver(start[0],start[1],start[2],z[0],z[1],z[2],color='yellow')
+            self.axr.set_xlim([-1,1])
+            self.axr.set_ylim([-1,1])
+            self.axr.set_zlim([-1,1])
+            self.canvas_r.draw()
+            self.axr.axes.clear()
+            
+            self.ax.quiver(start[0],start[1],start[2],L_x[0],L_x[1],L_x[2],color='red')
+            self.ax.quiver(start[0],start[1],start[2],L_y[0],L_y[1],L_y[2],color='orange')
+            self.ax.quiver(start[0],start[1],start[2],L_z[0],L_z[1],L_z[2],color='magenta')
             self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
             
             self.ax.set_xlim([-1,1])
@@ -340,6 +368,8 @@ class UI(QtGui.QMainWindow, form_class):
             self.ax.set_zlim([-1,1])
             self.canvas.draw()
             self.ax.axes.clear()
+
+           
             # print("update")
 
 
@@ -358,7 +388,7 @@ class Thread1(QThread):
     def run(self): 
         while True: 
             self.pose.emit()
-            sleep(0.4) 
+            sleep(0.6) 
         
 
 class Thread2(QThread):
@@ -516,13 +546,152 @@ class Thread3(QThread):
         
         
     def run(self): 
-        global hand_r
-        global hand_p
-        global hand_y
+        global L_hand_rpy  
         global nowrunname , L_data 
+        
         print("Connecting...")
         #56:ec:8a:8c:21:5d
         dev = btle.Peripheral("df:e6:f4:32:69:6d")
+
+ 
+        print("Device services list:")
+        for svc in dev.services:
+            print (str(svc))
+
+
+        HRService = dev.getServiceByUUID("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
+        print("HRService", HRService)
+
+        print("HRService characteristics list: ")
+        for char in HRService.getCharacteristics():
+            print("HRService char[", char.getHandle(), "]: ", char)
+
+        IMU1ACC = HRService.getCharacteristics("6e400002-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU1Gyro = HRService.getCharacteristics("6e400003-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU1Pose = HRService.getCharacteristics("6e400004-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+
+        IMU2ACC = HRService.getCharacteristics("6e400005-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU2Gyro = HRService.getCharacteristics("6e400006-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        IMU2Pose = HRService.getCharacteristics("6e400007-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+
+        #FSR = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+
+        # Assign delegate to target characteristic
+        object1 = MyDelegate(IMU1ACC.getHandle() , IMU1Gyro.getHandle(),IMU1Pose.getHandle(),IMU2ACC.getHandle(),IMU2Gyro.getHandle(),IMU2Pose.getHandle(),0 )
+        dev.setDelegate(object1)
+        # dev.setDelegate(MyDelegate(y_ACC.getHandle()))
+        # dev.setDelegate(MyDelegate(z_ACC.getHandle()))
+        
+        # We need to write into org.bluetooth.descriptor.gatt.client_characteristic_configuration descriptor to enabe notifications
+        # to do so, we must get this descriptor from characteristic first
+        # more details you can find in bluepy source (def getDescriptors(self, forUUID=None, hndEnd=0xFFFF))
+        desc_IMU1ACC = IMU1ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU1Gyro = IMU1Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU1Pose = IMU1Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+
+        desc_IMU2ACC = IMU2ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU2Gyro = IMU2Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_IMU2Pose = IMU2Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+
+        
+        #desc_z_acc = z_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+       
+        # print("Writing \"notification\" flag to descriptor with handle: ", desc[0].handle)
+        dev.writeCharacteristic(desc_IMU1ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU1Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU1Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+
+        dev.writeCharacteristic(desc_IMU2ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU2Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_IMU2Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+
+
+        #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+       
+        print("Waiting for notifications...")
+        self.connecton.emit()
+          
+
+        while True:
+            if dev.waitForNotifications(0.5):
+
+                L_data = object1.absolute_data()
+
+                L_hand_rpy =  object1.relativePose()
+                
+                continue
+        
+class Thread4(QThread): 
+    
+    count1 = pyqtSignal()
+    count2 = pyqtSignal()
+    count3 = pyqtSignal()
+    global L_data
+    global R_data
+    
+
+    def __init__(self):  
+        QThread.__init__(self) 
+        #self.cond = QWaitCondition()
+        #self.mutex = QMutex()
+        
+        
+    def run(self): 
+        L_counter  = Counter()
+        R_counter  = Counter()
+        before_val1 = 0
+        before_val2 = 0
+        before_val3 = 0
+        while True: 
+            #print("im okay",L_data[1][4])
+            if nowrunname == "바벨 컬":
+                temp = L_counter.KcCurl(L_data[1][4])
+                temp2 = R_counter.KcCurl(R_data[1][4])
+                print(temp,temp2)
+                if (before_val1 != max(temp,temp2)):
+                    self.count1.emit()
+                    print("change signal\n\n\n")
+                    before_val1 =temp
+
+            elif nowrunname == "벤치프레스":   
+                temp = L_counter.dumbelCurl(L_data[1][4]) 
+                if (before_val2 != temp):
+                    self.count2.emit()
+                    print("change signal\n\n\n")
+                    before_val2 =temp
+
+            elif nowrunname == "숄더프레스":
+                temp = L_counter.shoulderPress(L_data[1][3])
+                temp2 = R_counter.shoulderPress(R_data[1][3])
+                if (before_val3 != max(temp,temp2)):
+                    self.count3.emit()
+                    print("change signal\n\n\n")
+                    before_val3 =temp 
+
+
+
+class Thread5(QThread): 
+
+   
+    
+    count1 = pyqtSignal()
+    count2 = pyqtSignal()
+    count3 = pyqtSignal()
+    connecton = pyqtSignal()
+
+    def __init__(self): 
+        QThread.__init__(self) 
+        #self.cond = QWaitCondition()
+        #self.mutex = QMutex()
+        
+        
+    def run(self): 
+        global R_hand_rpy
+        global nowrunname , R_data 
+        
+        print("Connecting...")
+        #
+        dev = btle.Peripheral("56:ec:8a:8c:21:5d")
 
  
         print("Device services list:")
@@ -590,56 +759,15 @@ class Thread3(QThread):
         while True:
             if dev.waitForNotifications(0.5):
 
-                L_data = object1.absolute_data()
-                temp1 =  object1.relativePose()
-                
-                hand_r = temp1[0]
-                hand_p = temp1[1]
-                hand_y = temp1[2]
+                R_data = object1.absolute_data()
+                R_hand_rpy =  object1.relativePose()
+
                 continue
-        
-class Thread4(QThread): 
-    
-    count1 = pyqtSignal()
-    count2 = pyqtSignal()
-    count3 = pyqtSignal()
-    global L_data
-    global R_data
-
-    def __init__(self): 
-        QThread.__init__(self) 
-        #self.cond = QWaitCondition()
-        #self.mutex = QMutex()
-        
-        
-    def run(self): 
-        while True: 
-            print("im okay")
-            if nowrunname == "바벨 컬":
-                temp = Counter.KcCurl(L_data[1][4])
-                if (before_val1 != temp):
-                    self.count1.emit()
-                    print("change signal\n\n\n")
-                    before_val1 =temp
-
-            elif nowrunname == "벤치프레스":   
-                temp = Counter.dumbelCurl(L_data[1][4]) 
-                if (before_val2 != temp):
-                    self.count2.emit()
-                    print("change signal\n\n\n")
-                    before_val2 =temp
-
-            elif nowrunname == "숄더프레스":
-                temp = object1.count3Return()
-                if (before_val3 != temp):
-                    self.count3.emit()
-                    print("change signal\n\n\n")
-                    before_val3 =temp 
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)
     mainWindow = UI()
-    mainWindow.show()
-    #mainWindow.showFullScreen()
+    #mainWindow.show()
+    mainWindow.showFullScreen()
     sys.exit(app.exec_())
 

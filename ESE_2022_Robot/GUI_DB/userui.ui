@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>480</height>
+    <height>490</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@ appHeader{
       <x>0</x>
       <y>0</y>
       <width>800</width>
-      <height>460</height>
+      <height>490</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -48,7 +48,7 @@ appHeader{
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QFrame" name="frame">
@@ -57,7 +57,7 @@ appHeader{
         <x>0</x>
         <y>0</y>
         <width>800</width>
-        <height>460</height>
+        <height>490</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -244,11 +244,25 @@ appHeader{
         <bool>true</bool>
        </property>
       </widget>
+      <widget class="QPushButton" name="exitbutton">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>390</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
       <zorder>label_18</zorder>
       <zorder>label_16</zorder>
       <zorder>time_1</zorder>
       <zorder>frame_2</zorder>
       <zorder>label</zorder>
+      <zorder>exitbutton</zorder>
      </widget>
     </widget>
     <widget class="QWidget" name="page_6">
@@ -1151,7 +1165,7 @@ appHeader{
         <x>0</x>
         <y>0</y>
         <width>800</width>
-        <height>460</height>
+        <height>490</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -1270,7 +1284,7 @@ appHeader{
       <widget class="QWidget" name="gridLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>260</x>
          <y>170</y>
          <width>261</width>
          <height>141</height>
@@ -1604,13 +1618,24 @@ appHeader{
       <widget class="QWidget" name="verticalLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>180</y>
+         <x>20</x>
+         <y>170</y>
          <width>221</width>
          <height>211</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="forgraph"/>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>170</y>
+         <width>221</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="forgraph_2"/>
       </widget>
      </widget>
     </widget>
@@ -1621,7 +1646,7 @@ appHeader{
         <x>0</x>
         <y>0</y>
         <width>800</width>
-        <height>460</height>
+        <height>490</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -2153,7 +2178,7 @@ appHeader{
         <x>0</x>
         <y>0</y>
         <width>800</width>
-        <height>460</height>
+        <height>490</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -2201,7 +2226,7 @@ appHeader{
         <x>0</x>
         <y>0</y>
         <width>800</width>
-        <height>460</height>
+        <height>490</height>
        </rect>
       </property>
       <property name="frameShape">
