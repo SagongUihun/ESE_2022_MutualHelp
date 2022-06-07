@@ -87,7 +87,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.start_1.clicked.connect(self.goto6)
         self.finsave_6.clicked.connect(self.goto2)
         self.seerecord_1.clicked.connect(self.goto3)
-        self.calibration_1.clicked.connect(self.goto4)
+        #self.calibration_1.clicked.connect(self.goto4)
 
         self.gotohome_2.clicked.connect(self.gotohome)
         self.gotohome_3.clicked.connect(self.gotohome)
@@ -323,11 +323,11 @@ class UI(QtGui.QMainWindow, form_class):
         
         if self.stackedWidget.currentWidget() == self.page_2:
             L_x = np.array([np.cos(hp),0 ,-np.sin(hp)])
-            L_y = -np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
+            L_y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
             L_z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
 
             R_x = np.array([np.cos(rhp),0 ,-np.sin(rhp)])
-            R_y = -np.array([np.sin(rhp)*np.sin(rhr),np.cos(rhr),np.cos(rhp)*np.sin(rhr)])
+            R_y = np.array([np.sin(rhp)*np.sin(rhr),np.cos(rhr),np.cos(rhp)*np.sin(rhr)])
             R_z = np.array([np.sin(rhp)*np.cos(rhr),-np.sin(rhr),np.cos(rhp)*np.cos(rhr)])
             
             # x = np.array([np.cos(hp),np.sin(hp) ,0])
@@ -651,7 +651,7 @@ class Thread4(QThread):
                 if (before_val1 != max(temp,temp2)):
                     self.count1.emit()
                     print("change signal\n\n\n")
-                    before_val1 =temp
+                    before_val1 =max(temp,temp2)
 
             elif nowrunname == "벤치프레스":   
                 temp = L_counter.dumbelCurl(L_data[1][4]) 
@@ -666,7 +666,7 @@ class Thread4(QThread):
                 if (before_val3 != max(temp,temp2)):
                     self.count3.emit()
                     print("change signal\n\n\n")
-                    before_val3 =temp 
+                    before_val3 =max(temp,temp2) 
 
 
 

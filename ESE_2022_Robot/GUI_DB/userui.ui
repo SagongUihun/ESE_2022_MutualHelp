@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>490</height>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@ appHeader{
       <x>0</x>
       <y>0</y>
       <width>800</width>
-      <height>490</height>
+      <height>531</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -97,7 +97,7 @@ appHeader{
          <x>65</x>
          <y>120</y>
          <width>670</width>
-         <height>250</height>
+         <height>291</height>
         </rect>
        </property>
        <property name="focusPolicy">
@@ -148,7 +148,13 @@ appHeader{
           </property>
           <property name="font">
            <font>
+            <family>Ubuntu</family>
             <pointsize>25</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+            <underline>false</underline>
+            <strikeout>false</strikeout>
            </font>
           </property>
           <property name="focusPolicy">
@@ -156,27 +162,6 @@ appHeader{
           </property>
           <property name="text">
            <string>운동 기록 보기</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="calibration_1">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>25</pointsize>
-           </font>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text">
-           <string>센서 조정하기</string>
           </property>
          </widget>
         </item>
@@ -228,8 +213,8 @@ appHeader{
       <widget class="QLabel" name="label_18">
        <property name="geometry">
         <rect>
-         <x>530</x>
-         <y>20</y>
+         <x>510</x>
+         <y>10</y>
          <width>231</width>
          <height>141</height>
         </rect>
@@ -247,14 +232,14 @@ appHeader{
       <widget class="QPushButton" name="exitbutton">
        <property name="geometry">
         <rect>
-         <x>590</x>
-         <y>390</y>
-         <width>100</width>
-         <height>30</height>
+         <x>670</x>
+         <y>411</y>
+         <width>111</width>
+         <height>41</height>
         </rect>
        </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>종료</string>
        </property>
       </widget>
       <zorder>label_18</zorder>
@@ -270,8 +255,8 @@ appHeader{
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>400</y>
-        <width>791</width>
+        <y>398</y>
+        <width>691</width>
         <height>63</height>
        </rect>
       </property>
@@ -281,275 +266,288 @@ appHeader{
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <widget class="QComboBox" name="cb1_6">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>14</y>
+         <width>181</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
        <item>
-        <widget class="QComboBox" name="cb1_6">
-         <property name="font">
-          <font>
-           <pointsize>17</pointsize>
-          </font>
-         </property>
-         <item>
-          <property name="text">
-           <string>벤치프레스</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>바벨 컬</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>데드리프트</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>숄더프레스</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>팔굽혀펴기</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>사이드 레터럴 레이즈</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>스쿼트</string>
-          </property>
-         </item>
-        </widget>
+        <property name="text">
+         <string>벤치프레스</string>
+        </property>
        </item>
        <item>
-        <widget class="QComboBox" name="cb2_6">
-         <property name="font">
-          <font>
-           <pointsize>17</pointsize>
-          </font>
-         </property>
-         <item>
-          <property name="text">
-           <string>1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>3</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>4</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>5</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>6</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>7</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>8</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>9</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>10</string>
-          </property>
-         </item>
-        </widget>
+        <property name="text">
+         <string>바벨 컬</string>
+        </property>
        </item>
        <item>
-        <widget class="QComboBox" name="cb3_6">
-         <property name="font">
-          <font>
-           <pointsize>17</pointsize>
-          </font>
-         </property>
-         <item>
-          <property name="text">
-           <string>1</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>2</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>3</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>4</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>5</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>6</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>7</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>8</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>9</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>10</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>11</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>12</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>13</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>14</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>15</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>16</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>17</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>18</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>19</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>20</string>
-          </property>
-         </item>
-        </widget>
+        <property name="text">
+         <string>데드리프트</string>
+        </property>
        </item>
        <item>
-        <widget class="QComboBox" name="cb4_6">
-         <property name="font">
-          <font>
-           <pointsize>17</pointsize>
-          </font>
-         </property>
-         <item>
-          <property name="text">
-           <string>30</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>60</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>90</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>120</string>
-          </property>
-         </item>
-        </widget>
+        <property name="text">
+         <string>숄더프레스</string>
+        </property>
        </item>
        <item>
-        <widget class="QPushButton" name="finsave_6">
-         <property name="font">
-          <font>
-           <pointsize>17</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>측정 화면 이동</string>
-         </property>
-        </widget>
+        <property name="text">
+         <string>팔굽혀펴기</string>
+        </property>
        </item>
-      </layout>
+       <item>
+        <property name="text">
+         <string>사이드 레터럴 레이즈</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>스쿼트</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QComboBox" name="cb2_6">
+       <property name="geometry">
+        <rect>
+         <x>206</x>
+         <y>14</y>
+         <width>151</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>4</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>7</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>8</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QComboBox" name="cb3_6">
+       <property name="geometry">
+        <rect>
+         <x>365</x>
+         <y>14</y>
+         <width>151</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>4</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>7</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>8</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>11</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>12</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>13</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>14</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>15</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>16</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>17</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>18</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>19</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>20</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QComboBox" name="cb4_6">
+       <property name="geometry">
+        <rect>
+         <x>526</x>
+         <y>14</y>
+         <width>151</width>
+         <height>35</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>30</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>60</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>90</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>120</string>
+        </property>
+       </item>
+      </widget>
      </widget>
      <widget class="QComboBox" name="nowroutine_6">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>30</y>
-        <width>241</width>
-        <height>41</height>
+        <x>120</x>
+        <y>20</y>
+        <width>221</width>
+        <height>91</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <pointsize>23</pointsize>
        </font>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
       </property>
       <item>
        <property name="text">
@@ -585,10 +583,10 @@ appHeader{
      <widget class="QStackedWidget" name="stackedWidget_2">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>90</y>
-        <width>461</width>
-        <height>261</height>
+        <x>20</x>
+        <y>129</y>
+        <width>660</width>
+        <height>271</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -603,18 +601,39 @@ appHeader{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>471</width>
-          <height>261</height>
+          <width>661</width>
+          <height>271</height>
          </rect>
+        </property>
+        <property name="autoScroll">
+         <bool>false</bool>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
+        <property name="dragDropOverwriteMode">
+         <bool>false</bool>
+        </property>
+        <property name="defaultDropAction">
+         <enum>Qt::IgnoreAction</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>110</number>
+         <number>160</number>
+        </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>45</number>
+         <number>48</number>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <row>
          <property name="text">
@@ -669,18 +688,27 @@ appHeader{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>471</width>
-          <height>261</height>
+          <width>661</width>
+          <height>271</height>
          </rect>
         </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>110</number>
+         <number>160</number>
         </attribute>
-        <attribute name="horizontalHeaderHighlightSections">
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>45</number>
+         <number>48</number>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <row>
          <property name="text">
@@ -735,15 +763,27 @@ appHeader{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>471</width>
-          <height>264</height>
+          <width>661</width>
+          <height>271</height>
          </rect>
         </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>110</number>
+         <number>160</number>
+        </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>45</number>
+         <number>48</number>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <row>
          <property name="text">
@@ -798,15 +838,27 @@ appHeader{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>471</width>
-          <height>265</height>
+          <width>661</width>
+          <height>271</height>
          </rect>
         </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>110</number>
+         <number>160</number>
+        </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>45</number>
+         <number>48</number>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <row>
          <property name="text">
@@ -861,15 +913,27 @@ appHeader{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>471</width>
-          <height>265</height>
+          <width>661</width>
+          <height>271</height>
          </rect>
         </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>110</number>
+         <number>160</number>
+        </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>45</number>
+         <number>48</number>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <row>
          <property name="text">
@@ -924,18 +988,27 @@ appHeader{
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>471</width>
-          <height>265</height>
+          <width>661</width>
+          <height>271</height>
          </rect>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>110</number>
+         <number>160</number>
+        </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>45</number>
+         <number>48</number>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <row>
          <property name="text">
@@ -988,10 +1061,10 @@ appHeader{
      <widget class="QFrame" name="frame_20">
       <property name="geometry">
        <rect>
-        <x>510</x>
-        <y>80</y>
-        <width>261</width>
-        <height>271</height>
+        <x>690</x>
+        <y>130</y>
+        <width>101</width>
+        <height>331</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -1005,8 +1078,8 @@ appHeader{
         <rect>
          <x>10</x>
          <y>40</y>
-         <width>110</width>
-         <height>100</height>
+         <width>80</width>
+         <height>80</height>
         </rect>
        </property>
        <property name="text">
@@ -1027,9 +1100,9 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
-         <width>110</width>
-         <height>100</height>
+         <y>130</y>
+         <width>80</width>
+         <height>80</height>
         </rect>
        </property>
        <property name="text">
@@ -1043,15 +1116,15 @@ appHeader{
       <widget class="QPushButton" name="saveroutinedb_6">
        <property name="geometry">
         <rect>
-         <x>130</x>
-         <y>40</y>
-         <width>131</width>
-         <height>221</height>
+         <x>10</x>
+         <y>233</y>
+         <width>80</width>
+         <height>80</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>25</pointsize>
+         <pointsize>20</pointsize>
         </font>
        </property>
        <property name="text">
@@ -1059,84 +1132,6 @@ appHeader{
 저장</string>
        </property>
       </widget>
-     </widget>
-     <widget class="QFrame" name="frame_21">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>360</y>
-        <width>561</width>
-        <height>37</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_8">
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>운동 종류</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_5">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>세트 수</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_6">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>세트별 운동 횟수</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_15">
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string>쉬는 시간(초)</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
      <widget class="QLabel" name="time_6">
       <property name="geometry">
@@ -1155,6 +1150,37 @@ appHeader{
       </property>
       <property name="text">
        <string>HELLO</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="finsave_6">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>20</y>
+        <width>231</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>17</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>운동 시작</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>681</width>
+        <height>291</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
       </property>
      </widget>
     </widget>
@@ -1178,9 +1204,9 @@ appHeader{
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>400</y>
+         <y>391</y>
          <width>800</width>
-         <height>40</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -1242,9 +1268,9 @@ appHeader{
       <widget class="QFrame" name="frame_8">
        <property name="geometry">
         <rect>
-         <x>250</x>
+         <x>180</x>
          <y>10</y>
-         <width>351</width>
+         <width>421</width>
          <height>61</height>
         </rect>
        </property>
@@ -1255,18 +1281,6 @@ appHeader{
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="font">
-           <font>
-            <pointsize>20</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>현재 routine: </string>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QLabel" name="nowroutine_2">
           <property name="font">
@@ -1279,105 +1293,17 @@ appHeader{
           </property>
          </widget>
         </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="gridLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>260</x>
-         <y>170</y>
-         <width>261</width>
-         <height>141</height>
-        </rect>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <pointsize>35</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
-           <string>앞/뒤 </string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>좌/우 </string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>각도</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="leftangle1_2">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QLabel" name="rightangle1_2">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_13">
-          <property name="text">
-           <string>왼손 </string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>오른손 </string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="leftangle2_2">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QLabel" name="rightangle2_2">
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <string>asd</string>
           </property>
          </widget>
         </item>
@@ -1404,10 +1330,10 @@ appHeader{
       <widget class="QFrame" name="frame_18">
        <property name="geometry">
         <rect>
-         <x>70</x>
-         <y>70</y>
-         <width>671</width>
-         <height>101</height>
+         <x>302</x>
+         <y>80</y>
+         <width>181</width>
+         <height>290</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -1416,136 +1342,123 @@ appHeader{
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QFrame" name="frame_22">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>231</width>
-          <height>81</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <widget class="QLabel" name="label_88">
-           <property name="text">
-            <string>현재 운동:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_7">
-           <property name="font">
-            <font>
-             <pointsize>35</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="frame_23">
-        <property name="geometry">
-         <rect>
-          <x>260</x>
-          <y>10</y>
-          <width>156</width>
-          <height>81</height>
-         </rect>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QLabel" name="label_20">
-           <property name="text">
-            <string>남은 세트:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="leftset_2">
-           <property name="font">
-            <font>
-             <pointsize>50</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QFrame" name="frame_24">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>10</y>
-          <width>163</width>
-          <height>81</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
-         <item>
-          <widget class="QLabel" name="label_89">
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-             <weight>50</weight>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>남은 횟수:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="lefttry_2">
-           <property name="font">
-            <font>
-             <pointsize>50</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>55</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QFrame" name="frame_23">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>남은 세트:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="leftset_2">
+             <property name="font">
+              <font>
+               <pointsize>50</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame_24">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_89">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>남은 횟수:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lefttry_2">
+             <property name="font">
+              <font>
+               <pointsize>40</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>55</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame_6">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>휴식 시간:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="resttime_2">
+             <property name="font">
+              <font>
+               <pointsize>55</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QLabel" name="time_2">
        <property name="geometry">
@@ -1570,58 +1483,16 @@ appHeader{
         </rect>
        </property>
        <property name="text">
-        <string>운동 하기!</string>
+        <string>text</string>
        </property>
-      </widget>
-      <widget class="QFrame" name="frame_6">
-       <property name="geometry">
-        <rect>
-         <x>260</x>
-         <y>320</y>
-         <width>261</width>
-         <height>81</height>
-        </rect>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_12">
-          <property name="font">
-           <font>
-            <pointsize>18</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>휴식 시간:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="resttime_2">
-          <property name="font">
-           <font>
-            <pointsize>55</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </widget>
       <widget class="QWidget" name="verticalLayoutWidget">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>170</y>
-         <width>221</width>
-         <height>211</height>
+         <x>0</x>
+         <y>90</y>
+         <width>301</width>
+         <height>281</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="forgraph"/>
@@ -1629,10 +1500,10 @@ appHeader{
       <widget class="QWidget" name="verticalLayoutWidget_2">
        <property name="geometry">
         <rect>
-         <x>540</x>
-         <y>170</y>
-         <width>221</width>
-         <height>211</height>
+         <x>480</x>
+         <y>90</y>
+         <width>311</width>
+         <height>271</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="forgraph_2"/>
