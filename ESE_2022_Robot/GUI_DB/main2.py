@@ -30,6 +30,8 @@ counttry3 = 0
 hand_r = 0
 hand_p = 0
 hand_y = 0
+L_data = [] #[[imu1][imu2][fsr]]
+R_data = [] 
 
 nowrunname = ""
 nowpage = ""
@@ -53,13 +55,14 @@ class UI(QtGui.QMainWindow, form_class):
         self.th = Thread1()
         self.th2 = Thread2()
         self.th3 = Thread3()
-        #self.th4 = Thread4()
+        self.th4 = Thread4()
         self.th.start()
         self.th3.start()
-        self.th3.count1.connect(self.getval1)
-        self.th3.count2.connect(self.getval2)
-        self.th3.count3.connect(self.getval3)
+        self.th4.count1.connect(self.getval1)
+        self.th4.count2.connect(self.getval2)
+        self.th4.count3.connect(self.getval3)
         self.th3.connecton.connect(self.nowconnect)
+        self.th3.connecton.connect(self.th4.start)
         self.th.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
@@ -516,7 +519,7 @@ class Thread3(QThread):
         global hand_r
         global hand_p
         global hand_y
-        global nowrunname
+        global nowrunname , L_data 
         print("Connecting...")
         #56:ec:8a:8c:21:5d
         dev = btle.Peripheral("df:e6:f4:32:69:6d")
@@ -586,90 +589,52 @@ class Thread3(QThread):
 
         while True:
             if dev.waitForNotifications(0.5):
-                #print(object1.countReturn())
-                if nowrunname == "바벨 컬":
-                    temp = object1.count1Return()
-                    if (before_val1 != temp):
-                        self.count1.emit()
-                        print("change signal\n\n\n")
-                        before_val1 =temp
 
-                elif nowrunname == "벤치프레스":   
-                    temp = object1.count2Return() 
-                    if (before_val2 != temp):
-                        self.count2.emit()
-                        print("change signal\n\n\n")
-                        before_val2 =temp
-
-                elif nowrunname == "숄더프레스":
-                    temp = object1.count3Return()
-                    if (before_val3 != temp):
-                        self.count3.emit()
-                        print("change signal\n\n\n")
-                        before_val3 =temp  
-               
-                # before_val1 =object1.count1Return()
-                # before_val2 =object1.count2Return()
-                # before_val3 =object1.count3Return()
-                # handleNotification() was called
+                L_data = object1.absolute_data()
                 temp1 =  object1.relativePose()
-                # temp =  object1.ArduinoPose()
+                
                 hand_r = temp1[0]
                 hand_p = temp1[1]
                 hand_y = temp1[2]
                 continue
         
-# class Thread4(QThread): 
+class Thread4(QThread): 
     
-#     global hand_r
-#     global hand_p
-#     global hand_y
-#     global nowpage
-#     global figure
+    count1 = pyqtSignal()
+    count2 = pyqtSignal()
+    count3 = pyqtSignal()
+    global L_data
+    global R_data
 
-#     def __init__(self): 
-#         QThread.__init__(self) 
-#         #self.cond = QWaitCondition()
-#         #self.mutex = QMutex()
+    def __init__(self): 
+        QThread.__init__(self) 
+        #self.cond = QWaitCondition()
+        #self.mutex = QMutex()
         
-#     def run(self): 
         
-#         #print(hand_r, hand_p, hand_y)
-#         while True:
-#             hr = np.deg2rad(hand_r)
-#             hp = np.deg2rad(hand_p)
-#             hy = np.deg2rad(hand_y)
-#             if nowpage == "self.page_2":
-#                 x = np.array([np.cos(hp),0 ,-np.sin(hp)])
-#                 y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
-#                 z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
-                
-#                 # x = np.array([np.cos(hp),np.sin(hp) ,0])
-#                 # y = np.array([-np.sin(hp)*np.cos(hr), np.cos(hp)*np.cos(hr), np.sin(hr)])
-#                 # z = np.array([np.sin(hp)*np.sin(hr), -np.cos(hp)*np.sin(hr), np.cos(hr)])
-                
-                
-#                 v = np.array([5, 6, 2])
-                
-            
-#                 if(self.triger):
-#                     self.ax = figure.add_subplot(111, projection='3d')
-#                     self.triger = False
-#                 #print( hand_p, hand_r, hand_y, hr, hp)
-#                 start = [0,0,0]
-                
-#                 self.ax.quiver(start[0],start[1],start[2],x[0],x[1],x[2],color='red')
-#                 self.ax.quiver(start[0],start[1],start[2],y[0],y[1],y[2],color='orange')
-#                 self.ax.quiver(start[0],start[1],start[2],z[0],z[1],z[2],color='yellow')
-#                 self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
-                
-#                 self.ax.set_xlim([-1,1])
-#                 self.ax.set_ylim([-1,1])
-#                 self.ax.set_zlim([-1,1])
-#                 self.canvas.draw()
-#                 self.ax.axes.clear()
-#                 print("update") 
-#                 sleep(0.4)
+    def run(self): 
+        while True: 
+            print("im okay")
+            if nowrunname == "바벨 컬":
+                temp = Counter.KcCurl(L_data[1][4])
+                if (before_val1 != temp):
+                    self.count1.emit()
+                    print("change signal\n\n\n")
+                    before_val1 =temp
+
+            elif nowrunname == "벤치프레스":   
+                temp = Counter.dumbelCurl(L_data[1][4]) 
+                if (before_val2 != temp):
+                    self.count2.emit()
+                    print("change signal\n\n\n")
+                    before_val2 =temp
+
+            elif nowrunname == "숄더프레스":
+                temp = object1.count3Return()
+                if (before_val3 != temp):
+                    self.count3.emit()
+                    print("change signal\n\n\n")
+                    before_val3 =temp 
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)

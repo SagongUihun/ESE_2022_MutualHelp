@@ -99,9 +99,7 @@ class MyDelegate(btle.DefaultDelegate):
         return self.shoulderCount
     
     def absolute_data(self):
-        return round([[self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1],[self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2]],2)
-
-    # def count4Return(self):
+        return [[self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1],[self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2]]    # def count4Return(self):
     #     # if (health == 'dumbel'):
     #     return self.KcCount        
 
