@@ -58,8 +58,9 @@ class db(sqlite_lib):
         Rr = rowr[0]
         Pr = rowr[1]
         Yr = rowr[2]
-        sql = '''INSERT INTO handData(name, time, set_result) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}')'''.format(name,Rl, Pl, Yl, Rr, Pr, Yr)
+        sql = '''INSERT INTO handData(name, rollL, pitchL, yawL, rollR, pitchR, yawR) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}')'''.format(name,Rl, Pl, Yl, Rr, Pr, Yr)
         self.sql_exec(sql)
+        self.close()
 
     def returnHandData(self):
         self = sqlite_lib()

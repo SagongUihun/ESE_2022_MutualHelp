@@ -51,21 +51,21 @@ class UI(QtGui.QMainWindow, form_class):
 
         self.button()
         self.nowtime()
-        self.th = Thread1()
+        #self.th = Thread1()
         self.th2 = Thread2()
         self.th3 = Thread3()
         self.th4 = Thread4()
         self.th5 = Thread5()
-        self.th.start()
+        #self.th.start()
         self.th3.start()
-        self.th5.start()
+        #self.th5.start()
         self.th4.count1.connect(self.getval1)
         self.th4.count2.connect(self.getval2)
         self.th4.count3.connect(self.getval3)
         self.th3.connecton.connect(self.nowconnect_L)
         self.th3.connecton.connect(self.th4.start)
         self.th5.connecton.connect(self.nowconnect_R)
-        self.th.pose.connect(self.drawgraph)
+        self.th3.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
         
@@ -128,7 +128,6 @@ class UI(QtGui.QMainWindow, form_class):
         current_day = QDate.currentDate()
         self.stackedWidget.setCurrentWidget(self.page_4)
         self.todayday.setText(current_day.toString('yyyy-MM-dd'+"의 운동 기록"))
-        print(mydb.returnHandData)
         for i in range(1,8,1):
             nowday = "day"+str(i)+"_3"
             getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
@@ -346,44 +345,54 @@ class UI(QtGui.QMainWindow, form_class):
         rhy = np.deg2rad(R_hand_rpy[2])
         
         if self.stackedWidget.currentWidget() == self.page_2:
-            # L_x = np.array([np.cos(hp),0 ,-np.sin(hp)])
-            # L_y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
-            # L_z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
+            # L_x = np.array([np.cos(hp),np.sin(hp)*np.sin(hr) ,np.sin(hp)*np.cos(hr)])
+            # L_y = np.array([0,np.cos(hr),-np.sin(hr)])
+            # L_z = np.array([-np.sin(hp),np.cos(hp)*np.sin(hr),np.cos(hp)*np.cos(hr)])
 
             # R_x = np.array([np.cos(rhp),0 ,-np.sin(rhp)])
             # R_y = np.array([np.sin(rhp)*np.sin(rhr),np.cos(rhr),np.cos(rhp)*np.sin(rhr)])
             # R_z = np.array([np.sin(rhp)*np.cos(rhr),-np.sin(rhr),np.cos(rhp)*np.cos(rhr)])
-            x1_L = np.cos(60*np.pi/180)
-            z1_L = -np.sin(60*np.pi/180)
-            x2_L = np.cos(20*np.pi/180)
-            z2_L = -np.sin(20*np.pi/180)
-            x3_L = np.cos(0*np.pi/180)
-            z3_L = -np.sin(0*np.pi/180)
-            x4_L = np.cos(-20*np.pi/180)
-            z4_L = -np.sin(-20*np.pi/180)
-            x5_L = np.cos(-40*np.pi/180)
-            z5_L = -np.sin(-40*np.pi/180)
-            L_1 = np.array([x1_L*np.cos(hp) + z1_L*np.sin(hp)*np.cos(hr) , -z1_L*np.cos(hr) , -x1_L*np.sin(hp) + z1_L*np.cos(hp)*np.cos(hr)])
-            L_2 = np.array([x2_L*np.cos(hp) + z2_L*np.sin(hp)*np.cos(hr) , -z2_L*np.cos(hr) , -x2_L*np.sin(hp) + z2_L*np.cos(hp)*np.cos(hr)])
-            L_3 = np.array([x3_L*np.cos(hp) + z3_L*np.sin(hp)*np.cos(hr) , -z3_L*np.cos(hr) , -x3_L*np.sin(hp) + z3_L*np.cos(hp)*np.cos(hr)])
-            L_4 = np.array([x4_L*np.cos(hp) + z4_L*np.sin(hp)*np.cos(hr) , -z4_L*np.cos(hr) , -x4_L*np.sin(hp) + z4_L*np.cos(hp)*np.cos(hr)])
-            L_5 = np.array([x5_L*np.cos(hp) + z5_L*np.sin(hp)*np.cos(hr) , -z5_L*np.cos(hr) , -x5_L*np.sin(hp) + z5_L*np.cos(hp)*np.cos(hr)])
 
-            x1_R = np.cos(-40*np.pi/180)
-            z1_R = -np.sin(-40*np.pi/180)
-            x2_R = np.cos(-20*np.pi/180)
-            z2_R = -np.sin(-20*np.pi/180)
-            x3_R = np.cos(0*np.pi/180)
-            z3_R = -np.sin(0*np.pi/180)
-            x4_R = np.cos(20*np.pi/180)
-            z4_R = -np.sin(20*np.pi/180)
-            x5_R = np.cos(60*np.pi/180)
-            z5_R = -np.sin(60*np.pi/180)
-            R_1 = np.array([x1_R*np.cos(rhp) + z1_R*np.sin(rhp)*np.cos(rhr) , -z1_R*np.cos(rhr) , -x1_R*np.sin(rhp) + z1_R*np.cos(rhp)*np.cos(rhr)])
-            R_2 = np.array([x2_R*np.cos(rhp) + z2_R*np.sin(rhp)*np.cos(rhr) , -z2_R*np.cos(rhr) , -x2_R*np.sin(rhp) + z2_R*np.cos(rhp)*np.cos(rhr)])
-            R_3 = np.array([x3_R*np.cos(rhp) + z3_R*np.sin(rhp)*np.cos(rhr) , -z3_R*np.cos(rhr) , -x3_R*np.sin(rhp) + z3_R*np.cos(rhp)*np.cos(rhr)])
-            R_4 = np.array([x4_R*np.cos(rhp) + z4_R*np.sin(rhp)*np.cos(rhr) , -z4_R*np.cos(rhr) , -x4_R*np.sin(rhp) + z4_R*np.cos(rhp)*np.cos(rhr)])
-            R_5 = np.array([x5_R*np.cos(rhp) + z5_R*np.sin(rhp)*np.cos(rhr) , -z5_R*np.cos(rhr) , -x5_R*np.sin(rhp) + z5_R*np.cos(rhp)*np.cos(rhr)])
+            y1_L = np.cos(30*np.pi/180)
+            z1_L = np.sin(30*np.pi/180)
+            y2_L = np.cos(70*np.pi/180)
+            z2_L = np.sin(70*np.pi/180)
+            y3_L = np.cos(90*np.pi/180)
+            z3_L = np.sin(90*np.pi/180)
+            y4_L = -np.cos(70*np.pi/180)
+            z4_L = np.sin(70*np.pi/180)
+            y5_L = -np.cos(50*np.pi/180)
+            z5_L = np.sin(50*np.pi/180)
+            
+            # L_1 = np.array([x1_L*np.cos(hp) -z1_L*np.sin(hp) , x1_L*np.sin(hp)*np.sin(hr) + z1_L*np.cos(hp)*np.sin(hr) , x1_L*np.sin(hp)*np.cos(hr) + z1_L*np.cos(hp)*np.cos(hr)])
+            # L_2 = np.array([x2_L*np.cos(hp) -z2_L*np.sin(hp) , x2_L*np.sin(hp)*np.sin(hr) + z2_L*np.cos(hp)*np.sin(hr) , x2_L*np.sin(hp)*np.cos(hr) + z2_L*np.cos(hp)*np.cos(hr)])
+            # L_3 = np.array([x3_L*np.cos(hp) -z3_L*np.sin(hp) , x3_L*np.sin(hp)*np.sin(hr) + z3_L*np.cos(hp)*np.sin(hr) , x3_L*np.sin(hp)*np.cos(hr) + z3_L*np.cos(hp)*np.cos(hr)])
+            # L_4 = np.array([x4_L*np.cos(hp) -z4_L*np.sin(hp) , x4_L*np.sin(hp)*np.sin(hr) + z4_L*np.cos(hp)*np.sin(hr) , x4_L*np.sin(hp)*np.cos(hr) + z4_L*np.cos(hp)*np.cos(hr)])
+            # L_5 = np.array([x5_L*np.cos(hp) -z5_L*np.sin(hp) , x5_L*np.sin(hp)*np.sin(hr) + z5_L*np.cos(hp)*np.sin(hr) , x5_L*np.sin(hp)*np.cos(hr) + z5_L*np.cos(hp)*np.cos(hr)])
+            L_1 = np.array([-z1_L*np.sin(hp) , y1_L*np.cos(hr) + z1_L*np.cos(hp)*np.sin(hr) , -y1_L*np.sin(hr) + z1_L*np.cos(hp)*np.cos(hr)])
+            L_2 = np.array([-z2_L*np.sin(hp) , y2_L*np.cos(hr) + z2_L*np.cos(hp)*np.sin(hr) , -y2_L*np.sin(hr) + z2_L*np.cos(hp)*np.cos(hr)])
+            L_3 = np.array([-z3_L*np.sin(hp) , y3_L*np.cos(hr) + z3_L*np.cos(hp)*np.sin(hr) , -y3_L*np.sin(hr) + z3_L*np.cos(hp)*np.cos(hr)])
+            L_4 = np.array([-z4_L*np.sin(hp) , y4_L*np.cos(hr) + z4_L*np.cos(hp)*np.sin(hr) , -y4_L*np.sin(hr) + z4_L*np.cos(hp)*np.cos(hr)])
+            L_5 = np.array([-z5_L*np.sin(hp) , y5_L*np.cos(hr) + z5_L*np.cos(hp)*np.sin(hr) , -y5_L*np.sin(hr) + z5_L*np.cos(hp)*np.cos(hr)])
+
+            y1_R = np.cos(30*np.pi/180)
+            z1_R = np.sin(30*np.pi/180)
+            y2_R = np.cos(70*np.pi/180)
+            z2_R = np.sin(70*np.pi/180)
+            y3_R = np.cos(90*np.pi/180)
+            z3_R = np.sin(90*np.pi/180)
+            y4_R = -np.cos(70*np.pi/180)
+            z4_R = np.sin(70*np.pi/180)
+            y5_R = -np.cos(50*np.pi/180)
+            z5_R = np.sin(50*np.pi/180)
+
+            R_1 = np.array([-z1_R*np.sin(rhp) , y1_R*np.cos(rhr) + z1_R*np.cos(rhp)*np.sin(rhr) , -y1_R*np.sin(rhr) + z1_R*np.cos(rhp)*np.cos(rhr)])
+            R_2 = np.array([-z2_R*np.sin(rhp) , y2_R*np.cos(rhr) + z2_R*np.cos(rhp)*np.sin(rhr) , -y2_R*np.sin(rhr) + z2_R*np.cos(rhp)*np.cos(rhr)])
+            R_3 = np.array([-z3_R*np.sin(rhp) , y3_R*np.cos(rhr) + z3_R*np.cos(rhp)*np.sin(rhr) , -y3_R*np.sin(rhr) + z3_R*np.cos(rhp)*np.cos(rhr)])
+            R_4 = np.array([-z4_R*np.sin(rhp) , y4_R*np.cos(rhr) + z4_R*np.cos(rhp)*np.sin(rhr) , -y4_R*np.sin(rhr) + z4_R*np.cos(rhp)*np.cos(rhr)])
+            R_5 = np.array([-z5_R*np.sin(rhp) , y5_R*np.cos(rhr) + z5_R*np.cos(rhp)*np.sin(rhr) , -y5_R*np.sin(rhr) + z5_R*np.cos(rhp)*np.cos(rhr)])
+           
+            
             v = np.array([5, 6, 2])
 
 
@@ -396,10 +405,10 @@ class UI(QtGui.QMainWindow, form_class):
             #print( hand_p, hand_r, hand_y, hr, hp)
             start = [0,0,0]
 
-            #self.axr.quiver(start[0],start[1],start[2],R_x[0],R_x[1],R_x[2],color='red')
-            #self.axr.quiver(start[0],start[1],start[2],R_y[0],R_y[1],R_y[2],color='orange')
-            #self.axr.quiver(start[0],start[1],start[2],R_z[0],R_z[1],R_z[2],color='magenta')
-            #self.axr.quiver(start[0],start[1],-1,0,0,1,color = 'black')
+            # self.axr.quiver(start[0],start[1],start[2],R_x[0],R_x[1],R_x[2],color='red')
+            # self.axr.quiver(start[0],start[1],start[2],R_y[0],R_y[1],R_y[2],color='orange')
+            # self.axr.quiver(start[0],start[1],start[2],R_z[0],R_z[1],R_z[2],color='magenta')
+            # self.axr.quiver(start[0],start[1],-1,0,0,1,color = 'black')
 
             self.axr.quiver(start[0],start[1],start[2],R_1[0],R_1[1],R_1[2],color='red')
             self.axr.quiver(start[0],start[1],start[2],R_2[0],R_2[1],R_2[2],color='orange')
@@ -414,10 +423,10 @@ class UI(QtGui.QMainWindow, form_class):
             self.canvas_r.draw()
             self.axr.axes.clear()
 
-            #self.ax.quiver(start[0],start[1],start[2],L_x[0],L_x[1],L_x[2],color='red')
-            #self.ax.quiver(start[0],start[1],start[2],L_y[0],L_y[1],L_y[2],color='orange')
-            #self.ax.quiver(start[0],start[1],start[2],L_z[0],L_z[1],L_z[2],color='magenta')
-            #self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
+            # self.ax.quiver(start[0],start[1],start[2],L_x[0],L_x[1],L_x[2],color='red')
+            # self.ax.quiver(start[0],start[1],start[2],L_y[0],L_y[1],L_y[2],color='magenta')
+            # self.ax.quiver(start[0],start[1],start[2],L_z[0],L_z[1],L_z[2],color='magenta')
+            # self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
 
             self.ax.quiver(start[0],start[1],start[2],L_1[0],L_1[1],L_1[2],color='red')
             self.ax.quiver(start[0],start[1],start[2],L_2[0],L_2[1],L_2[2],color='orange')
@@ -517,8 +526,6 @@ class Thread2(QThread):
                                 savetime = int(time()%3)
                                 if savetime != savetime_before:
                                     mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
-                                    print("save")
-                                    print(mydb.returnHandData)
                                 savetime_before = int(time()%3)
                                 sleep(0.01)
                     
@@ -610,6 +617,7 @@ class Thread3(QThread):
     count2 = pyqtSignal()
     count3 = pyqtSignal()
     connecton = pyqtSignal()
+    pose = pyqtSignal()
 
     def __init__(self): 
         QThread.__init__(self) 
@@ -646,10 +654,10 @@ class Thread3(QThread):
         IMU2Gyro = HRService.getCharacteristics("6e400006-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
         IMU2Pose = HRService.getCharacteristics("6e400007-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
 
-        #FSR = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        FSR = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
 
         # Assign delegate to target characteristic
-        object1 = MyDelegate(IMU1ACC.getHandle() , IMU1Gyro.getHandle(),IMU1Pose.getHandle(),IMU2ACC.getHandle(),IMU2Gyro.getHandle(),IMU2Pose.getHandle(),0 )
+        object1 = MyDelegate(IMU1ACC.getHandle() , IMU1Gyro.getHandle(),IMU1Pose.getHandle(),IMU2ACC.getHandle(),IMU2Gyro.getHandle(),IMU2Pose.getHandle(),FSR.getHandle() )
         dev.setDelegate(object1)
         # dev.setDelegate(MyDelegate(y_ACC.getHandle()))
         # dev.setDelegate(MyDelegate(z_ACC.getHandle()))
@@ -664,6 +672,7 @@ class Thread3(QThread):
         desc_IMU2ACC = IMU2ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
         desc_IMU2Gyro = IMU2Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
         desc_IMU2Pose = IMU2Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_FSR = FSR.getDescriptors(AssignedNumbers.client_characteristic_configuration)
 
         
         #desc_z_acc = z_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
@@ -676,22 +685,27 @@ class Thread3(QThread):
         dev.writeCharacteristic(desc_IMU2ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
         dev.writeCharacteristic(desc_IMU2Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
         dev.writeCharacteristic(desc_IMU2Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_FSR[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
 
 
         #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
        
         print("Waiting for notifications...")
         self.connecton.emit()
-          
+        before_time = time()
 
         while True:
-            if dev.waitForNotifications(0.5):
+            if dev.waitForNotifications(1):
 
                 L_data = object1.absolute_data()
 
                 L_hand_rpy =  object1.relativePose()
                 
-                continue
+                
+                if(time() - before_time > 0.6):
+                    self.pose.emit()
+                    before_time = time()
+
         
 class Thread4(QThread): 
     
@@ -715,30 +729,30 @@ class Thread4(QThread):
         before_val2 = 0
         before_val3 = 0
         while True: 
-            #print("im okay",L_data[1][4])
-            if nowrunname == "바벨 컬":
-                temp = L_counter.KcCurl(L_data[1][4])
-                temp2 = R_counter.KcCurl(R_data[1][4])
-                print(temp,temp2)
-                if (before_val1 != max(temp,temp2)):
-                    self.count1.emit()
-                    print("change signal\n\n\n")
-                    before_val1 =max(temp,temp2)
+            if(L_data[2][0] >30 and R_data[2][0]>30):
+                if nowrunname == "바벨 컬":
+                    temp = L_counter.KcCurl(L_data[0][3])
+                    temp2 = R_counter.KcCurl(R_data[0][3])
+                    print(temp,temp2)
+                    if (before_val1 != max(temp,temp2)):
+                        self.count1.emit()
+                        print("change signal\n\n\n")
+                        before_val1 =max(temp,temp2)
 
-            elif nowrunname == "벤치프레스":   
-                temp = L_counter.dumbelCurl(L_data[1][4]) 
-                if (before_val2 != temp):
-                    self.count2.emit()
-                    print("change signal\n\n\n")
-                    before_val2 =temp
+                elif nowrunname == "벤치프레스":   
+                    temp = L_counter.dumbelCurl(L_data[1][4]) 
+                    if (before_val2 != temp):
+                        self.count2.emit()
+                        print("change signal\n\n\n")
+                        before_val2 =temp
 
-            elif nowrunname == "숄더프레스":
-                temp = L_counter.shoulderPress(L_data[1][3])
-                temp2 = R_counter.shoulderPress(R_data[1][3])
-                if (before_val3 != max(temp,temp2)):
-                    self.count3.emit()
-                    print("change signal\n\n\n")
-                    before_val3 =max(temp,temp2) 
+                elif nowrunname == "숄더프레스":
+                    temp = L_counter.shoulderPress(L_data[1][3])
+                    temp2 = R_counter.shoulderPress(R_data[1][3])
+                    if (before_val3 != max(temp,temp2)):
+                        self.count3.emit()
+                        print("change signal\n\n\n")
+                        before_val3 =max(temp,temp2) 
 
 
 
@@ -786,10 +800,10 @@ class Thread5(QThread):
         IMU2Gyro = HRService.getCharacteristics("6e400006-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
         IMU2Pose = HRService.getCharacteristics("6e400007-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
 
-        #FSR = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
+        FSR = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
 
         # Assign delegate to target characteristic
-        object1 = MyDelegate(IMU1ACC.getHandle() , IMU1Gyro.getHandle(),IMU1Pose.getHandle(),IMU2ACC.getHandle(),IMU2Gyro.getHandle(),IMU2Pose.getHandle(),0 )
+        object1 = MyDelegate(IMU1ACC.getHandle() , IMU1Gyro.getHandle(),IMU1Pose.getHandle(),IMU2ACC.getHandle(),IMU2Gyro.getHandle(),IMU2Pose.getHandle(),FSR.getHandle() )
         dev.setDelegate(object1)
         # dev.setDelegate(MyDelegate(y_ACC.getHandle()))
         # dev.setDelegate(MyDelegate(z_ACC.getHandle()))
@@ -804,6 +818,7 @@ class Thread5(QThread):
         desc_IMU2ACC = IMU2ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
         desc_IMU2Gyro = IMU2Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
         desc_IMU2Pose = IMU2Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
+        desc_FSR = FSR.getDescriptors(AssignedNumbers.client_characteristic_configuration)
 
         
         #desc_z_acc = z_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
@@ -816,6 +831,7 @@ class Thread5(QThread):
         dev.writeCharacteristic(desc_IMU2ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
         dev.writeCharacteristic(desc_IMU2Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
         dev.writeCharacteristic(desc_IMU2Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
+        dev.writeCharacteristic(desc_FSR[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
 
 
         #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!

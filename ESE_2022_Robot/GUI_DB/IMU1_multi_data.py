@@ -28,6 +28,7 @@ class MyDelegate(btle.DefaultDelegate):
         self.dumbelCount = 0
         self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1= 0,0,0,0,0,0,0,0,0
         self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2= 0,0,0,0,0,0,0,0,0
+        self.FSR_data = 0
         getcount1 = 0
         getcount2 = 0
         getcount3 = 0
@@ -77,7 +78,7 @@ class MyDelegate(btle.DefaultDelegate):
             self.yaw2 = float(val[2])
 
         elif(self.FSR == cHandle):    
-             self.FSR_data = val
+             self.FSR_data = float(val)
         
             
         # print(time.time() - self.T_before)
@@ -99,7 +100,7 @@ class MyDelegate(btle.DefaultDelegate):
         return self.shoulderCount
     
     def absolute_data(self):
-        return [[self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1],[self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2]]    # def count4Return(self):
+        return [[self.x_acc1,self.y_acc1,self.z_acc1,self.x_gyro1 ,self.y_gyro1, self.z_gyro1 , self.roll1, self.pitch1, self.yaw1],[self.x_acc2,self.y_acc2,self.z_acc2,self.x_gyro2 ,self.y_gyro2, self.z_gyro2 , self.roll2, self.pitch2, self.yaw2],[self.FSR_data]]    # def count4Return(self):
     #     # if (health == 'dumbel'):
     #     return self.KcCount        
 

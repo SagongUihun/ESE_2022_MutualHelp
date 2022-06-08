@@ -48,7 +48,7 @@ appHeader{
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QFrame" name="frame">
@@ -289,7 +289,7 @@ appHeader{
        </item>
        <item>
         <property name="text">
-         <string>바벨 컬</string>
+         <string>덤벨컬</string>
         </property>
        </item>
        <item>
@@ -299,12 +299,17 @@ appHeader{
        </item>
        <item>
         <property name="text">
+         <string>랫풀다운</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>숄더프레스</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>팔굽혀펴기</string>
+         <string>푸쉬업</string>
         </property>
        </item>
        <item>
@@ -314,7 +319,12 @@ appHeader{
        </item>
        <item>
         <property name="text">
-         <string>스쿼트</string>
+         <string>바벨스쿼트</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>딥스</string>
         </property>
        </item>
       </widget>
@@ -2505,17 +2515,22 @@ appHeader{
        </property>
        <item>
         <property name="text">
-         <string>bench press</string>
+         <string>벤치프레스</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>shoulder press</string>
+         <string>숄더프레스</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>팔굽혀펴기</string>
+         <string>푸쉬업</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>딥스</string>
         </property>
        </item>
        <item>
@@ -2526,6 +2541,21 @@ appHeader{
        <item>
         <property name="text">
          <string>스쿼트</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>데드리프트</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>렛풀다운</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>덤벨컬</string>
         </property>
        </item>
       </widget>
