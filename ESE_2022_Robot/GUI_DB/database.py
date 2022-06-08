@@ -35,106 +35,48 @@ class db(sqlite_lib):
         self = sqlite_lib()
         self.open("database.db")
 
-        sqlL = '''CREATE TABLE if not exists leftsensor(
-        time DATETIME DEFAULT (DATETIME('now', 'localtime')),
-        roll float not null,
-        pitch float not null,
-        yaw float not null)'''
+        sql = '''CREATE TABLE if not exists handData(
+        time DATETIME DEFAULT (strftime('%Y-%m-%d', DATETIME('now', 'localtime'))),
+        name text,
+        rollL float,
+        pitchL float,
+        yawL float,
+        rollR float,
+        pitchR float,
+        yawR float)'''
 
-        sqlR ='''CREATE TABLE if not exists rightsensor(
-        time DATETIME DEFAULT (DATETIME('now', 'localtime')),
-        roll float not null,
-        pitch float not null,
-        yaw float not null)'''
-
-        self.sql_exec(sqlL)
-        self.sql_exec(sqlR)
+        self.sql_exec(sql)
         self.close()
 
-    # 센서 데이터 테이블에서 운동별 자세 측정을 위해 데이터 추출 함수
-    def classifySensorData(self):
+    def insertRPY(self, name, rowl, rowr):
         self = sqlite_lib()
         self.open("database.db")
 
-        num = int(raw_input('운동 종류 선택: ')
-        )
-        if num == 1:
-            sql = '''SELECT * FROM sensor WHERE id="%s"'''%num
-            self.sql_exec(sql)
-            rows = self.cur.fetchall()
+        Rl = rowl[0]
+        Pl = rowl[1]
+        Yl = rowl[2]
+        Rr = rowr[0]
+        Pr = rowr[1]
+        Yr = rowr[2]
+        sql = '''INSERT INTO handData(name, time, set_result) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}')'''.format(name,Rl, Pl, Yl, Rr, Pr, Yr)
+        self.sql_exec(sql)
 
-            for row in rows:
-                print(row)
-
-            self.close()
-
-        elif num == 2:
-            sql = '''SELECT * FROM sensor WHERE id="%s"'''%num
-
-            self.sql_exec(sql)
-            rows = self.cur.fetchall()
-
-            for row in rows:
-                print(row)
-
-            self.close()
-
-        elif num == 3:
-            sql = '''SELECT * FROM sensor WHERE id="%s"'''%num
-
-            self.sql_exec(sql)
-            rows = self.cur.fetchall()
-
-            for row in rows:
-                print(row)
-
-            self.close()
-
-        elif num == 4:
-            sql = '''SELECT * FROM sensor WHERE id="%s"'''%num
-
-            self.sql_exec(sql)
-            rows = self.cur.fetchall()
-
-            for row in rows:
-                print(row)
-
-            self.close()
-
-    # 센서 데이터 테이블에서 운동 종류에 따라 테이블 데이터 출력
-    def getSensorData(self):
+    def returnHandData(self):
         self = sqlite_lib()
         self.open("database.db")
-
-        num = int(raw_input("운동종류선택: "))
-
-        while num != 0:
-            for i in range(10):
-                data = (num, random.random(), random.random(), random.random()
-                    , random.random(), random.random(), random.random()
-                    , random.random(), random.random(), random.random()
-                    , random.random(), random.random(), random.random()
-                    , random.random(), random.random(), random.random()
-                    , random.random(), random.random(), random.random()
-                    , random.random(), random.random(), random.random()
-                    , random.random(), random.random(), random.random())
-
-                sqlInsert = '''INSERT INTO sensor(
-                    id, Lfsr1, Lfsr2, Lfsr3, Rfsr1, Rfsr2, Rfsr3,
-                    LaccelX, LaccelY, LaccelZ, LgyroX, LgyroY, LgyroZ, LmagX, LmagY, LmagZ,
-                    RaccelX, RaccelY, RaccelZ, RgyroX, RgyroY, RgyroZ, RmagX, RmagY, RmagZ
-                    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
-
-                self.cur.execute(sqlInsert, data)
-                self.commit()
-            num = int(raw_input("종료: 0 다른 운동종류선택: ?"))
-
+        sql = '''SELECT time, name, avg(rollL), avg(pitchL), avg(yawL), avg(rollR), avg(pitchR), avg(yawR) FROM handData Group by time, name'''
+        self.sql_exec(sql)
+        rows = self.cur.fetchall()
         self.close()
+        return rows
 
-    # 센서 데이터 저장 후 계산
-    def saveSensorData(self):
+    def deleteSensorData(self, day):
         self = sqlite_lib()
         self.open("database.db")
+
+        sql = '''DELETE FROM handData'''
+        self.sql_exec(sql)
+        self.close()
 
     # 운동목표 데이터 베이스 생성 함수
     def createWorkoutData(self):

@@ -62,9 +62,9 @@ class UI(QtGui.QMainWindow, form_class):
         self.th4.count1.connect(self.getval1)
         self.th4.count2.connect(self.getval2)
         self.th4.count3.connect(self.getval3)
-        self.th3.connecton.connect(self.nowconnect)
+        self.th3.connecton.connect(self.nowconnect_L)
         self.th3.connecton.connect(self.th4.start)
-        self.th5.connecton.connect(self.nowconnect)
+        self.th5.connecton.connect(self.nowconnect_R)
         self.th.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
@@ -92,6 +92,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.gotohome_2.clicked.connect(self.gotohome)
         self.gotohome_3.clicked.connect(self.gotohome)
         self.gotohome_4.clicked.connect(self.gotohome)
+        self.gotohome_5.clicked.connect(self.gotohome)
         self.goto3_5.clicked.connect(self.goto3)
         self.startfinish_2.clicked.connect(self.workoutestimate)
         
@@ -106,6 +107,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.selectworkout.activated[str].connect(self.updaterecord)
         self.saveroutinedb_6.clicked.connect(self.saveroutine)
         self.exitbutton.clicked.connect(QtCore.QCoreApplication.instance().quit)
+        self.calendar.clicked.connect(self.updatecalrecord)
         
 
         
@@ -115,14 +117,18 @@ class UI(QtGui.QMainWindow, form_class):
         global nowpage
         nowpage = "self.page_2"
         self.stackedWidget.setCurrentWidget(self.page_2)
-        self.nowroutine_2.setText(self.nowroutine_6.currentText()) 
+        self.nowroutine_2.setText(self.nowroutine_6.currentText())
+        # #QSound.play('./sound/eng.wav')
+        # QSound('./sound/eng.wav').play()
+        # print("why no sound")
         
     # record
     def goto3(self):
         mydb = database.db()
-        
         current_day = QDate.currentDate()
-        self.stackedWidget.setCurrentWidget(self.page_3)
+        self.stackedWidget.setCurrentWidget(self.page_4)
+        self.todayday.setText(current_day.toString('yyyy-MM-dd'+"의 운동 기록"))
+        print(mydb.returnHandData)
         for i in range(1,8,1):
             nowday = "day"+str(i)+"_3"
             getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
@@ -142,25 +148,6 @@ class UI(QtGui.QMainWindow, form_class):
     #calibration
     def goto4(self):
         self.stackedWidget.setCurrentWidget(self.page_4)
-        # self.fig = plt.Figure()
-        # self.canvas = FigureCanvas(self.fig)
-
-        # self.forgraph.addWidget(self.canvas)
-        # u = np.array([-8, -8, 0])   # vector u
-        # v = np.array([5, 6, 2])
-
-        # ax = self.fig.add_subplot(111, projection='3d')
-
-        # start = [0,0,0]
-        # ax.quiver(start[0],start[1],start[2],u[0],u[1],u[2],color='red')
-        # ax.quiver(start[0],start[1],start[2],v[0],v[1],v[2])
-        # ax.quiver(v[0],v[1],v[2],u[0],u[1],u[2],color="green")
-        # ax.set_xlim([-8,8])
-        # ax.set_ylim([-8,8])
-        # ax.set_zlim([-8,8])
-        # self.canvas.draw()
-
-
         
     def goto6(self):
         # self.th3.start()
@@ -169,6 +156,7 @@ class UI(QtGui.QMainWindow, form_class):
 
         self.stackedWidget.setCurrentWidget(self.page_6)
         mydb.createWorkoutData()
+        mydb.createSensorTable()
 
         row = mydb.returnRoutineRows(1)
         currentroutine = "routine_1"
@@ -306,9 +294,45 @@ class UI(QtGui.QMainWindow, form_class):
         global counttry3
         counttry3 = counttry3 + 1 
     
-    def nowconnect(self):
-        QMessageBox.about(self,'Ble Notice','Success Connect ')
+    def nowconnect_L(self):
+        QMessageBox.about(self,'Ble Notice','Left arm Connect Success')
         playsound('./sound/eng.wav')
+
+    def nowconnect_R(self):
+        QMessageBox.about(self,'Ble Notice','Right arm Connect Success ')
+        playsound('./sound/eng.wav')
+
+    def updatecalrecord(self):
+        mydb = database.db()
+        for i in range(7):
+            workrecord = "rec_"+str(i)
+            getattr(self, workrecord).setText("")
+
+        current_day = self.calendar.selectedDate()
+        self.todayday.setText(current_day.toString('yyyy-MM-dd'+'의 운동 기록'))
+        nowday = current_day.toString('yyyy-MM-dd')
+        print(nowday)
+        row = mydb.returnDayworkoutRows()
+        count = len(row)
+        j = 0
+        for x in range(count):
+            day, name, time = row[x]
+            if day == nowday:
+                workrecord = "rec_"+str(j)
+                j = j + 1
+                getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
+        
+        # for i in range(7):
+        #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
+        #     row = mydb.returnDayworkoutRows()
+        #     count = len(row)
+        #     j = 0
+        #     for x in range(count):
+        #         day, name, time = row[x]
+        #         if day == nowday:
+        #             workrecord = "day"+str(7-i)+str(j+1)+"_3"
+        #             j = j + 1
+        #             getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
     
     def drawgraph(self):
         global L_hand_rpy
@@ -322,22 +346,47 @@ class UI(QtGui.QMainWindow, form_class):
         rhy = np.deg2rad(R_hand_rpy[2])
         
         if self.stackedWidget.currentWidget() == self.page_2:
-            L_x = np.array([np.cos(hp),0 ,-np.sin(hp)])
-            L_y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
-            L_z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
+            # L_x = np.array([np.cos(hp),0 ,-np.sin(hp)])
+            # L_y = np.array([np.sin(hp)*np.sin(hr),np.cos(hr),np.cos(hp)*np.sin(hr)])
+            # L_z = np.array([np.sin(hp)*np.cos(hr),-np.sin(hr),np.cos(hp)*np.cos(hr)])
 
-            R_x = np.array([np.cos(rhp),0 ,-np.sin(rhp)])
-            R_y = np.array([np.sin(rhp)*np.sin(rhr),np.cos(rhr),np.cos(rhp)*np.sin(rhr)])
-            R_z = np.array([np.sin(rhp)*np.cos(rhr),-np.sin(rhr),np.cos(rhp)*np.cos(rhr)])
-            
-            # x = np.array([np.cos(hp),np.sin(hp) ,0])
-            # y = np.array([-np.sin(hp)*np.cos(hr), np.cos(hp)*np.cos(hr), np.sin(hr)])
-            # z = np.array([np.sin(hp)*np.sin(hr), -np.cos(hp)*np.sin(hr), np.cos(hr)])
-            
-            
+            # R_x = np.array([np.cos(rhp),0 ,-np.sin(rhp)])
+            # R_y = np.array([np.sin(rhp)*np.sin(rhr),np.cos(rhr),np.cos(rhp)*np.sin(rhr)])
+            # R_z = np.array([np.sin(rhp)*np.cos(rhr),-np.sin(rhr),np.cos(rhp)*np.cos(rhr)])
+            x1_L = np.cos(60*np.pi/180)
+            z1_L = -np.sin(60*np.pi/180)
+            x2_L = np.cos(20*np.pi/180)
+            z2_L = -np.sin(20*np.pi/180)
+            x3_L = np.cos(0*np.pi/180)
+            z3_L = -np.sin(0*np.pi/180)
+            x4_L = np.cos(-20*np.pi/180)
+            z4_L = -np.sin(-20*np.pi/180)
+            x5_L = np.cos(-40*np.pi/180)
+            z5_L = -np.sin(-40*np.pi/180)
+            L_1 = np.array([x1_L*np.cos(hp) + z1_L*np.sin(hp)*np.cos(hr) , -z1_L*np.cos(hr) , -x1_L*np.sin(hp) + z1_L*np.cos(hp)*np.cos(hr)])
+            L_2 = np.array([x2_L*np.cos(hp) + z2_L*np.sin(hp)*np.cos(hr) , -z2_L*np.cos(hr) , -x2_L*np.sin(hp) + z2_L*np.cos(hp)*np.cos(hr)])
+            L_3 = np.array([x3_L*np.cos(hp) + z3_L*np.sin(hp)*np.cos(hr) , -z3_L*np.cos(hr) , -x3_L*np.sin(hp) + z3_L*np.cos(hp)*np.cos(hr)])
+            L_4 = np.array([x4_L*np.cos(hp) + z4_L*np.sin(hp)*np.cos(hr) , -z4_L*np.cos(hr) , -x4_L*np.sin(hp) + z4_L*np.cos(hp)*np.cos(hr)])
+            L_5 = np.array([x5_L*np.cos(hp) + z5_L*np.sin(hp)*np.cos(hr) , -z5_L*np.cos(hr) , -x5_L*np.sin(hp) + z5_L*np.cos(hp)*np.cos(hr)])
+
+            x1_R = np.cos(-40*np.pi/180)
+            z1_R = -np.sin(-40*np.pi/180)
+            x2_R = np.cos(-20*np.pi/180)
+            z2_R = -np.sin(-20*np.pi/180)
+            x3_R = np.cos(0*np.pi/180)
+            z3_R = -np.sin(0*np.pi/180)
+            x4_R = np.cos(20*np.pi/180)
+            z4_R = -np.sin(20*np.pi/180)
+            x5_R = np.cos(60*np.pi/180)
+            z5_R = -np.sin(60*np.pi/180)
+            R_1 = np.array([x1_R*np.cos(rhp) + z1_R*np.sin(rhp)*np.cos(rhr) , -z1_R*np.cos(rhr) , -x1_R*np.sin(rhp) + z1_R*np.cos(rhp)*np.cos(rhr)])
+            R_2 = np.array([x2_R*np.cos(rhp) + z2_R*np.sin(rhp)*np.cos(rhr) , -z2_R*np.cos(rhr) , -x2_R*np.sin(rhp) + z2_R*np.cos(rhp)*np.cos(rhr)])
+            R_3 = np.array([x3_R*np.cos(rhp) + z3_R*np.sin(rhp)*np.cos(rhr) , -z3_R*np.cos(rhr) , -x3_R*np.sin(rhp) + z3_R*np.cos(rhp)*np.cos(rhr)])
+            R_4 = np.array([x4_R*np.cos(rhp) + z4_R*np.sin(rhp)*np.cos(rhr) , -z4_R*np.cos(rhr) , -x4_R*np.sin(rhp) + z4_R*np.cos(rhp)*np.cos(rhr)])
+            R_5 = np.array([x5_R*np.cos(rhp) + z5_R*np.sin(rhp)*np.cos(rhr) , -z5_R*np.cos(rhr) , -x5_R*np.sin(rhp) + z5_R*np.cos(rhp)*np.cos(rhr)])
             v = np.array([5, 6, 2])
-            
-           
+
+
             if(self.triger):
                 self.ax = self.fig.add_subplot(111, projection='3d')
                 self.triger = False
@@ -347,28 +396,41 @@ class UI(QtGui.QMainWindow, form_class):
             #print( hand_p, hand_r, hand_y, hr, hp)
             start = [0,0,0]
 
-            self.axr.quiver(start[0],start[1],start[2],R_x[0],R_x[1],R_x[2],color='red')
-            self.axr.quiver(start[0],start[1],start[2],R_y[0],R_y[1],R_y[2],color='orange')
-            self.axr.quiver(start[0],start[1],start[2],R_z[0],R_z[1],R_z[2],color='magenta')
+            #self.axr.quiver(start[0],start[1],start[2],R_x[0],R_x[1],R_x[2],color='red')
+            #self.axr.quiver(start[0],start[1],start[2],R_y[0],R_y[1],R_y[2],color='orange')
+            #self.axr.quiver(start[0],start[1],start[2],R_z[0],R_z[1],R_z[2],color='magenta')
+            #self.axr.quiver(start[0],start[1],-1,0,0,1,color = 'black')
+
+            self.axr.quiver(start[0],start[1],start[2],R_1[0],R_1[1],R_1[2],color='red')
+            self.axr.quiver(start[0],start[1],start[2],R_2[0],R_2[1],R_2[2],color='orange')
+            self.axr.quiver(start[0],start[1],start[2],R_3[0],R_3[1],R_3[2],color='yellow')
+            self.axr.quiver(start[0],start[1],start[2],R_4[0],R_4[1],R_4[2],color='green')
+            self.axr.quiver(start[0],start[1],start[2],R_5[0],R_5[1],R_5[2],color='blue')
             self.axr.quiver(start[0],start[1],-1,0,0,1,color = 'black')
-            
+
             self.axr.set_xlim([-1,1])
             self.axr.set_ylim([-1,1])
             self.axr.set_zlim([-1,1])
             self.canvas_r.draw()
             self.axr.axes.clear()
-            
-            self.ax.quiver(start[0],start[1],start[2],L_x[0],L_x[1],L_x[2],color='red')
-            self.ax.quiver(start[0],start[1],start[2],L_y[0],L_y[1],L_y[2],color='orange')
-            self.ax.quiver(start[0],start[1],start[2],L_z[0],L_z[1],L_z[2],color='magenta')
+
+            #self.ax.quiver(start[0],start[1],start[2],L_x[0],L_x[1],L_x[2],color='red')
+            #self.ax.quiver(start[0],start[1],start[2],L_y[0],L_y[1],L_y[2],color='orange')
+            #self.ax.quiver(start[0],start[1],start[2],L_z[0],L_z[1],L_z[2],color='magenta')
+            #self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
+
+            self.ax.quiver(start[0],start[1],start[2],L_1[0],L_1[1],L_1[2],color='red')
+            self.ax.quiver(start[0],start[1],start[2],L_2[0],L_2[1],L_2[2],color='orange')
+            self.ax.quiver(start[0],start[1],start[2],L_3[0],L_3[1],L_3[2],color='yellow')
+            self.ax.quiver(start[0],start[1],start[2],L_4[0],L_4[1],L_4[2],color='green')
+            self.ax.quiver(start[0],start[1],start[2],L_5[0],L_5[1],L_5[2],color='blue')
             self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
-            
+
             self.ax.set_xlim([-1,1])
             self.ax.set_ylim([-1,1])
             self.ax.set_zlim([-1,1])
             self.canvas.draw()
             self.ax.axes.clear()
-
            
             # print("update")
 
@@ -405,6 +467,8 @@ class Thread2(QThread):
         global counttry1
         global counttry2
         global counttry3
+        global L_hand_rpy
+        global R_hand_rpy
 
         global nowroutine
         global nowrunname
@@ -412,6 +476,8 @@ class Thread2(QThread):
         goal2 = 0
         totaltry = 0
         record = []
+        savetime = 0
+        savetime_before = 0
         print(nowroutine)
         mydb = database.db()
         for i in range(1,7,1):
@@ -448,6 +514,12 @@ class Thread2(QThread):
                                     #saverecord
                                     totaltry = totaltry + counttry1
                                     break
+                                savetime = int(time()%3)
+                                if savetime != savetime_before:
+                                    mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
+                                    print("save")
+                                    print(mydb.returnHandData)
+                                savetime_before = int(time()%3)
                                 sleep(0.01)
                     
                         if (name =="벤치프레스"):

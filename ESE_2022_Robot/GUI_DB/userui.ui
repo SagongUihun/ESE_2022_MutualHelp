@@ -124,6 +124,8 @@ appHeader{
           <property name="font">
            <font>
             <pointsize>25</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
             <strikeout>false</strikeout>
            </font>
           </property>
@@ -1183,6 +1185,23 @@ appHeader{
        <string/>
       </property>
      </widget>
+     <widget class="QPushButton" name="gotohome_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>70</width>
+        <height>60</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resources.qrc">
+        <normaloff>:/icons/icons/rotate-ccw.svg</normaloff>:/icons/icons/rotate-ccw.svg</iconset>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_2">
      <widget class="QFrame" name="frame_3">
@@ -1271,7 +1290,7 @@ appHeader{
          <x>180</x>
          <y>10</y>
          <width>421</width>
-         <height>61</height>
+         <height>81</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -1280,34 +1299,44 @@ appHeader{
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="nowroutine_2">
-          <property name="font">
-           <font>
-            <pointsize>20</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="font">
-           <font>
-            <pointsize>35</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>asd</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QLabel" name="nowroutine_2">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>23</y>
+          <width>122</width>
+          <height>30</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>161</x>
+          <y>9</y>
+          <width>251</width>
+          <height>63</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>35</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
       <widget class="QLabel" name="label_17">
        <property name="geometry">
@@ -1415,7 +1444,7 @@ appHeader{
               </font>
              </property>
              <property name="text">
-              <string>55</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -1447,7 +1476,9 @@ appHeader{
             <widget class="QLabel" name="resttime_2">
              <property name="font">
               <font>
-               <pointsize>55</pointsize>
+               <pointsize>40</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="text">
@@ -1503,7 +1534,7 @@ appHeader{
          <x>480</x>
          <y>90</y>
          <width>311</width>
-         <height>271</height>
+         <height>281</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="forgraph_2"/>
@@ -2014,32 +2045,6 @@ appHeader{
         </item>
        </layout>
       </widget>
-      <widget class="QPushButton" name="giverecord_3">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>410</y>
-         <width>99</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>운동 통계</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="givefeedback_3">
-       <property name="geometry">
-        <rect>
-         <x>670</x>
-         <y>410</y>
-         <width>99</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>피드백 받기</string>
-       </property>
-      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="page_4">
@@ -2086,6 +2091,116 @@ appHeader{
        </property>
        <property name="text">
         <string>TextLabel</string>
+       </property>
+      </widget>
+      <widget class="QCalendarWidget" name="calendar">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>90</y>
+         <width>391</width>
+         <height>341</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frame_21">
+       <property name="geometry">
+        <rect>
+         <x>480</x>
+         <y>80</y>
+         <width>271</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="todayday">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="rec_0">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="rec_1">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="rec_2">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="rec_3">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="rec_4">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="rec_5">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="rec_6">
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="giverecord_3">
+       <property name="geometry">
+        <rect>
+         <x>170</x>
+         <y>20</y>
+         <width>99</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>운동 통계</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="givefeedback_3">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>20</y>
+         <width>99</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>피드백 받기</string>
        </property>
       </widget>
      </widget>
