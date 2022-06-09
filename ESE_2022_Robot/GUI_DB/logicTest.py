@@ -146,12 +146,12 @@ class Counter():
                 if self.pole2[50]+50 < self.pole2[51] and self.pole2[51] == self.pole2[52]==self.pole2[53] == self.pole2[54]==self.pole2[55]:
                     # if self.up%3 == 1:
                     if(time.time() - self.timer > 1):
-                        self.count1 = self.count1 + 1
+                        self.count3 = self.count3 + 1
                         self.timer = time.time()
             #     #print(high)
                 
                 #print(self.count1, self.pole2[50], self.up, self.down)
-                self.pol2e.pop(0)
+                self.pole2.pop(0)
                 if(len(self.pole2)>100):
                     self.pole2.pop(0)
                 time.sleep(0.01)
@@ -160,7 +160,7 @@ class Counter():
                 #    count = count+1
                     #print(i)
             
-        #print(self.count1, self.pole[90])
+                # print(value,self.count3, self.pole2[50])
         #self.asd = self.asd+1
 
         return self.count3
