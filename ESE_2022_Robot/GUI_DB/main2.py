@@ -58,13 +58,14 @@ class UI(QtGui.QMainWindow, form_class):
         self.th5 = Thread5()
         #self.th.start()
         self.th3.start()
-        #self.th5.start()
+        self.th5.start()
         self.th4.count1.connect(self.getval1)
         self.th4.count2.connect(self.getval2)
         self.th4.count3.connect(self.getval3)
         self.th3.connecton.connect(self.nowconnect_L)
         self.th3.connecton.connect(self.th4.start)
         self.th5.connecton.connect(self.nowconnect_R)
+        self.th5.connecton.connect(self.th4.start)
         self.th3.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
@@ -849,7 +850,7 @@ class Thread5(QThread):
 
                 R_data = object1.absolute_data()
                 R_hand_rpy =  object1.relativePose()
-
+                print(R_data)
                 continue
 
 if __name__ == '__main__':        

@@ -128,7 +128,8 @@ class db(sqlite_lib):
         count = len(row)
         for x in range(count):
             name, time, set_result = row[x]
-            sql = '''INSERT INTO daywork(name, time, set_result) VALUES('{}', '{}', '{}')'''.format(name, time, set_result)
+            kcal = time * 0.1225
+            sql = '''INSERT INTO daywork(name, time, kcal, set_result) VALUES('{}', '{}', '{}', '{}')'''.format(name, time, kcal,  set_result)
             self.sql_exec(sql)
 
     # 운동 결과 데이터 추출 함수

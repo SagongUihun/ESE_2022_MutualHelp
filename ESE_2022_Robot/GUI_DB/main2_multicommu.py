@@ -1,4 +1,5 @@
 #-*-coding:utf-8-*-
+from cProfile import run
 import sys
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import *
@@ -108,6 +109,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.saveroutinedb_6.clicked.connect(self.saveroutine)
         self.exitbutton.clicked.connect(QtCore.QCoreApplication.instance().quit)
         self.calendar.clicked.connect(self.updatecalrecord)
+        self.calendar_2.clicked.connect(self.updatecalrecord_2)
         
 
         
@@ -128,21 +130,21 @@ class UI(QtGui.QMainWindow, form_class):
         current_day = QDate.currentDate()
         self.stackedWidget.setCurrentWidget(self.page_4)
         self.todayday.setText(current_day.toString('yyyy-MM-dd'+"의 운동 기록"))
-        for i in range(1,8,1):
-            nowday = "day"+str(i)+"_3"
-            getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
+        # for i in range(1,8,1):
+        #     nowday = "day"+str(i)+"_3"
+        #     getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
 
-        for i in range(7):
-            nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
-            row = mydb.returnDayworkoutRows()
-            count = len(row)
-            j = 0
-            for x in range(count):
-                day, name, time = row[x]
-                if day == nowday:
-                    workrecord = "day"+str(7-i)+str(j+1)+"_3"
-                    j = j + 1
-                    getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
+        # for i in range(7):
+        #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
+        #     row = mydb.returnDayworkoutRows()
+        #     count = len(row)
+        #     j = 0
+        #     for x in range(count):
+        #         day, name, time = row[x]
+        #         if day == nowday:
+        #             workrecord = "day"+str(7-i)+str(j+1)+"_3"
+        #             j = j + 1
+        #             getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
   
     #calibration
     def goto4(self):
@@ -198,6 +200,7 @@ class UI(QtGui.QMainWindow, form_class):
         
     # feedback
     def givefeedback(self):     
+        self.stackedWidget.setCurrentWidget(self.page_3) 
         print("feedback.")       
     
     # workout info
@@ -308,7 +311,7 @@ class UI(QtGui.QMainWindow, form_class):
             getattr(self, workrecord).setText("")
 
         current_day = self.calendar.selectedDate()
-        self.todayday.setText(current_day.toString('yyyy-MM-dd'+'의 운동 기록'))
+        self.todayday.setText(current_day.toString('yyyy-MM-dd')+" "+"의")
         nowday = current_day.toString('yyyy-MM-dd')
         print(nowday)
         row = mydb.returnDayworkoutRows()
@@ -321,6 +324,34 @@ class UI(QtGui.QMainWindow, form_class):
                 j = j + 1
                 getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
         
+        # for i in range(7):
+        #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
+        #     row = mydb.returnDayworkoutRows()
+        #     count = len(row)
+        #     j = 0
+        #     for x in range(count):
+        #         day, name, time = row[x]
+        #         if day == nowday:
+        #             workrecord = "day"+str(7-i)+str(j+1)+"_3"
+        #             j = j + 1
+        #             getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
+    
+    def updatecalrecord_2(self):
+        mydb = database.db()
+        row = mydb.returnHandData()
+        count = len(row)
+        
+        current_day = self.calendar_2.selectedDate()
+        self.label_3.setText(current_day.toString('yyyy-MM-dd')+str("의 sonmok jumsu"))
+        nowday = current_day.toString('yyyy-MM-dd')
+        # print(nowday)
+        
+        for x in range(count):
+            print("load")
+            day, name, RLavg, PLavg, YLavg, RRavg, PRavg, YRavg = row[x]
+            print(day,nowday,name,self.cb1_7.currentText())
+            if day == str(nowday):# and name == self.cb1_7.currentText():
+                print(RLavg, PLavg, YLavg, RRavg, PRavg, YRavg)
         # for i in range(7):
         #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
         #     row = mydb.returnDayworkoutRows()
@@ -508,7 +539,7 @@ class Thread2(QThread):
                         counttry1 = 0
                         counttry2 = 0
                         counttry3 = 0
-                        if (name =="바벨 컬"):
+                        if (name =="바벨 컬" or "덤벨컬" or "사이드 레터럴 레이즈"):
                             while True:
                                 #print(counttry1,counttry2,counttry3)
                                 self.exercount.emit(str(goal2))
@@ -529,7 +560,7 @@ class Thread2(QThread):
                                 savetime_before = int(time()%3)
                                 sleep(0.01)
                     
-                        if (name =="벤치프레스"):
+                        if (name =="푸쉬업" or "딥스"):
                             while True:
                                 # print("벤치프레스")
                                 self.exercount.emit(str(goal2))
@@ -547,7 +578,7 @@ class Thread2(QThread):
                                     totaltry = totaltry + counttry2
                                     break
 
-                        if (name =="숄더프레스"):
+                        if (name =="숄더프레스" or "벤치프레스" or "데드리프트" or " 렛풀다운"):
                             while True:
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry3
@@ -631,10 +662,12 @@ class Thread3(QThread):
         
         print("Connecting...")
         #56:ec:8a:8c:21:5d
-        dev = btle.Peripheral("df:e6:f4:32:69:6d")
-        dev1 = btle.Peripheral("56:ec:8a:8c:21:5d")
-
- 
+        try:
+            dev = btle.Peripheral("df:e6:f4:32:69:6d")
+            dev1 = btle.Peripheral("56:ec:8a:8c:21:5d")
+        except :
+            #self.run()
+            pass
         print("Device services list:")
         for svc in dev.services:
             print (str(svc))
@@ -728,20 +761,23 @@ class Thread3(QThread):
         before_time = time()
 
         while True:
-            if dev.waitForNotifications(1):
+            try:
+                if dev.waitForNotifications(1):
 
-                L_data = object1.absolute_data()
-                L_hand_rpy =  object1.relativePose()
-                if(time() - before_time > 0.6):
-                    self.pose.emit()
-                    before_time = time()
-            if dev1.waitForNotifications(1):
+                    L_data = object1.absolute_data()
+                    L_hand_rpy =  object1.relativePose()
+                    if(time() - before_time > 0.6):
+                        self.pose.emit()
+                        before_time = time()
+                if dev1.waitForNotifications(1):
 
-                R_data = object2.absolute_data()
-                R_hand_rpy =  object2.relativePose()
-                # print(L_data )
-
-
+                    R_data = object2.absolute_data()
+                    R_hand_rpy =  object2.relativePose()
+                    print(R_data)
+            except:
+                print("error with bluetooth communication")
+                #self.run()
+                pass
 
         
 class Thread4(QThread): 
@@ -766,8 +802,12 @@ class Thread4(QThread):
         before_val2 = 0
         before_val3 = 0
         while True: 
-            if(L_data[2][0] >30 and R_data[2][0]>30):
-                if nowrunname == "바벨 컬":
+            print(L_data[2][0])
+            print(R_data[2][0])
+            if(L_data[2][0] >30):# and R_data[2][0]>30):
+                print("asfasf")
+                if nowrunname == "바벨 컬" or "덤벨컬" or "사이드 레터럴 레이즈":
+                    print("countinf")
                     temp = L_counter.KcCurl(L_data[0][3])
                     temp2 = R_counter.KcCurl(R_data[0][3])
                     #print(temp,temp2)
@@ -776,14 +816,15 @@ class Thread4(QThread):
                         print("change signal\n\n\n")
                         before_val1 =max(temp,temp2)
 
-                elif nowrunname == "벤치프레스":   
-                    temp = R_counter.pushUp(L_data[2][0]) 
-                    if (before_val2 != temp):
+                elif nowrunname == "푸쉬업" or "딥스":   
+                    temp = L_counter.pushUp(L_data[2][0]) 
+                    temp2 = R_counter.pushUp(R_data[2][0]) 
+                    if (before_val2 != max(temp,temp2)):
                         self.count2.emit()
                         print("change signal\n\n\n")
                         before_val2 =temp
 
-                elif nowrunname == "숄더프레스":
+                elif nowrunname == "숄더프레스" or "벤치프레스" or "데드리프트" or " 렛풀다운":
                     temp = L_counter.shoulderPress(L_data[1][3])
                     temp2 = R_counter.shoulderPress(R_data[1][3])
                     if (before_val3 != max(temp,temp2)):
