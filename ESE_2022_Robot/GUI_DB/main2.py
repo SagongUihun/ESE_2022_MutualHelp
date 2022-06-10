@@ -57,7 +57,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.th4 = Thread4()
         self.th5 = Thread5()
         #self.th.start()
-        self.th3.start()
+        #self.th3.start()
         self.th5.start()
         self.th4.count1.connect(self.getval1)
         self.th4.count2.connect(self.getval2)
@@ -66,7 +66,8 @@ class UI(QtGui.QMainWindow, form_class):
         self.th3.connecton.connect(self.th4.start)
         self.th5.connecton.connect(self.nowconnect_R)
         self.th5.connecton.connect(self.th4.start)
-        self.th3.pose.connect(self.drawgraph)
+        #self.th3.pose.connect(self.drawgraph)
+        self.th5.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
         
@@ -511,6 +512,7 @@ class Thread2(QThread):
                         counttry3 = 0
                         if (name =="바벨 컬"):
                             while True:
+                                
                                 #print(counttry1,counttry2,counttry3)
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry1
@@ -528,7 +530,7 @@ class Thread2(QThread):
                                 if savetime != savetime_before:
                                     mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
                                 savetime_before = int(time()%3)
-                                sleep(0.01)
+                                
                     
                         if (name =="벤치프레스"):
                             while True:
@@ -730,9 +732,11 @@ class Thread4(QThread):
         before_val2 = 0
         before_val3 = 0
         while True: 
-            if(L_data[2][0] >30 and R_data[2][0]>30):
+            #print(R_data[2][0])
+            if(R_data[2][0]>30):
                 if nowrunname == "바벨 컬":
-                    temp = L_counter.KcCurl(L_data[0][3])
+                    print("바벨 컬")
+                    temp = 0# L_counter.KcCurl(L_data[0][3])
                     temp2 = R_counter.KcCurl(R_data[0][3])
                     print(temp,temp2)
                     if (before_val1 != max(temp,temp2)):
@@ -765,6 +769,7 @@ class Thread5(QThread):
     count2 = pyqtSignal()
     count3 = pyqtSignal()
     connecton = pyqtSignal()
+    pose = pyqtSignal()
 
     def __init__(self): 
         QThread.__init__(self) 
@@ -844,13 +849,16 @@ class Thread5(QThread):
         beforepose = []
         self.connecton.emit()
           
-
+        before_time = time()
         while True:
-            if dev.waitForNotifications(0.5):
+            if dev.waitForNotifications(111):
 
                 R_data = object1.absolute_data()
                 R_hand_rpy =  object1.relativePose()
                 print(R_data)
+                if(time() - before_time > 0.6):
+                    self.pose.emit()
+                    before_time = time()
                 continue
 
 if __name__ == '__main__':        

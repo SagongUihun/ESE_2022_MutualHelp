@@ -518,6 +518,8 @@ class Thread2(QThread):
         record = []
         savetime = 0
         savetime_before = 0
+        t_after_count = 0
+        t_now = 0
         print(nowroutine)
         mydb = database.db()
         for i in range(1,7,1):
@@ -537,6 +539,7 @@ class Thread2(QThread):
                         goal = count
                         goal2 = count
                         counttry1 = 0
+                        counttry1_buf = 0
                         counttry2 = 0
                         counttry3 = 0
                         if (name =="바벨 컬" or "덤벨컬" or "사이드 레터럴 레이즈"):
@@ -544,6 +547,12 @@ class Thread2(QThread):
                                 #print(counttry1,counttry2,counttry3)
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry1
+                                if counttry1_buf != counttry1:
+                                    t_after_count = time()
+                                t_now = time()
+                                if t_now - t_after_count > 10:
+                                    ############### Notice "Do exercise now!!!!!!!!!!!!!"##############
+                                    pass
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
@@ -558,6 +567,7 @@ class Thread2(QThread):
                                 if savetime != savetime_before:
                                     mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
                                 savetime_before = int(time()%3)
+                                counttry1_buf = counttry1
                                 sleep(0.01)
                     
                         if (name =="푸쉬업" or "딥스"):
