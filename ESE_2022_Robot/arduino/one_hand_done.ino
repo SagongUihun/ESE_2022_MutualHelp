@@ -19,22 +19,20 @@ BLEStringCharacteristic IMU2Gyro("6e400006-b5a3-f393-e0a9-e50e24dcca9e", BLEWrit
 BLEStringCharacteristic IMU2Pose("6e400007-b5a3-f393-e0a9-e50e24dcca9e", BLEWrite | BLERead |BLENotify ,20);
 
 
-//BLEStringCharacteristic FSR("6e400008-b5a3-f393-e0a9-e50e24dcca9e", BLEWrite | BLERead |BLENotify ,20);
+BLEStringCharacteristic FSR("6e400008-b5a3-f393-e0a9-e50e24dcca9e", BLEWrite | BLERead |BLENotify ,20);
 
 LSM9DS1 imu_s;
 Madgwick filter,filter2;
 
 int FSR_1 = A1; //analog pin 1
-//int FSR_2 = A2; //analog pin 2
 int FSR_11;
-//int FSR_22;
 
 // Arduino
 float xAcc, yAcc, zAcc;
 float xGyro, yGyro, zGyro;
 float roll, pitch, yaw;
 float s_roll, s_pitch, s_yaw;
-float relative_roll, relative_pitch;
+float relative_roll, relative_pitch, relative_yaw;
 float s_xAcc, s_yAcc, s_zAcc;
 float s_xGyro, s_yGyro, s_zGyro;
 float gyroScale=0.001;
@@ -86,7 +84,7 @@ void setup()
   imu_s.settings.mag.scale = 8; // Set mag range to +/-8Gs
 
   //ble setting 
-  BLE.setLocalName("Thanos_Glove");
+  BLE.setLocalName("Thanos_Right_Glove");
   BLE.setAdvertisedService(DataSendService); 
   DataSendService.addCharacteristic(IMU1Acc);
   DataSendService.addCharacteristic(IMU1Gyro);
@@ -96,7 +94,7 @@ void setup()
   DataSendService.addCharacteristic(IMU2Gyro);
   DataSendService.addCharacteristic(IMU2Pose);
 
-//  DataSendService.addCharacteristic(FSR);
+  DataSendService.addCharacteristic(FSR);
  
   BLE.addService(DataSendService);
 
@@ -119,19 +117,14 @@ void loop()
     //    IMU.readMagneticField(mx, my, mz); 
     
      
-//        filter.updateIMU(-xGyro, zGyro, yGyro, -xAcc, zAcc, yAcc);
-//        roll = filter.getRoll();
-//        pitch = filter.getPitch();
-//        yaw = filter.getYaw();
-
-        filter.updateIMU(xGyro, yGyro, zGyro, xAcc, yAcc, zAcc);
+        filter.updateIMU(xGyro, -yGyro, zGyro, xAcc, -yAcc, zAcc);
         roll = filter.getRoll();
         pitch = filter.getPitch();
         yaw = filter.getYaw();
 //     
-        Serial.print("Arduino: ");
-        Serial.print(roll);
-        Serial.print(" ");
+//        Serial.print("Arduino: ");
+//        Serial.print(roll);
+//        Serial.print(" ");
 //        Serial.print(pitch);
 //        Serial.print(" ");
 //        Serial.println(yaw);
@@ -162,8 +155,8 @@ void loop()
         s_yGyro = imu_s.calcGyro(imu_s.Gy);
         s_zGyro = imu_s.calcGyro(imu_s.Gz);
 
-        filter2.updateIMU(s_xGyro, s_yGyro, s_zGyro, s_xAcc, s_yAcc, s_zAcc);
-//        filter2.updateIMU(s_xGyro, s_zGyro, s_yGyro, s_xAcc, s_zAcc, s_yAcc);
+        filter2.updateIMU(s_xGyro, -s_yGyro, s_zGyro, s_xAcc, -s_yAcc, s_zAcc);
+//        filter2.updateIMU(s_zGyro, s_yGyro, s_xGyro, s_zAcc, s_yAcc, s_xAcc);
         s_roll = filter2.getRoll();
         s_pitch = filter2.getPitch();
         s_yaw = filter2.getYaw();
@@ -172,14 +165,10 @@ void loop()
 //        Serial.print("Sparkfun: ");
 //        Serial.print(s_roll);
 //        Serial.print(" ");
-        Serial.print(s_pitch);
-        Serial.print(" ");
+//        Serial.print(s_pitch);
+//        Serial.print(" ");
 //        Serial.println(s_yaw);
-//        filter2.updateIMU(s_xGyro, s_yGyro, s_zGyro, s_xAcc, s_yAcc, s_zAcc);
-//        s_pitch = filter2.getRoll();
-//        s_yaw = filter2.getPitch();
-//        s_roll = filter2.getYaw();
-        
+
         IMU2_data_acc = String(s_xAcc) + " " + String(s_yAcc) + " " + String(s_zAcc);
         IMU2_data_gyro = String(s_xGyro) + " " + String(s_yGyro) + " " + String(s_zGyro);
         IMU2_data_pose = String(s_roll) + " " + String(s_pitch) + " " + String(s_yaw);
@@ -193,19 +182,19 @@ void loop()
     //    Serial.println(s_yaw);
         relative_roll = roll - s_roll;
         relative_pitch = pitch - s_pitch;
-//        Serial.print("Relative Angle: ");
-//        Serial.print(relative_roll);
-//        Serial.print(" ");
-//        Serial.println(relative_pitch);
+        relative_yaw = yaw - s_yaw;
+        Serial.print("Relative Angle: ");
+        Serial.print(relative_roll);
+        Serial.print(" ");
+        Serial.print(relative_pitch);
+        Serial.print(" ");
+        Serial.println(relative_yaw);
     //    Serial.print(" ");
     //    Serial.println(yaw - s_yaw);
-//    
-//        FSR_22 = analogRead(FSR_2); 
+
         FSR_11 = analogRead(FSR_1);  
-//      Serial.print(FSR_00);
-//      Serial.print(" ");
-        Serial.println(FSR_11);
-//        FSR_data = String(FSR_22) + " " + String(FSR_11);
+//        Serial.println(FSR_11);
+        FSR_data = String(FSR_11);
     
     if (central) {
       if(central.connected()){
@@ -217,7 +206,7 @@ void loop()
         IMU2Acc.writeValue(IMU2_data_acc);
         IMU2Gyro.writeValue(IMU2_data_gyro);
         IMU2Pose.writeValue(IMU2_data_pose);
-//        FSR.writeValue(FSR_data);
+        FSR.writeValue(FSR_data);
   
       }
   }
