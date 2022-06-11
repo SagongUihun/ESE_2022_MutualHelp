@@ -511,19 +511,28 @@ class Thread2(QThread):
                         goal2 = count
                         goal3 = goal2
                         counttry1 = 0
+                        counttry1_buf = 0
                         counttry2 = 0
+                        counttry2_buf = 0
                         counttry3 = 0
-                        if (nowrunname =="바벨 컬" or nowrunname == "덤벨컬" or nowrunname == "사이드 레터럴 레이즈"):
+                        counttry3_buf = 0
+                        if (nowrunname =="바벨 컬" or nowrunname == "덤벨컬" or nowrunname =="사이드 레터럴 레이즈"):
                             while True:
-                                
                                 #print(counttry1,counttry2,counttry3)
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry1
                                 if goal3 != goal2:
                                     os.system("mpg123 ./sound/"+str(counttry1)+".wav")
                                     goal3 = goal2
-
-
+                                #### Virtual Trainer saying ###
+                                if counttry1_buf != counttry1:
+                                    t_after_count = time()
+                                t_now = time()
+                                if counttry1 != 0 and t_now - t_after_count > 10:
+                                    print("10 seconds last")
+                                    os.system("mpg123 ./sound/dodo.wav")
+                                    t_after_count = time()
+                                ###############################    
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
@@ -538,19 +547,31 @@ class Thread2(QThread):
                                 if savetime != savetime_before:
                                     mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
                                 savetime_before = int(time()%3)
+                                counttry1_buf = counttry1
                                 sleep(0.01)
-                                
                     
-                        if (nowrunname =="푸쉬업" or nowrunname == "딥스"):
+                        if (nowrunname == "푸쉬업" or nowrunname == "딥스"):
                             while True:
-                                print("벤치프레스")
+                                # print("벤치프레스")
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry2
+                                if goal3 != goal2:
+                                    os.system("mpg123 ./sound/"+str(counttry1)+".wav")
+                                    goal3 = goal2
+
+                                #### Virtual Trainer saying ###
+                                if counttry2_buf != counttry2:
+                                    t_after_count = time()
+                                t_now = time()
+                                if counttry2 != 0 and t_now - t_after_count > 10:
+                                    print("10 seconds last")
+                                    os.system("mpg123 ./sound/dodo.wav")
+                                    t_after_count = time()
+
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
                                     #saverecord
-                                    #row.append([])
                                     totaltry = totaltry + counttry2
                                     break
                                 elif a%2 == 1:
@@ -558,12 +579,30 @@ class Thread2(QThread):
                                     #saverecord
                                     totaltry = totaltry + counttry2
                                     break
+                                savetime = int(time()%3)
+                                if savetime != savetime_before:
+                                    mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
+                                savetime_before = int(time()%3)
+                                counttry2_buf = counttry2
                                 sleep(0.01)
 
-                        if (nowrunname =="숄더프레스" or nowrunname == "벤치프레스" or nowrunname == "데드리프트" or nowrunname == "렛풀다운"):
+                        if (name =="숄더프레스" or nowrunname == "벤치프레스" or nowrunname == "데드리프트" or nowrunname == "렛풀다운"):
                             while True:
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry3
+                                if goal3 != goal2:
+                                    os.system("mpg123 ./sound/"+str(counttry1)+".wav")
+                                    goal3 = goal2
+
+                                #### Virtual Trainer saying ###
+                                if counttry3_buf != counttry3:
+                                    t_after_count = time()
+                                t_now = time()
+                                if counttry3 != 0 and t_now - t_after_count > 10:
+                                    print("10 seconds last")
+                                    os.system("mpg123 ./sound/dodo.wav")
+                                    t_after_count = time()
+
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
@@ -576,6 +615,11 @@ class Thread2(QThread):
                                     #saverecord
                                     totaltry = totaltry + counttry3
                                     break
+                                savetime = int(time()%3)
+                                if savetime != savetime_before:
+                                    mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
+                                savetime_before = int(time()%3)
+                                counttry3_buf = counttry3
                                 sleep(0.01)
 
                         goalset = goalset-1

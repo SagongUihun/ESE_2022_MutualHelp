@@ -15,8 +15,8 @@ count = ["하나", "둘","셋", "넷", "다섯", "여섯", "일곱", "여덟", "
 # pygame.mixer.init()
 # p=pygame.mixer.Sound("ensg.wav")
 # p.play()
-voice = "손목보호대와 연결되었습니다!"
-filename = "connectbt"
+voice = "회원님 힘 더 내서 운동합니다!"
+filename = "dodo"
 
 eng_wav = gTTS(voice,lang='ko')
 eng_wav.save(filename+'.wav')
