@@ -138,7 +138,7 @@ class db(sqlite_lib):
     def returnDayworkoutRows(self):
         self = sqlite_lib()
         self.open("database.db")
-        sql = '''SELECT day, name, sum(set_result) FROM daywork GROUP BY name, day'''
+        sql = '''SELECT day, name, sum(set_result), sum(time), sum(kcal) FROM daywork GROUP BY name, day'''
         self.sql_exec(sql)
         rows = self.cur.fetchall()
         self.close()

@@ -530,7 +530,7 @@ class Thread2(QThread):
                                 t_now = time()
                                 if counttry1 != 0 and t_now - t_after_count > 10:
                                     print("10 seconds last")
-                                    os.system("mpg123 ./sound/dodo.wav")
+                                    os.system("mpg123 ./sound/doit_sibal.wav")
                                     t_after_count = time()
                                 ###############################    
                                 if goal2 == 0:
@@ -689,8 +689,11 @@ class Thread3(QThread):
         
         print("Connecting...")
         #56:ec:8a:8c:21:5d
-        dev = btle.Peripheral("df:e6:f4:32:69:6d")
-
+        try:
+            dev = btle.Peripheral("df:e6:f4:32:69:6d")
+        except:
+            print("reconnect")
+            self.run()
  
         print("Device services list:")
         for svc in dev.services:
@@ -753,18 +756,22 @@ class Thread3(QThread):
         before_time = time()
 
         while True:
-            if dev.waitForNotifications(1):
+            try:
+                if dev.waitForNotifications(1):
 
-                L_data = object1.absolute_data()
+                    L_data = object1.absolute_data()
 
-                L_hand_rpy =  object1.relativePose()
-                
-                if(time() - before_time > 0.6):
-                    self.pose.emit()
-                    before_time = time()
-                sleep(0.01)
+                    L_hand_rpy =  object1.relativePose()
+                    
+                    if(time() - before_time > 0.6):
+                        self.pose.emit()
+                        before_time = time()
+                    sleep(0.01)
+            except:
+                print("disconnect")
+                break
+        self.run()
 
-        
 class Thread4(QThread): 
     
     count1 = pyqtSignal()
@@ -792,7 +799,7 @@ class Thread4(QThread):
             print(R_data)
             sleep(0.01)
             if(R_data[2][0] >30):# and R_data[2][0]>30):
-                #print("asfasf")
+                #print(R_data)
                 #print(nowrunname)
                 if nowrunname == None or nowrunname == "":
                     pass
@@ -846,7 +853,13 @@ class Thread5(QThread):
         
         print("Connecting...")
         #
-        dev = btle.Peripheral("56:ec:8a:8c:21:5d")
+        try:
+            dev = btle.Peripheral("df:e6:f4:32:69:6d")
+            #dev = btle.Peripheral("56:ec:8a:8c:21:5d")
+        except:
+            print("reconnect")
+            self.run()
+        # dev = btle.Peripheral("56:ec:8a:8c:21:5d")
         #dev = btle.Peripheral("df:e6:f4:32:69:6d")
 
  
@@ -907,7 +920,7 @@ class Thread5(QThread):
         #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
        
         print("Waiting for notifications...")
-        os.system("mpg123 ./sound/connectbt.wav")
+        os.system("mpg123 ./sound/blueconnect.wav")
         sleep(5)
         before_val1 = 0
         before_val2 = 0
@@ -931,9 +944,11 @@ class Thread5(QThread):
             
             except:
                 print("sensor disconnect")
-                sleep(0.01)
-                continue
-
+                os.system("mpg123 ./sound/bluedisconnect.wav")
+                break
+        sleep(1)
+        self.run()
+            
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)
     mainWindow = UI()

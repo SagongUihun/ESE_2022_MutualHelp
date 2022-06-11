@@ -11,7 +11,6 @@ from IMU1_multi_data import MyDelegate
 from logicTest import Counter
 import database
 from time import time, sleep
-from playsound import playsound
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas 
@@ -52,20 +51,15 @@ class UI(QtGui.QMainWindow, form_class):
 
         self.button()
         self.nowtime()
-        #self.th = Thread1()
         self.th2 = Thread2()
         self.th3 = Thread3()
         self.th4 = Thread4()
-        self.th5 = Thread5()
-        #self.th.start()
         self.th3.start()
-        #self.th5.start()
         self.th4.count1.connect(self.getval1)
         self.th4.count2.connect(self.getval2)
         self.th4.count3.connect(self.getval3)
-        self.th3.connecton.connect(self.nowconnect_L)
+        self.th3.connecton.connect(self.nowconnect)
         self.th3.connecton.connect(self.th4.start)
-        self.th5.connecton.connect(self.nowconnect_R)
         self.th3.pose.connect(self.drawgraph)
         global nowroutine 
         nowroutine= self.nowroutine_2
@@ -187,21 +181,26 @@ class UI(QtGui.QMainWindow, form_class):
     # undong tonggue 
     def giverecord(self):
         self.stackedWidget.setCurrentWidget(self.page_5) 
-        print(" giverecord.")
 
     def updaterecord(self):
+        for i in range(12):
+            target = "detail_"+str(i+1)
+            getattr(self, target).setText("")
         mydb = database.db()
         row = mydb.returnNameWorkoutRows()
         for x in range(len(row)):
             if row[x][0] == self.selectworkout.currentText():
                 for i in range(12):
                     target = "detail_"+str(i+1)
-                    getattr(self, target).setText(str(round(float(row[x][i+1]),2))) 
+                    if i<4: 
+                        getattr(self, target).setText(str(round(float(row[x][i+1])/60,2))+"m") 
+                    else:
+                        getattr(self, target).setText(str(round(float(row[x][i+1]),2))) 
         
     # feedback
     def givefeedback(self):     
         self.stackedWidget.setCurrentWidget(self.page_3) 
-        print("feedback.")       
+        self.stackedWidget_3.setCurrentWidget(self.page_9)     
     
     # workout info
     def giveinfo(self):
@@ -287,29 +286,22 @@ class UI(QtGui.QMainWindow, form_class):
     def getval1(self):
         global counttry1
         counttry1 = counttry1 + 1 
-        os.system("mpg123 ./sound/"+str(counttry1)+".wav")
-    
+        
     def getval2(self):
         global counttry2
         counttry2 = counttry2 + 1 
-        os.system("mpg123 ./sound/"+str(counttry1)+".wav")
-
+        
     def getval3(self):
         global counttry3
         counttry3 = counttry3 + 1 
-        os.system("mpg123 ./sound/"+str(counttry1)+".wav")
     
-    def nowconnect_L(self):
-        QMessageBox.about(self,'Ble Notice','Left arm Connect Success')
-        playsound('./sound/eng.wav')
-
-    def nowconnect_R(self):
-        QMessageBox.about(self,'Ble Notice','Right arm Connect Success ')
-        playsound('./sound/eng.wav')
+    def nowconnect(self):
+        QMessageBox.about(self,'Ble Notice','BLE Connect Success')
 
     def updatecalrecord(self):
         mydb = database.db()
-        for i in range(7):
+        self.rec_0.setText("No Record")
+        for i in range(1,7):
             workrecord = "rec_"+str(i)
             getattr(self, workrecord).setText("")
 
@@ -321,11 +313,11 @@ class UI(QtGui.QMainWindow, form_class):
         count = len(row)
         j = 0
         for x in range(count):
-            day, name, time = row[x]
+            day, name, trysum, time, kcalsum = row[x]
             if day == nowday:
                 workrecord = "rec_"+str(j)
                 j = j + 1
-                getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
+                getattr(self, workrecord).setText(name+" "+str(int(trysum))+"회 "+str(int(time/60)+1)+"분 "+ str(round((float(kcalsum)),3)) + "kcal")
         
         # for i in range(7):
         #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
@@ -343,30 +335,25 @@ class UI(QtGui.QMainWindow, form_class):
         mydb = database.db()
         row = mydb.returnHandData()
         count = len(row)
-        
+        self.stackedWidget_3.setCurrentWidget(self.page_9)
+        self.label_9.setText("")
+
         current_day = self.calendar_2.selectedDate()
-        self.label_3.setText(current_day.toString('yyyy-MM-dd')+str("의 sonmok jumsu"))
+        self.label_3.setText(current_day.toString('yyyy-MM-dd'))
         nowday = current_day.toString('yyyy-MM-dd')
         # print(nowday)
         
         for x in range(count):
-            print("load")
             day, name, RLavg, PLavg, YLavg, RRavg, PRavg, YRavg = row[x]
-            print(day,nowday,name,self.cb1_7.currentText())
             if day == str(nowday) and name == self.cb1_7.currentText():
-                print(RLavg, PLavg, YLavg, RRavg, PRavg, YRavg)
-                self.label_5.setText(str(round(PLavg,2))+str(round(PRavg,2)))
-        # for i in range(7):
-        #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
-        #     row = mydb.returnDayworkoutRows()
-        #     count = len(row)
-        #     j = 0
-        #     for x in range(count):
-        #         day, name, time = row[x]
-        #         if day == nowday:
-        #             workrecord = "day"+str(7-i)+str(j+1)+"_3"
-        #             j = j + 1
-        #             getattr(self, workrecord).setText(name+" "+str(int(time))+"회")
+                self.label_9.setText(str(round(PLavg,2)+round(PRavg,2)/2))
+                if(round(PLavg,2)+round(PRavg,2)<5 and round(PLavg,2)+round(PRavg,2)>-5):
+                    self.stackedWidget_3.setCurrentWidget(self.page_7)
+                elif(round(PLavg,2)+round(PRavg,2)==0):
+                    self.stackedWidget_3.setCurrentWidget(self.page_9)
+                else:
+                    self.stackedWidget_3.setCurrentWidget(self.page_8)
+        
     
     def drawgraph(self):
         global L_hand_rpy
@@ -579,7 +566,7 @@ class Thread2(QThread):
                                     break
                                 savetime = int(time()%3)
                                 if savetime != savetime_before:
-                                    mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
+                                    mydb.insertRPY(nowrunname, L_hand_rpy, R_hand_rpy)
                                 savetime_before = int(time()%3)
                                 counttry1_buf = counttry1
                                 sleep(0.01)
@@ -705,8 +692,6 @@ class Thread2(QThread):
 
 class Thread3(QThread): 
 
-   
-    
     count1 = pyqtSignal()
     count2 = pyqtSignal()
     count3 = pyqtSignal()
@@ -728,9 +713,10 @@ class Thread3(QThread):
         try:
             dev = btle.Peripheral("df:e6:f4:32:69:6d")
             dev1 = btle.Peripheral("56:ec:8a:8c:21:5d")
-        except :
-            #self.run()
-            pass
+        except:
+            print("reconnect")
+            sleep(0.01)
+            self.run()
         print("Device services list:")
         for svc in dev.services:
             print (str(svc))
@@ -820,8 +806,8 @@ class Thread3(QThread):
         #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
        
         print("Waiting for notifications...")
-        os.system("mpg123 ./sound/connectbt.wav")
-        sleep(3)
+        os.system("mpg123 ./sound/blueconnect.wav")
+        sleep(4)
         self.connecton.emit()
         before_time = time()
 
@@ -834,18 +820,21 @@ class Thread3(QThread):
                     if(time() - before_time > 0.6):
                         self.pose.emit()
                         before_time = time()
+                    #print(L_data)
                 if dev1.waitForNotifications(1):
 
                     R_data = object2.absolute_data()
                     R_hand_rpy =  object2.relativePose()
-                    print(R_data)
+                    #print(R_data)
                 sleep(0.01)
 
             except:
                 print("error with bluetooth communication")
                 #self.run()
-                sleep(0.01)
-                pass
+                os.system("mpg123 ./sound/bluedisconnect.wav")
+                break
+        sleep(1)
+        self.run()
 
         
 class Thread4(QThread): 
@@ -869,10 +858,13 @@ class Thread4(QThread):
         before_val1 = 0
         before_val2 = 0
         before_val3 = 0
+        sleep(3)
         while True: 
             sleep(0.01)
+            print("good")
             if(L_data[2][0] >30):# and R_data[2][0]>30):
                 if nowrunname == "바벨 컬" or nowrunname == "덤벨컬" or nowrunname == "사이드 레터럴 레이즈":
+                    print("countinf")
                     temp = L_counter.KcCurl(L_data[0][4])
                     temp2 = R_counter.KcCurl(R_data[0][4])
                     #print(temp,temp2)
@@ -897,113 +889,7 @@ class Thread4(QThread):
                         print("change signal\n\n\n")
                         before_val3 =max(temp,temp2) 
                 
-                # elif nowrunname == "푸시업":
-                #     temp = L_counter.shoulderPress(L_data[1][3])
-                #     temp2 = R_counter.shoulderPress(R_data[1][3])
-                #     if (before_val3 != max(temp,temp2)):
-                #         self.count3.emit()
-                #         print("change signal\n\n\n")
-                #         before_val3 =max(temp,temp2) 
                 
-                
-
-
-
-class Thread5(QThread): 
-
-   
-    
-    count1 = pyqtSignal()
-    count2 = pyqtSignal()
-    count3 = pyqtSignal()
-    connecton = pyqtSignal()
-
-    def __init__(self): 
-        QThread.__init__(self) 
-        #self.cond = QWaitCondition()
-        #self.mutex = QMutex()
-        
-        
-    def run(self): 
-        global R_hand_rpy
-        global nowrunname , R_data 
-        
-        print("Connecting...")
-        #
-        dev = btle.Peripheral("56:ec:8a:8c:21:5d")
-
- 
-        print("Device services list:")
-        for svc in dev.services:
-            print (str(svc))
-
-
-        HRService = dev.getServiceByUUID("6e400001-b5a3-f393-e0a9-e50e24dcca9e")
-        print("HRService", HRService)
-
-        print("HRService characteristics list: ")
-        for char in HRService.getCharacteristics():
-            print("HRService char[", char.getHandle(), "]: ", char)
-
-        IMU1ACC = HRService.getCharacteristics("6e400002-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        IMU1Gyro = HRService.getCharacteristics("6e400003-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        IMU1Pose = HRService.getCharacteristics("6e400004-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-
-        IMU2ACC = HRService.getCharacteristics("6e400005-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        IMU2Gyro = HRService.getCharacteristics("6e400006-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-        IMU2Pose = HRService.getCharacteristics("6e400007-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-
-        FSR = HRService.getCharacteristics("6e400008-b5a3-f393-e0a9-e50e24dcca9e")[0] #Notice! Check is characteristic found before usage in production code!
-
-        # Assign delegate to target characteristic
-        object1 = MyDelegate(IMU1ACC.getHandle() , IMU1Gyro.getHandle(),IMU1Pose.getHandle(),IMU2ACC.getHandle(),IMU2Gyro.getHandle(),IMU2Pose.getHandle(),FSR.getHandle() )
-        dev.setDelegate(object1)
-        # dev.setDelegate(MyDelegate(y_ACC.getHandle()))
-        # dev.setDelegate(MyDelegate(z_ACC.getHandle()))
-        
-        # We need to write into org.bluetooth.descriptor.gatt.client_characteristic_configuration descriptor to enabe notifications
-        # to do so, we must get this descriptor from characteristic first
-        # more details you can find in bluepy source (def getDescriptors(self, forUUID=None, hndEnd=0xFFFF))
-        desc_IMU1ACC = IMU1ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_IMU1Gyro = IMU1Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_IMU1Pose = IMU1Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-
-        desc_IMU2ACC = IMU2ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_IMU2Gyro = IMU2Gyro.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_IMU2Pose = IMU2Pose.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-        desc_FSR = FSR.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-
-        
-        #desc_z_acc = z_ACC.getDescriptors(AssignedNumbers.client_characteristic_configuration)
-       
-        # print("Writing \"notification\" flag to descriptor with handle: ", desc[0].handle)
-        dev.writeCharacteristic(desc_IMU1ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_IMU1Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_IMU1Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-
-        dev.writeCharacteristic(desc_IMU2ACC[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_IMU2Gyro[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_IMU2Pose[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-        dev.writeCharacteristic(desc_FSR[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-
-
-        #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
-       
-        print("Waiting for notifications...")
-        before_val1 = 0
-        before_val2 = 0
-        before_val3 = 0
-        beforepose = []
-        self.connecton.emit()
-          
-
-        while True:
-            if dev.waitForNotifications(111):
-
-                R_data = object1.absolute_data()
-                R_hand_rpy =  object1.relativePose()
-                sleep(0.01)
-                continue
 
 if __name__ == '__main__':        
     app = QtGui.QApplication(sys.argv)
