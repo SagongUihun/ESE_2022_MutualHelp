@@ -20,74 +20,47 @@ class Counter():
         pass
 
     def shoulderPress(self, value):
-        # if(self.countBuffer.qsize() > self.MAXSIZE):
-        #     self.countBuffer.get()
-        if(len(self.checkBuffer) > 20):
-            self.checkBuffer.pop(0)
+        if(len(self.kcBuffer) > 70):
+           self.kcBuffer.pop(0)
+        self.kcBuffer.append(value)
+
+        if(len(self.kcBuffer) > 69):
+            self.pole.append(max(self.kcBuffer[10:60]))
+
+            if(len(self.pole)>69):
+        # Ideally, if the filter is applied well, there will be no problem
+                if self.pole[50]+0.5 < self.pole[51] and self.pole[51] == self.pole[52]==self.pole[53] == self.pole[54]==self.pole[55]:
+                    if(time.time() - self.timer > 1):
+                        self.count3 = self.count3 + 1
+                        self.timer = time.time()
+
+                self.pole.pop(0)
+                if(len(self.pole)>100):
+                    self.pole.pop(0)
+                time.sleep(0.01)
+
+        return self.count3
 
 
-        # self.countBuffer.put(value)
-
-        if (value > 1.1):
-            # before value check ( 1 1 X) (-1 1 O)
-            if (len(self.checkBuffer) != 0 and self.checkBuffer[-1] ==  -1):
-                self.checkBuffer.append(1) 
-        elif(value <0.85):
-            # before value check ( -1 -1 X) (1 -1 O)
-            if(len(self.checkBuffer) == 0 or self.checkBuffer[-1] == 1):
-                self.checkBuffer.append(-1)
-        # else:
-        #     if(time.time() - self.stopTimer>3):
-        #         self.checkBuffer = []
-        #         self.stopTimer = time.time()
-
-
-
-        #check numerical alogrithm ([-1 1 -1] , counter ++ )-> [-1]
-        if len(self.checkBuffer) > 2 :
-            if(self.checkBuffer[0] == -1 and self.checkBuffer[1] == 1 and self.checkBuffer[2] == -1 ):
-            
-                self.checkBuffer.pop(0)
-                self.checkBuffer.pop(0)
-                # timer add 
-                if(time.time() - self.timer > 1):
-                    self.count2 += 1
-                    self.timer = time.time()
-
-
-
-        #print(value,self.checkBuffer[-1])
-        print(self.checkBuffer,self.count2)
-        time.sleep(0.01)
-        return self.count2
+        
 
     def dumbelCurl(self, value):
-        # if(self.countBuffer.qsize() > self.MAXSIZE):
-        #     self.countBuffer.get()
-        # if(len(self.checkBuffer) > 20):
-        #     self.checkBuffer.pop(0)
+        if(len(self.kcBuffer) > 70):
+           self.kcBuffer.pop(0)
+        self.kcBuffer.append(value)
 
-
-        # # self.countBuffer.put(value)
-
-        # if (value > -30):
-        #     # before value check ( 1 1 X) (-1 1 O)
-        #     if (len(self.checkBuffer) == 0 or self.checkBuffer[-1] ==  -1):
-        #         self.checkBuffer.append(1) 
-        # elif(value < -130):
-        #     # before value check ( -1 -1 X) (1 -1 O)
-        #     if(len(self.checkBuffer) == 0 or self.checkBuffer[-1] == 1):
-        #         self.checkBuffer.append(-1)
-
-
-
-        # #check numerical alogrithm ([-1 1 -1] , counter ++ )-> [-1]
-        # if len(self.checkBuffer) > 2 :
-        #         if(self.checkBuffer[i] == -1 and self.checkBuffer[i+1] == 1 and self.checkBuffer[i+2] == -1 ):
-        #             self.count3 += 1
-        #             self.checkBuffer.pop(0)
-        #             self.checkBuffer.pop(0)
-        return 1
+    
+        if(len(self.kcBuffer) > 69):
+            self.pole.append(max(self.kcBuffer[10:60]))
+            if(len(self.pole)>69):
+        # Ideally, if the filter is applied well, there will be no problem
+                if self.pole[50]+80 < self.pole[51] and self.pole[51] == self.pole[52]==self.pole[53] == self.pole[54]==self.pole[55]:
+                    if(time.time() - self.timer > 1.5):
+                        self.count2 = self.count2 + 1
+                        self.timer = time.time()
+                self.pole.pop(0)
+                time.sleep(0.01)
+        return self.count2
 
     def KcCurl(self, value):
     # This is developed by ChangHyun Kim 
@@ -104,10 +77,10 @@ class Counter():
             
             if(len(self.pole)>69):
         # Ideally, if the filter is applied well, there will be no problem
-                if self.pole[50]+50 < self.pole[51] and self.pole[51] == self.pole[52]==self.pole[53] == self.pole[54]==self.pole[55]:
+                if self.pole[50]+80 < self.pole[51] and self.pole[51] == self.pole[52]==self.pole[53] == self.pole[54]==self.pole[55]:
                     # self.up = self.up + 1
                     # if self.up%3 == 1:
-                    if(time.time() - self.timer > 1):
+                    if(time.time() - self.timer > 1.5):
                         self.count1 = self.count1 + 1
                         self.timer = time.time()
 
@@ -115,8 +88,6 @@ class Counter():
 
                 #print(self.count1, self.pole2[50], self.up, self.down)
                 self.pole.pop(0)
-                if(len(self.pole)>100):
-                    self.pole.pop(0)
                 time.sleep(0.01)
 
                 #if nowmax == dmax and pole[i-13] == pole[i-12] == pole[i-11] == pole[i-10] == pole[i-9] == pole[i-8] == pole[i-7] == pole[i-6] == pole[i-5] == pole[i-4] == pole[i-3]:# == pole[i-2] == pole[i-1] == pole[i]:

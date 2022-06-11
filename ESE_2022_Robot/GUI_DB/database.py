@@ -120,6 +120,7 @@ class db(sqlite_lib):
             routine_id, name, aim_set, aim_num, rest_time = row[x]
             sql = '''INSERT INTO routine(routine_id, name, aim_set, aim_num, rest_time) VALUES('{}', '{}', '{}', '{}', '{}')'''.format(routine_id, name, aim_set, aim_num, rest_time)
             self.sql_exec(sql)
+        self.close()
 
     # workout data save function
     def saveDayworkoutData(self, row):
@@ -131,6 +132,7 @@ class db(sqlite_lib):
             kcal = time * 0.1225
             sql = '''INSERT INTO daywork(name, time, kcal, set_result) VALUES('{}', '{}', '{}', '{}')'''.format(name, time, kcal,  set_result)
             self.sql_exec(sql)
+        self.close()
 
     # 운동 결과 데이터 추출 함수
     def returnDayworkoutRows(self):

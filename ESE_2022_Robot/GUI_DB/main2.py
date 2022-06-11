@@ -1,5 +1,5 @@
 #-*-coding:utf-8-*-
-import sys
+import sys, os
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -8,11 +8,11 @@ from bluepy import btle
 from bluepy.btle import AssignedNumbers
 from IMU1_multi_data import MyDelegate 
 from logicTest import Counter
-import database
+import database 
 from time import time, sleep
-from playsound import playsound
 
-import matplotlib.pyplot as plt
+
+import matplotlib.pyplot as plt 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas 
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from mpl_toolkits.mplot3d import Axes3D
@@ -51,12 +51,12 @@ class UI(QtGui.QMainWindow, form_class):
 
         self.button()
         self.nowtime()
-        #self.th = Thread1()
+        self.th = Thread1()
         self.th2 = Thread2()
         self.th3 = Thread3()
         self.th4 = Thread4()
         self.th5 = Thread5()
-        #self.th.start()
+        self.th.start()
         #self.th3.start()
         self.th5.start()
         self.th4.count1.connect(self.getval1)
@@ -100,8 +100,8 @@ class UI(QtGui.QMainWindow, form_class):
         
         self.giverecord_3.clicked.connect(self.giverecord)
         self.givefeedback_3.clicked.connect(self.givefeedback)
-        self.info_3.clicked.connect(self.giveinfo)
-        self.pushButton.clicked.connect(self.liveupdate)
+        #self.info_3.clicked.connect(self.giveinfo)
+        #self.pushButton.clicked.connect(self.liveupdate)
         
         self.addroutine_6.clicked.connect(self.addroutine)
         self.deleteroutine_6.clicked.connect(self.deleteroutine)
@@ -129,7 +129,7 @@ class UI(QtGui.QMainWindow, form_class):
         mydb = database.db()
         current_day = QDate.currentDate()
         self.stackedWidget.setCurrentWidget(self.page_4)
-        self.todayday.setText(current_day.toString('yyyy-MM-dd'+"의 운동 기록"))
+        self.todayday.setText(current_day.toString('yyyy-MM-dd'))
         for i in range(1,8,1):
             nowday = "day"+str(i)+"_3"
             getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
@@ -286,22 +286,24 @@ class UI(QtGui.QMainWindow, form_class):
     def getval1(self):
         global counttry1
         counttry1 = counttry1 + 1 
+        #os.system("mpg123 ./sound/"+str(counttry1)+".wav")
     
     def getval2(self):
         global counttry2
         counttry2 = counttry2 + 1 
+        #os.system("mpg123 ./sound/"+str(counttry2)+".wav")
 
     def getval3(self):
         global counttry3
         counttry3 = counttry3 + 1 
+        #os.system("mpg123 ./sound/"+str(counttry3)+".wav")
     
     def nowconnect_L(self):
         QMessageBox.about(self,'Ble Notice','Left arm Connect Success')
-        playsound('./sound/eng.wav')
+        
 
     def nowconnect_R(self):
         QMessageBox.about(self,'Ble Notice','Right arm Connect Success ')
-        playsound('./sound/eng.wav')
 
     def updatecalrecord(self):
         mydb = database.db()
@@ -310,7 +312,7 @@ class UI(QtGui.QMainWindow, form_class):
             getattr(self, workrecord).setText("")
 
         current_day = self.calendar.selectedDate()
-        self.todayday.setText(current_day.toString('yyyy-MM-dd'+'의 운동 기록'))
+        self.todayday.setText(current_day.toString('yyyy-MM-dd'))
         nowday = current_day.toString('yyyy-MM-dd')
         print(nowday)
         row = mydb.returnDayworkoutRows()
@@ -459,10 +461,10 @@ class Thread1(QThread):
         
         
     def run(self): 
-        while True: 
-            self.pose.emit()
-            sleep(0.6) 
-        
+        # while True: 
+        #     self.pose.emit()
+        #     sleep(0.6) 
+        print("hello")
 
 class Thread2(QThread):
     
@@ -507,15 +509,21 @@ class Thread2(QThread):
                         self.resttime.emit(str(rest))
                         goal = count
                         goal2 = count
+                        goal3 = goal2
                         counttry1 = 0
                         counttry2 = 0
                         counttry3 = 0
-                        if (name =="바벨 컬"):
+                        if (nowrunname =="바벨 컬" or nowrunname == "덤벨컬" or nowrunname == "사이드 레터럴 레이즈"):
                             while True:
                                 
                                 #print(counttry1,counttry2,counttry3)
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry1
+                                if goal3 != goal2:
+                                    os.system("mpg123 ./sound/"+str(counttry1)+".wav")
+                                    goal3 = goal2
+
+
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
@@ -530,9 +538,10 @@ class Thread2(QThread):
                                 if savetime != savetime_before:
                                     mydb.insertRPY(name, L_hand_rpy, R_hand_rpy)
                                 savetime_before = int(time()%3)
+                                sleep(0.01)
                                 
                     
-                        if (name =="벤치프레스"):
+                        if (nowrunname =="푸쉬업" or nowrunname == "딥스"):
                             while True:
                                 print("벤치프레스")
                                 self.exercount.emit(str(goal2))
@@ -549,8 +558,9 @@ class Thread2(QThread):
                                     #saverecord
                                     totaltry = totaltry + counttry2
                                     break
+                                sleep(0.01)
 
-                        if (name =="숄더프레스"):
+                        if (nowrunname =="숄더프레스" or nowrunname == "벤치프레스" or nowrunname == "데드리프트" or nowrunname == "렛풀다운"):
                             while True:
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry3
@@ -566,6 +576,7 @@ class Thread2(QThread):
                                     #saverecord
                                     totaltry = totaltry + counttry3
                                     break
+                                sleep(0.01)
 
                         goalset = goalset-1
                         self.exerset.emit(str(goalset))
@@ -704,10 +715,10 @@ class Thread3(QThread):
 
                 L_hand_rpy =  object1.relativePose()
                 
-                
                 if(time() - before_time > 0.6):
                     self.pose.emit()
                     before_time = time()
+                sleep(0.01)
 
         
 class Thread4(QThread): 
@@ -717,7 +728,7 @@ class Thread4(QThread):
     count3 = pyqtSignal()
     global L_data
     global R_data
-    
+    global nowrunname
 
     def __init__(self):  
         QThread.__init__(self) 
@@ -731,39 +742,47 @@ class Thread4(QThread):
         before_val1 = 0
         before_val2 = 0
         before_val3 = 0
+        
+        sleep(1)
         while True: 
-            #print(R_data[2][0])
-            if(R_data[2][0]>30):
-                if nowrunname == "바벨 컬":
-                    print("바벨 컬")
-                    temp = 0# L_counter.KcCurl(L_data[0][3])
-                    temp2 = R_counter.KcCurl(R_data[0][3])
-                    print(temp,temp2)
+            print(R_data)
+            sleep(0.01)
+            if(R_data[2][0] >30):# and R_data[2][0]>30):
+                #print("asfasf")
+                #print(nowrunname)
+                if nowrunname == None or nowrunname == "":
+                    pass
+                
+                elif nowrunname == "바벨 컬" or nowrunname =="덤벨컬" or nowrunname == "사이드 레터럴 레이즈":
+                    print("countinf")
+                    temp = 0#L_counter.KcCurl(L_data[0][3])
+                    temp2 = R_counter.KcCurl(R_data[0][4])
+                    #print(temp,temp2)
                     if (before_val1 != max(temp,temp2)):
                         self.count1.emit()
                         print("change signal\n\n\n")
                         before_val1 =max(temp,temp2)
 
-                elif nowrunname == "벤치프레스":   
-                    temp = L_counter.dumbelCurl(L_data[1][4]) 
-                    if (before_val2 != temp):
+                elif nowrunname == "푸쉬업" or nowrunname ==  "딥스":   
+                    temp = L_counter.pushUp(L_data[2][0]) 
+                    temp2 = R_counter.pushUp(R_data[2][0]) 
+                    if (before_val2 != max(temp,temp2)):
                         self.count2.emit()
                         print("change signal\n\n\n")
                         before_val2 =temp
 
-                elif nowrunname == "숄더프레스":
-                    temp = L_counter.shoulderPress(L_data[1][3])
-                    temp2 = R_counter.shoulderPress(R_data[1][3])
+                elif nowrunname == "숄더프레스" or nowrunname == "벤치프레스" or nowrunname == "데드리프트" or nowrunname == "렛풀다운":
+                    temp =0# L_counter.shoulderPress(L_data[1][3])
+                    temp2 = R_counter.shoulderPress(R_data[1][0])
                     if (before_val3 != max(temp,temp2)):
                         self.count3.emit()
                         print("change signal\n\n\n")
                         before_val3 =max(temp,temp2) 
 
 
-
 class Thread5(QThread): 
 
-   
+    from time import time, sleep
     
     count1 = pyqtSignal()
     count2 = pyqtSignal()
@@ -784,6 +803,7 @@ class Thread5(QThread):
         print("Connecting...")
         #
         dev = btle.Peripheral("56:ec:8a:8c:21:5d")
+        #dev = btle.Peripheral("df:e6:f4:32:69:6d")
 
  
         print("Device services list:")
@@ -843,22 +863,31 @@ class Thread5(QThread):
         #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
        
         print("Waiting for notifications...")
+        os.system("mpg123 ./sound/connectbt.wav")
+        sleep(5)
         before_val1 = 0
         before_val2 = 0
         before_val3 = 0
         beforepose = []
         self.connecton.emit()
+        #os.system("mpg123 ./sound/connectbt.wav")
           
         before_time = time()
         while True:
-            if dev.waitForNotifications(111):
+            try:
+                if dev.waitForNotifications(1):
 
-                R_data = object1.absolute_data()
-                R_hand_rpy =  object1.relativePose()
-                print(R_data)
-                if(time() - before_time > 0.6):
-                    self.pose.emit()
-                    before_time = time()
+                    R_data = object1.absolute_data()
+                    R_hand_rpy = object1.relativePose()
+                    if(time() - before_time > 0.5):
+                        self.pose.emit()
+                        before_time = time()
+                    sleep(0.01)
+                    continue
+            
+            except:
+                print("sensor disconnect")
+                sleep(0.01)
                 continue
 
 if __name__ == '__main__':        

@@ -1,6 +1,6 @@
 #-*-coding:utf-8-*-
 from cProfile import run
-import sys
+import sys, os
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -99,8 +99,8 @@ class UI(QtGui.QMainWindow, form_class):
         
         self.giverecord_3.clicked.connect(self.giverecord)
         self.givefeedback_3.clicked.connect(self.givefeedback)
-        self.info_3.clicked.connect(self.giveinfo)
-        self.pushButton.clicked.connect(self.liveupdate)
+        #self.info_3.clicked.connect(self.giveinfo)
+        #self.pushButton.clicked.connect(self.liveupdate)
         
         self.addroutine_6.clicked.connect(self.addroutine)
         self.deleteroutine_6.clicked.connect(self.deleteroutine)
@@ -129,7 +129,7 @@ class UI(QtGui.QMainWindow, form_class):
         mydb = database.db()
         current_day = QDate.currentDate()
         self.stackedWidget.setCurrentWidget(self.page_4)
-        self.todayday.setText(current_day.toString('yyyy-MM-dd'+"의 운동 기록"))
+        self.todayday.setText(current_day.toString('yyyy-MM-dd'))
         # for i in range(1,8,1):
         #     nowday = "day"+str(i)+"_3"
         #     getattr(self, nowday).setText(current_day.addDays(i-7).toString('MM.dd'))
@@ -196,7 +196,7 @@ class UI(QtGui.QMainWindow, form_class):
             if row[x][0] == self.selectworkout.currentText():
                 for i in range(12):
                     target = "detail_"+str(i+1)
-                    getattr(self, target).setText(str(row[x][i+1])) 
+                    getattr(self, target).setText(str(round(float(row[x][i+1]),2))) 
         
     # feedback
     def givefeedback(self):     
@@ -287,14 +287,17 @@ class UI(QtGui.QMainWindow, form_class):
     def getval1(self):
         global counttry1
         counttry1 = counttry1 + 1 
+        os.system("mpg123 ./sound/"+str(counttry1)+".wav")
     
     def getval2(self):
         global counttry2
         counttry2 = counttry2 + 1 
+        os.system("mpg123 ./sound/"+str(counttry1)+".wav")
 
     def getval3(self):
         global counttry3
         counttry3 = counttry3 + 1 
+        os.system("mpg123 ./sound/"+str(counttry1)+".wav")
     
     def nowconnect_L(self):
         QMessageBox.about(self,'Ble Notice','Left arm Connect Success')
@@ -311,7 +314,7 @@ class UI(QtGui.QMainWindow, form_class):
             getattr(self, workrecord).setText("")
 
         current_day = self.calendar.selectedDate()
-        self.todayday.setText(current_day.toString('yyyy-MM-dd')+" "+"의")
+        self.todayday.setText(current_day.toString('yyyy-MM-dd'))
         nowday = current_day.toString('yyyy-MM-dd')
         print(nowday)
         row = mydb.returnDayworkoutRows()
@@ -350,8 +353,9 @@ class UI(QtGui.QMainWindow, form_class):
             print("load")
             day, name, RLavg, PLavg, YLavg, RRavg, PRavg, YRavg = row[x]
             print(day,nowday,name,self.cb1_7.currentText())
-            if day == str(nowday):# and name == self.cb1_7.currentText():
+            if day == str(nowday) and name == self.cb1_7.currentText():
                 print(RLavg, PLavg, YLavg, RRavg, PRavg, YRavg)
+                self.label_5.setText(str(round(PLavg,2))+str(round(PRavg,2)))
         # for i in range(7):
         #     nowday = current_day.addDays(-i).toString('yyyy-MM-dd')
         #     row = mydb.returnDayworkoutRows()
@@ -488,9 +492,10 @@ class Thread1(QThread):
         
         
     def run(self): 
-        while True: 
-            self.pose.emit()
-            sleep(0.6) 
+        # while True: 
+        #     self.pose.emit()
+        #     sleep(0.6) 
+        print("ejwlwiqfoi")
         
 
 class Thread2(QThread):
@@ -538,21 +543,25 @@ class Thread2(QThread):
                         self.resttime.emit(str(rest))
                         goal = count
                         goal2 = count
+                        goal3 = goal2
                         counttry1 = 0
                         counttry1_buf = 0
                         counttry2 = 0
                         counttry3 = 0
-                        if (name =="바벨 컬" or "덤벨컬" or "사이드 레터럴 레이즈"):
+                        if (nowrunname =="바벨 컬" or nowrunname == "덤벨컬" or nowrunname =="사이드 레터럴 레이즈"):
                             while True:
                                 #print(counttry1,counttry2,counttry3)
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry1
+                                if goal3 != goal2:
+                                    os.system("mpg123 ./sound/"+str(counttry1)+".wav")
+                                    goal3 = goal2
                                 if counttry1_buf != counttry1:
                                     t_after_count = time()
                                 t_now = time()
                                 if t_now - t_after_count > 10:
                                     ############### Notice "Do exercise now!!!!!!!!!!!!!"##############
-                                    pass
+                                    print("10 seconds last")
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
@@ -570,11 +579,14 @@ class Thread2(QThread):
                                 counttry1_buf = counttry1
                                 sleep(0.01)
                     
-                        if (name =="푸쉬업" or "딥스"):
+                        if (nowrunname == "푸쉬업" or nowrunname == "딥스"):
                             while True:
                                 # print("벤치프레스")
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry2
+                                if goal3 != goal2:
+                                    os.system("mpg123 ./sound/"+str(counttry1)+".wav")
+                                    goal3 = goal2
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
@@ -587,11 +599,15 @@ class Thread2(QThread):
                                     #saverecord
                                     totaltry = totaltry + counttry2
                                     break
+                                sleep(0.01)
 
-                        if (name =="숄더프레스" or "벤치프레스" or "데드리프트" or " 렛풀다운"):
+                        if (name =="숄더프레스" or nowrunname == "벤치프레스" or nowrunname == "데드리프트" or nowrunname == "렛풀다운"):
                             while True:
                                 self.exercount.emit(str(goal2))
                                 goal2 = goal - counttry3
+                                if goal3 != goal2:
+                                    os.system("mpg123 ./sound/"+str(counttry1)+".wav")
+                                    goal3 = goal2
                                 if goal2 == 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
@@ -604,12 +620,15 @@ class Thread2(QThread):
                                     #saverecord
                                     totaltry = totaltry + counttry3
                                     break
+                                sleep(0.01)
 
                         goalset = goalset-1
                         self.exerset.emit(str(goalset))
                         if k < range(goalset):
                             for l in range(rest):
                                 self.resttime.emit(str(rest-l))
+                                if rest-l == 10:
+                                    os.system("mpg123 ./sound/rest10.wav")
                                 if a%2 == 1:
                                     print("stop")
                                     break
@@ -767,12 +786,14 @@ class Thread3(QThread):
         #dev.writeCharacteristic(desc_z_acc[0].handle, b"\x01\x00")# Notice! Do not use [0] in production. Check is descriptor found first!
        
         print("Waiting for notifications...")
+        os.system("mpg123 ./sound/connectbt.wav")
+        sleep(3)
         self.connecton.emit()
         before_time = time()
 
         while True:
             try:
-                if dev.waitForNotifications(1):
+                if dev.waitForNotifications(111):
 
                     L_data = object1.absolute_data()
                     L_hand_rpy =  object1.relativePose()
@@ -784,9 +805,12 @@ class Thread3(QThread):
                     R_data = object2.absolute_data()
                     R_hand_rpy =  object2.relativePose()
                     print(R_data)
+                sleep(0.01)
+
             except:
                 print("error with bluetooth communication")
                 #self.run()
+                sleep(0.01)
                 pass
 
         
@@ -812,21 +836,18 @@ class Thread4(QThread):
         before_val2 = 0
         before_val3 = 0
         while True: 
-            print(L_data[2][0])
-            print(R_data[2][0])
+            sleep(0.01)
             if(L_data[2][0] >30):# and R_data[2][0]>30):
-                print("asfasf")
-                if nowrunname == "바벨 컬" or "덤벨컬" or "사이드 레터럴 레이즈":
-                    print("countinf")
-                    temp = L_counter.KcCurl(L_data[0][3])
-                    temp2 = R_counter.KcCurl(R_data[0][3])
+                if nowrunname == "바벨 컬" or nowrunname == "덤벨컬" or nowrunname == "사이드 레터럴 레이즈":
+                    temp = L_counter.KcCurl(L_data[0][4])
+                    temp2 = R_counter.KcCurl(R_data[0][4])
                     #print(temp,temp2)
                     if (before_val1 != max(temp,temp2)):
                         self.count1.emit()
                         print("change signal\n\n\n")
                         before_val1 =max(temp,temp2)
 
-                elif nowrunname == "푸쉬업" or "딥스":   
+                elif nowrunname == "푸쉬업" or nowrunname == "딥스":   
                     temp = L_counter.pushUp(L_data[2][0]) 
                     temp2 = R_counter.pushUp(R_data[2][0]) 
                     if (before_val2 != max(temp,temp2)):
@@ -834,9 +855,9 @@ class Thread4(QThread):
                         print("change signal\n\n\n")
                         before_val2 =temp
 
-                elif nowrunname == "숄더프레스" or "벤치프레스" or "데드리프트" or " 렛풀다운":
-                    temp = L_counter.shoulderPress(L_data[1][3])
-                    temp2 = R_counter.shoulderPress(R_data[1][3])
+                elif nowrunname == "숄더프레스" or nowrunname == "벤치프레스" or nowrunname == "데드리프트" or nowrunname == "렛풀다운":
+                    temp = L_counter.shoulderPress(L_data[1][0])
+                    temp2 = R_counter.shoulderPress(R_data[1][0])
                     if (before_val3 != max(temp,temp2)):
                         self.count3.emit()
                         print("change signal\n\n\n")
@@ -943,11 +964,11 @@ class Thread5(QThread):
           
 
         while True:
-            if dev.waitForNotifications(0.5):
+            if dev.waitForNotifications(111):
 
                 R_data = object1.absolute_data()
                 R_hand_rpy =  object1.relativePose()
-
+                sleep(0.01)
                 continue
 
 if __name__ == '__main__':        
