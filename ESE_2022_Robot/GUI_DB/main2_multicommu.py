@@ -100,7 +100,7 @@ class UI(QtGui.QMainWindow, form_class):
         self.deleteroutine_6.clicked.connect(self.deleteroutine)
         self.nowroutine_6.activated[str].connect(self.changeroutinepage)
         self.selectworkout.activated[str].connect(self.updaterecord)
-        self.saveroutinedb_6.clicked.connect(self.saveroutine)
+        #self.saveroutinedb_6.clicked.connect(self.saveroutine)
         self.exitbutton.clicked.connect(QtCore.QCoreApplication.instance().quit)
         self.calendar.clicked.connect(self.updatecalrecord)
         self.calendar_2.clicked.connect(self.updatecalrecord_2)
@@ -193,7 +193,7 @@ class UI(QtGui.QMainWindow, form_class):
                 for i in range(12):
                     target = "detail_"+str(i+1)
                     if i<4: 
-                        getattr(self, target).setText(str(round(float(row[x][i+1])/60,2))+"m") 
+                        getattr(self, target).setText(str(round(float(row[x][i+1])/60,2))) 
                     else:
                         getattr(self, target).setText(str(round(float(row[x][i+1]),2))) 
         
@@ -231,7 +231,27 @@ class UI(QtGui.QMainWindow, form_class):
         getattr(self, currentroutine).setItem(j, 0, QTableWidgetItem(self.cb1_6.currentText()))
         getattr(self, currentroutine).setItem(j, 1, QTableWidgetItem(self.cb2_6.currentText()))
         getattr(self, currentroutine).setItem(j, 2, QTableWidgetItem(self.cb3_6.currentText()))
-        getattr(self, currentroutine).setItem(j, 3, QTableWidgetItem(self.cb4_6.currentText()))        
+        getattr(self, currentroutine).setItem(j, 3, QTableWidgetItem(self.cb4_6.currentText()))
+        mydb = database.db()
+        row = []
+        for i in range(1,7,1):
+            if self.nowroutine_6.currentText() == "routine "+str(i):
+                currentroutine = "routine_"+str(i)
+        for i in range(5):
+            if getattr(self, currentroutine).item(i,0) == None:
+                break 
+            row.append([])
+            row[i].append(currentroutine)
+            row[i].append(getattr(self, currentroutine).item(i, 0).text())
+            row[i].append(getattr(self, currentroutine).item(i, 1).text())
+            row[i].append(getattr(self, currentroutine).item(i, 2).text())
+            row[i].append(getattr(self, currentroutine).item(i, 3).text())
+
+        for i in range(1,7,1):
+            if row[0][0] == "routine_"+str(i):
+                mydb.deleteRoutine(i)
+
+        mydb.GuiInsertWorkout(row)        
         
     def deleteroutine(self):
         for i in range(1,7,1):
@@ -244,6 +264,26 @@ class UI(QtGui.QMainWindow, form_class):
         getattr(self, currentroutine).setItem(j, 1, None)
         getattr(self, currentroutine).setItem(j, 2, None)
         getattr(self, currentroutine).setItem(j, 3, None)
+        mydb = database.db()
+        row = []
+        for i in range(1,7,1):
+            if self.nowroutine_6.currentText() == "routine "+str(i):
+                currentroutine = "routine_"+str(i)
+        for i in range(5):
+            if getattr(self, currentroutine).item(i,0) == None:
+                break 
+            row.append([])
+            row[i].append(currentroutine)
+            row[i].append(getattr(self, currentroutine).item(i, 0).text())
+            row[i].append(getattr(self, currentroutine).item(i, 1).text())
+            row[i].append(getattr(self, currentroutine).item(i, 2).text())
+            row[i].append(getattr(self, currentroutine).item(i, 3).text())
+
+        for i in range(1,7,1):
+            if row[0][0] == "routine_"+str(i):
+                mydb.deleteRoutine(i)
+
+        mydb.GuiInsertWorkout(row)
          
     
     def liveupdate(self):
@@ -525,6 +565,7 @@ class Thread2(QThread):
                     self.exername.emit(name)
                     print(name)
                     nowrunname = name
+                    sleep(0.5)
                     for k in range(goalset):
                         self.exerset.emit(str(goalset))
                         self.resttime.emit(str(rest))
@@ -552,9 +593,13 @@ class Thread2(QThread):
                                 if counttry1 != 0 and t_now - t_after_count > 10:
                                     print("10 seconds last")
                                     os.system("mpg123 ./sound/dodo.wav")
+                                    # t_after_count = time()
+                                if counttry1 != 0 and t_now - t_after_count > 20:
+                                    print("20 seconds last")
+                                    os.system("mpg123 ./sound/dodo20.wav")
                                     t_after_count = time()
                                 ###############################    
-                                if goal2 == 0:
+                                if goal2 <= 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
                                     totaltry = totaltry + counttry1
@@ -587,9 +632,14 @@ class Thread2(QThread):
                                 if counttry2 != 0 and t_now - t_after_count > 10:
                                     print("10 seconds last")
                                     os.system("mpg123 ./sound/dodo.wav")
+                                    # t_after_count = time()
+
+                                if counttry2 != 0 and t_now - t_after_count > 20:
+                                    print("20 seconds last")
+                                    os.system("mpg123 ./sound/dodo20.wav")
                                     t_after_count = time()
 
-                                if goal2 == 0:
+                                if goal2 <= 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
                                     #saverecord
@@ -622,9 +672,15 @@ class Thread2(QThread):
                                 if counttry3 != 0 and t_now - t_after_count > 10:
                                     print("10 seconds last")
                                     os.system("mpg123 ./sound/dodo.wav")
+                                    # t_after_count = time()
+
+                                if counttry3 != 0 and t_now - t_after_count > 20:
+                                    print("10 seconds last")
+                                    os.system("mpg123 ./sound/dodo20.wav")
                                     t_after_count = time()
 
-                                if goal2 == 0:
+
+                                if goal2 <= 0:
                                     self.exercount.emit(str(goal2))
                                     print("finish 1set")
                                     #saverecord
@@ -646,14 +702,18 @@ class Thread2(QThread):
                         goalset = goalset-1
                         self.exerset.emit(str(goalset))
                         if k < range(goalset):
+                            os.system("mpg123 ./sound/finset.wav")
                             for l in range(rest):
                                 self.resttime.emit(str(rest-l))
                                 if rest-l == 10:
                                     os.system("mpg123 ./sound/rest10.wav")
+                                # if rest-l == 0:
+                                #     os.system("mpg123 ./sound/restover.wav")
                                 if a%2 == 1:
                                     print("stop")
                                     break
                                 sleep(1)
+                            os.system("mpg123 ./sound/restover.wav")
 
                         if a%2 ==1:
                             self.exercount.emit("")
@@ -682,6 +742,7 @@ class Thread2(QThread):
                 # save workout data to DB
                 mydb.saveDayworkoutData(record)
         a=a+1
+        os.system("mpg123 ./sound/endexer.wav")
 
 
         
@@ -712,10 +773,10 @@ class Thread3(QThread):
         #56:ec:8a:8c:21:5d
         try:
             dev = btle.Peripheral("df:e6:f4:32:69:6d")
-            dev1 = btle.Peripheral("56:ec:8a:8c:21:5d")
+            dev1 = btle.Peripheral("7a:97:26:89:44:21")
         except:
             print("reconnect")
-            sleep(0.01)
+            sleep(0.1)
             self.run()
         print("Device services list:")
         for svc in dev.services:
@@ -820,7 +881,7 @@ class Thread3(QThread):
                     if(time() - before_time > 0.6):
                         self.pose.emit()
                         before_time = time()
-                    #print(L_data)
+                    print(L_data)
                 if dev1.waitForNotifications(1):
 
                     R_data = object2.absolute_data()
@@ -856,13 +917,16 @@ class Thread4(QThread):
         L_counter  = Counter()
         R_counter  = Counter()
         before_val1 = 0
+        before_val12 = 0
         before_val2 = 0
+        before_val22 = 0
         before_val3 = 0
+        before_val32 = 0
         sleep(3)
         while True: 
             sleep(0.01)
             print("good")
-            if(L_data[2][0] >30):# and R_data[2][0]>30):
+            if(L_data[2][0] >10):# and R_data[2][0]>30):
                 if nowrunname == "바벨 컬" or nowrunname == "덤벨컬" or nowrunname == "사이드 레터럴 레이즈":
                     print("countinf")
                     temp = L_counter.KcCurl(L_data[0][4])
@@ -879,7 +943,7 @@ class Thread4(QThread):
                     if (before_val2 != max(temp,temp2)):
                         self.count2.emit()
                         print("change signal\n\n\n")
-                        before_val2 =temp
+                        before_val2 =max(temp,temp2)
 
                 elif nowrunname == "숄더프레스" or nowrunname == "벤치프레스" or nowrunname == "데드리프트" or nowrunname == "렛풀다운":
                     temp = L_counter.shoulderPress(L_data[1][0])

@@ -30,8 +30,8 @@ class Counter():
 
             if(len(self.pole)>69):
         # Ideally, if the filter is applied well, there will be no problem
-                if self.pole[50]+0.5 < self.pole[51] and self.pole[51] == self.pole[52]==self.pole[53] == self.pole[54]==self.pole[55]:
-                    if(time.time() - self.timer > 1):
+                if self.pole[50]+0.28 < self.pole[51] and self.pole[51] == self.pole[52]==self.pole[53]:# == self.pole[54]:#==self.pole[55]:
+                    if(time.time() - self.timer > 1.5):
                         self.count3 = self.count3 + 1
                         self.timer = time.time()
 
@@ -58,7 +58,7 @@ class Counter():
             
             if(len(self.pole2)>69):
         # Ideally, if the filter is applied well, there will be no problem
-                if self.pole2[50]+80 < self.pole2[51] and self.pole2[51] == self.pole2[52]==self.pole2[53] == self.pole2[54]==self.pole2[55]:
+                if self.pole2[50]+70 < self.pole2[51] and self.pole2[51] == self.pole2[52]==self.pole2[53]:# == self.pole2[54]:#==self.pole2[55]:
                     # self.up = self.up + 1
                     # if self.up%3 == 1:
                     if(time.time() - self.timer > 1.5):
@@ -95,9 +95,9 @@ class Counter():
             
             if(len(self.pole3)>69):
             # Ideally, if the filter is applied well, there will be no problem
-                if self.pole3[50]+30 < self.pole3[51] and self.pole3[51] == self.pole3[52]==self.pole3[53] == self.pole3[54]==self.pole3[55]:
+                if self.pole3[50]+12 < self.pole3[51] and self.pole3[51] == self.pole3[52]==self.pole3[53]: #== self.pole3[54]==self.pole3[55]:
                     # if self.up%3 == 1:
-                    if(time.time() - self.timer > 1):
+                    if(time.time() - self.timer > 1.5):
                         self.count3 = self.count3 + 1
                         self.timer = time.time()
             #     #print(high)

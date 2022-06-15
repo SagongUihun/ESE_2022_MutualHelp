@@ -412,9 +412,9 @@ class UI(QtGui.QMainWindow, form_class):
     def drawgraph(self):
         global L_hand_rpy
         global R_hand_rpy
-        hr = np.deg2rad(L_hand_rpy[0])
-        hp = np.deg2rad(L_hand_rpy[1])
-        hy = np.deg2rad(L_hand_rpy[2])
+        # hr = np.deg2rad(L_hand_rpy[0])
+        # hp = np.deg2rad(L_hand_rpy[1])
+        # hy = np.deg2rad(L_hand_rpy[2])
 
         rhr = np.deg2rad(R_hand_rpy[0])
         rhp = np.deg2rad(R_hand_rpy[1])
@@ -440,11 +440,11 @@ class UI(QtGui.QMainWindow, form_class):
             y5 = -np.cos(50*np.pi/180)
             z5 = np.sin(50*np.pi/180)
         
-            L_1 = np.array([-z1*np.sin(hp) , y1*np.cos(hr) + z1*np.cos(hp)*np.sin(hr) , -y1*np.sin(hr) + z1*np.cos(hp)*np.cos(hr)])
-            L_2 = np.array([-z2*np.sin(hp) , y2*np.cos(hr) + z2*np.cos(hp)*np.sin(hr) , -y2*np.sin(hr) + z2*np.cos(hp)*np.cos(hr)])
-            L_3 = np.array([-z3*np.sin(hp) , y3*np.cos(hr) + z3*np.cos(hp)*np.sin(hr) , -y3*np.sin(hr) + z3*np.cos(hp)*np.cos(hr)])
-            L_4 = np.array([-z4*np.sin(hp) , y4*np.cos(hr) + z4*np.cos(hp)*np.sin(hr) , -y4*np.sin(hr) + z4*np.cos(hp)*np.cos(hr)])
-            L_5 = np.array([-z5*np.sin(hp) , y5*np.cos(hr) + z5*np.cos(hp)*np.sin(hr) , -y5*np.sin(hr) + z5*np.cos(hp)*np.cos(hr)])
+            # L_1 = np.array([-z1*np.sin(hp) , y1*np.cos(hr) + z1*np.cos(hp)*np.sin(hr) , -y1*np.sin(hr) + z1*np.cos(hp)*np.cos(hr)])
+            # L_2 = np.array([-z2*np.sin(hp) , y2*np.cos(hr) + z2*np.cos(hp)*np.sin(hr) , -y2*np.sin(hr) + z2*np.cos(hp)*np.cos(hr)])
+            # L_3 = np.array([-z3*np.sin(hp) , y3*np.cos(hr) + z3*np.cos(hp)*np.sin(hr) , -y3*np.sin(hr) + z3*np.cos(hp)*np.cos(hr)])
+            # L_4 = np.array([-z4*np.sin(hp) , y4*np.cos(hr) + z4*np.cos(hp)*np.sin(hr) , -y4*np.sin(hr) + z4*np.cos(hp)*np.cos(hr)])
+            # L_5 = np.array([-z5*np.sin(hp) , y5*np.cos(hr) + z5*np.cos(hp)*np.sin(hr) , -y5*np.sin(hr) + z5*np.cos(hp)*np.cos(hr)])
 
             R_1 = np.array([-z1*np.sin(rhp) , y1*np.cos(rhr) + z1*np.cos(rhp)*np.sin(rhr) , -y1*np.sin(rhr) + z1*np.cos(rhp)*np.cos(rhr)])
             R_2 = np.array([-z2*np.sin(rhp) , y2*np.cos(rhr) + z2*np.cos(rhp)*np.sin(rhr) , -y2*np.sin(rhr) + z2*np.cos(rhp)*np.cos(rhr)])
@@ -495,19 +495,19 @@ class UI(QtGui.QMainWindow, form_class):
             # self.ax.quiver(start[0],start[1],start[2],L_z[0],L_z[1],L_z[2],color='magenta')
             # self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
 
-            self.ax.quiver(start[0],start[1],start[2],L_1[0],L_1[1],L_1[2],color='red')
-            self.ax.quiver(start[0],start[1],start[2],L_2[0],L_2[1],L_2[2],color='orange')
-            self.ax.quiver(start[0],start[1],start[2],L_3[0],L_3[1],L_3[2],color='yellow')
-            self.ax.quiver(start[0],start[1],start[2],L_4[0],L_4[1],L_4[2],color='green')
-            self.ax.quiver(start[0],start[1],start[2],L_5[0],L_5[1],L_5[2],color='blue')
-            self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
+            # self.ax.quiver(start[0],start[1],start[2],L_1[0],L_1[1],L_1[2],color='red')
+            # self.ax.quiver(start[0],start[1],start[2],L_2[0],L_2[1],L_2[2],color='orange')
+            # self.ax.quiver(start[0],start[1],start[2],L_3[0],L_3[1],L_3[2],color='yellow')
+            # self.ax.quiver(start[0],start[1],start[2],L_4[0],L_4[1],L_4[2],color='green')
+            # self.ax.quiver(start[0],start[1],start[2],L_5[0],L_5[1],L_5[2],color='blue')
+            # self.ax.quiver(start[0],start[1],-1,0,0,1,color = 'black')
 
-            self.ax.set_xlim([-1,1])
-            self.ax.set_ylim([-1,1])
-            self.ax.set_zlim([-1,1])
-            self.canvas.draw()
+            # self.ax.set_xlim([-1,1])
+            # self.ax.set_ylim([-1,1])
+            # self.ax.set_zlim([-1,1])
+            # self.canvas.draw()
             # self.canvas.blit(self.ax.bbox)
-            self.ax.axes.clear()
+            # self.ax.axes.clear()
             # self.canvas.flush_events()
            
             # print("update")
@@ -876,7 +876,7 @@ class Thread4(QThread):
         while True: 
             # print(R_data)
             sleep(0.01)
-            if(R_data[2][0] >-1):# and R_data[2][0]>30):
+            if(R_data[2][0] >3):# and R_data[2][0]>30):
                 #print(R_data)
                 #print(nowrunname)
                 if nowrunname == None or nowrunname == "":
@@ -1016,7 +1016,7 @@ class Thread5(QThread):
 
                     R_data = object1.absolute_data()
                     R_hand_rpy = object1.relativePose()
-                    if(time() - before_time > 0.4):
+                    if(time() - before_time > 0.2):
                         self.pose.emit()
                         before_time = time()
                     sleep(0.01)
